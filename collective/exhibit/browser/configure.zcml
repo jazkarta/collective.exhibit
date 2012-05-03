@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="collective.exhibit">
+
+  <include package="plone.app.contentmenu" />
+
+  <browser:page for="..interfaces.exhibit.IExhibit"
+    name="base_view"
+    template="exhibit.pt"
+    permission="zope2.View"
+  />
+
+</configure>

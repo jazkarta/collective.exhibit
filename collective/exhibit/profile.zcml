@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="collective.exhibit">
+
+  <!-- register import steps -->
+  <genericsetup:importStep
+      name="exhibit-setup"
+      handler="collective.exhibit.setuphandlers.exhibitSetup"
+      title="Exhbit Setup"
+      description="Additional configuration steps">
+   <depends name="keywords" />
+  </genericsetup:importStep>
+
+  <!-- Register the installation GenericSetup extension profile -->
+  <genericsetup:registerProfile
+      name="default"
+      title="Exhbit"
+      directory="profiles/default"
+      description=""
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+</configure>
