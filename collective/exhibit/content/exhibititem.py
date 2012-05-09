@@ -3,10 +3,12 @@ from Acquisition import aq_inner, aq_parent
 from zope import schema
 from zope.publisher.interfaces import NotFound
 from zope.traversing.interfaces import TraversalError
+from zope.globalrequest import getRequest
 
 from plone.directives import form, dexterity
 from plone.formwidget.contenttree import UUIDSourceBinder
 from plone.app.uuid.utils import uuidToObject
+from plone.app.content.interfaces import INameFromTitle
 
 from plone.app.textfield import RichText
 from plone.app.textfield.interfaces import ITransformer
@@ -90,9 +92,12 @@ class ExhibitItemScaling(ImageScaling):
             schema = obj.Schema()
             if name in schema.keys():
                 return name
-            for field in schema:
+            for field in schema.fields():
                 if field.type == 'image':
-                    name = field.name
+                    name = field.__name__
+                    break
+            else:
+                name = None
         return name
 
     def publishTraverse(self, request, name):
@@ -108,9 +113,11 @@ class ExhibitItemScaling(ImageScaling):
             obj = self._get_referenced()
             if scale and obj is not None:
                 name = self._get_referenced_image_name(obj, name)
-                self._new_url = '%s/@@images/%s/%s'%(obj.absolute_url(),
-                                                     name, scale)
-                return self.redirector
+                if name:
+                    self._new_url = '%s/@@images/%s/%s'%(obj.absolute_url(),
+                                                         name, scale)
+                    return self.redirector
+            raise
 
     def traverse(self, name, furtherPath):
         """ used for path traversal, i.e. in zope page templates """
@@ -195,21 +202,31 @@ class ExhibitItemPrimary(BrowserView):
         return text
 
 
+class ExhibitItemNamer(grok.Adapter):
+    grok.context(IExhibitItem)
+    grok.provides(INameFromTitle)
+
+    @property
+    def title(self):
+        request = getRequest()
+        return ExhibitItemPrimary(self.context, request).Title()
+
+
 @indexer(IExhibitItem)
 def titleIndexer(obj):
-    request = getattr(obj, 'REQUEST', None)
+    request = getRequest()
     return ExhibitItemPrimary(obj, request).Title()
 grok.global_adapter(titleIndexer, name="Title")
 
 @indexer(IExhibitItem)
 def descriptionIndexer(obj):
-    request = getattr(obj, 'REQUEST', None)
+    request = getRequest()
     return ExhibitItemPrimary(obj, request).Description()
 grok.global_adapter(descriptionIndexer, name="Description")
 
 @indexer(IExhibitItem)
 def textIndexer(obj):
-    request = getattr(obj, 'REQUEST', None)
+    request = getRequest()
     primary = ExhibitItemPrimary(obj, request)
     return '%s\n%s\n%s'%(primary.getText(mimetype='text/plain'),
                          primary.Title(), primary.Description())
