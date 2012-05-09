@@ -11,4 +11,5 @@
   <object name="Exhibit"
     meta_type="Factory-based Type Information with dynamic views" />
   <object name="collective.exhibit.exhibititem" meta_type="Dexterity FTI" />
+  <object name="collective.exhibit.exhibitsection" meta_type="Dexterity FTI" />
 </object>

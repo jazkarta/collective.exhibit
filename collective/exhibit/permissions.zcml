@@ -12,4 +12,9 @@
         title="collective.exhibit: Add Exhibit Item"
         />
 
+    <permission
+        id="collective.exhibit.AddExhibitSection"
+        title="collective.exhibit: Add Exhibit Section"
+        />
+
 </configure>
