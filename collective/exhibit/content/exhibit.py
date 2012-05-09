@@ -12,7 +12,7 @@ from Products.ATContentTypes.content import folder
 from Products.ATContentTypes.content import schemata
 from archetypes.referencebrowserwidget import ReferenceBrowserWidget
 
-from collective.exhibit import contenttypesMessageFactory as _
+from collective.exhibit import exhibitMessageFactory as _
 
 from collective.exhibit.interfaces import IExhibit
 from collective.exhibit.config import PROJECTNAME

@@ -1,6 +1,6 @@
 from Products.CMFCore.utils import getToolByName
 
-from collective.exhibit import contenttypesMessageFactory as _
+from collective.exhibit import exhibitMessageFactory as _
 
 
 def exhibitSetup(context):

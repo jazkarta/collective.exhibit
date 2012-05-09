@@ -18,7 +18,7 @@
     <element value="base_view" />
   </property>
   <property name="allowed_content_types">
-    <element value="Exhibit Section" />
+    <element value="collective.exhibit.exhibititem" />
     <element value="Page" />
     <element value="File" />
     <element value="Image" />

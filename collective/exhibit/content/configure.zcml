@@ -1,9 +1,28 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:grok="http://namespaces.zope.org/grok"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:five="http://namespaces.zope.org/five"
+    xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="collective.exhibit">
 
   <!-- configure your content components here -->
+  <grok:grok package="." />
+
+  <browser:page
+      name="images"
+      for=".exhibititem.IExhibitItem"
+      class=".exhibititem.ExhibitItemScaling"
+      allowed_attributes="scale redirector"
+      permission="zope2.View"
+      />
+  <browser:page
+      name="primary"
+      for=".exhibititem.IExhibitItem"
+      class=".exhibititem.ExhibitItemPrimary"
+      allowed_attributes="Title Description getText"
+      permission="zope2.View"
+      />
   
   <!-- -*- extra stuff goes here -*- -->
   <class class=".exhibit.Exhibit">

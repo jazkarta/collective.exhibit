@@ -8,12 +8,6 @@
       <role name="Owner" />
       <role name="Site Administrator" />
     </permission>
-    <permission name="collective.exhibit: Add Exhibit Section" acquire="False">
-      <role name="Manager" />
-      <role name="Contributor" />
-      <role name="Owner" />
-      <role name="Site Administrator" />
-    </permission>
     <permission name="collective.exhibit: Add Exhibit Item" acquire="False">
       <role name="Manager" />
       <role name="Contributor" />

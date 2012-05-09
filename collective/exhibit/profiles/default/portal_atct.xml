@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<atcttool
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <topic_indexes i18n:domain="doaks.contenttypes">
+  <index name="ExhibitSection"
+     description="" enabled="True"
+     friendlyName="Exhibit Section"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATSelectionCriterion</criteria>
+   <criteria>ATSimpleStringCriterion</criteria>
+   <criteria>ATListCriterion</criteria>
+  </index>
+ </topic_indexes>
+</atcttool>

@@ -11,8 +11,5 @@
   <factorytypes>
     <!-- -*- extra stuff goes here -*- -->
     <type portal_type="Exhibit" />
-    <type portal_type="Exhibit Section" />
-    <type portal_type="Exhibit Item" />
-    -->
   </factorytypes>
 </object>

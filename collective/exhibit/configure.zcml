@@ -6,14 +6,15 @@
     xmlns:cmf="http://namespaces.zope.org/cmf"
     i18n_domain="collective.exhibit">
 
+  <includeDependencies package="." />
   <five:registerPackage package="." initialize=".initialize" />
 
 
   <!-- Include the sub-packages that use their own configure.zcml files. -->
+  <include file="permissions.zcml" />
   <include package=".browser" />
   <include package=".content" />
   <include package=".portlets" />
   <include file="profile.zcml" />
-  
 
 </configure>

@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="example.conference">
+
+    <permission
+        id="collective.exhibit.AddExhibit"
+        title="collective.exhibit: Add Exhibit"
+        />
+
+    <permission
+        id="collective.exhibit.AddExhibitItem"
+        title="collective.exhibit: Add Exhibit Item"
+        />
+
+</configure>
