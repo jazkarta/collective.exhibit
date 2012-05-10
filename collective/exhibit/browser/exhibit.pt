@@ -12,8 +12,21 @@
 
 <body>
 
-<metal:main fill-slot="main">
-  <h1>Exhibit</h1>
+<metal:main fill-slot="content-core">
+<div tal:content="structure context/text/output">
+</div>
+<h3 class="exhibit-subtitle">Contents</h3>
+<ul class="exhibit-contents"
+    tal:define="pages python:[p for p in context.values() if p.portal_type=='Document'];
+                sections python:[p for p in context.values() if p.portal_type=='collective.exhibit.exhibitsection'];"
+                >
+<li tal:repeat="page pages">
+<a href="page/getURL" tal:content="page/Title">page</a>
+</li>
+<li tal:repeat="section sections">
+<a href="section/getURL" tal:content="section/Title">page</a>
+</li>
+</ul>
 </metal:main>
 
 </body>
