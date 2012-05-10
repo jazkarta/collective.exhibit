@@ -6,10 +6,4 @@
 
   <include package="plone.app.contentmenu" />
 
-  <browser:page for="..interfaces.exhibit.IExhibit"
-    name="base_view"
-    template="exhibit.pt"
-    permission="zope2.View"
-  />
-
 </configure>

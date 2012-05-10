@@ -25,11 +25,5 @@
       />
   
   <!-- -*- extra stuff goes here -*- -->
-  <class class=".exhibit.Exhibit">
-    <require
-        permission="zope2.View"
-        interface="..interfaces.IExhibit"
-        />
-  </class>
 
 </configure>

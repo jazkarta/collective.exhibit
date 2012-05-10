@@ -8,7 +8,7 @@
   <genericsetup:importStep
       name="exhibit-setup"
       handler="collective.exhibit.setuphandlers.exhibitSetup"
-      title="Exhbit Setup"
+      title="Exhibit Setup"
       description="Additional configuration steps">
    <depends name="keywords" />
   </genericsetup:importStep>
@@ -16,7 +16,7 @@
   <!-- Register the installation GenericSetup extension profile -->
   <genericsetup:registerProfile
       name="default"
-      title="Exhbit"
+      title="Exhibit"
       directory="profiles/default"
       description=""
       provides="Products.GenericSetup.interfaces.EXTENSION"
