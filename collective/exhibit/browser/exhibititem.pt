@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<head>
+  <metal:js fill-slot="javascript_head_slot">
+    <script>
+      $(function () {
+          $('a.FullExhibitItemLink').prepOverlay({subtype: 'ajax', filter: '#content-core'});
+          $('a.ExhibitItemImage').prepOverlay({subtype: 'image'});
+      });
+    </script>
+  </metal:js>
+</head>
+
+<body>
+
+<metal:main fill-slot="content-core"
+            tal:define="image_view context/@@images;
+                        image_preview image_view/image/preview;
+                        image_url string:${context/absolute_url}/@@images/image">
+  <a href=""
+     class="ExhibitItemImage"
+     tal:condition="nocall:image_preview"
+     tal:attributes="href image_url;
+                     title context/Title"
+     tal:content="structure image_preview">
+    <img src="some_image.jpg" alt="title" />
+  </a>
+  <div class="ExhibitItemText" tal:content="structure context/getText">
+    Full Text
+  </div>
+  <a class="FullExhibitItemLink"
+     href="#"
+     tal:define="item_url context/collection_item_url|nothing;
+                 show_link context/show_more_link|nothing"
+     tal:condition="python:item_url and show_link"
+     tal:attributes="href item_url">More information ...</a>
+</metal:main>
+
+</body>
+</html>

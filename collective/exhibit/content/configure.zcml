@@ -13,14 +13,7 @@
       name="images"
       for=".exhibititem.IExhibitItem"
       class=".exhibititem.ExhibitItemScaling"
-      allowed_attributes="scale redirector"
-      permission="zope2.View"
-      />
-  <browser:page
-      name="primary"
-      for=".exhibititem.IExhibitItem"
-      class=".exhibititem.ExhibitItemPrimary"
-      allowed_attributes="Title Description getText"
+      allowed_attributes="scale redirector image_url"
       permission="zope2.View"
       />
   

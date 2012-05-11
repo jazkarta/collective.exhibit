@@ -3,9 +3,9 @@ from Acquisition import aq_inner, aq_parent
 from zope import schema
 from zope.publisher.interfaces import NotFound
 from zope.traversing.interfaces import TraversalError
-from zope.globalrequest import getRequest
 
 from plone.directives import form, dexterity
+from plone.dexterity.content import Item
 from plone.formwidget.contenttree import UUIDSourceBinder
 from plone.app.uuid.utils import uuidToObject
 from plone.app.content.interfaces import INameFromTitle
@@ -16,8 +16,7 @@ from plone.namedfile.field import NamedImage
 from plone.namedfile.scaling import ImageScaling
 from plone.memoize import view
 from plone.indexer import indexer
-from Products.Five import BrowserView
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByName, _checkPermission
 
 from collective.exhibit import exhibitMessageFactory as _
 
@@ -68,6 +67,9 @@ class IExhibitItem(form.Schema):
                     default=u'',
                     )
 
+    show_more_link = schema.Bool(title=_(u'Show more info link'),
+                                 default=True)
+
 
 class ExhibitItemScaling(ImageScaling):
     """ view used for generating (and storing) image scales """
@@ -109,13 +111,19 @@ class ExhibitItemScaling(ImageScaling):
         try:
             return super(ExhibitItemScaling, self).publishTraverse(request,
                                                                    name)
-        except NotFound:
+        except (NotFound, AttributeError):
             obj = self._get_referenced()
-            if scale and obj is not None:
+            if obj is not None:
+                # XXX: We assume the referenced object is either
+                # Archetypes content or has an image field named
+                # 'image'
                 name = self._get_referenced_image_name(obj, name)
                 if name:
-                    self._new_url = '%s/@@images/%s/%s'%(obj.absolute_url(),
-                                                         name, scale)
+                    if scale:
+                        self._new_url = '%s/@@images/%s/%s'%(obj.absolute_url(),
+                                                             name, scale)
+                    else:
+                        self._new_url = obj.absolute_url() + '/' + name
                     return self.redirector
             raise
 
@@ -124,7 +132,7 @@ class ExhibitItemScaling(ImageScaling):
         morePath = furtherPath[:]
         try:
             image = super(ExhibitItemScaling, self).traverse(name, furtherPath)
-        except TraversalError:
+        except (TraversalError, AttributeError):
             image = None
 
         if image is None:
@@ -133,8 +141,6 @@ class ExhibitItemScaling(ImageScaling):
                 name = self._get_referenced_image_name(obj, name)
                 image = obj.restrictedTraverse('@@images').traverse(name,
                                                                     morePath)
-                if image:
-                    image = image.__of__(self.context)
         return image
 
     def redirector(self, REQUEST=None):
@@ -145,18 +151,22 @@ class ExhibitItemScaling(ImageScaling):
             return ''
 
 
-class ExhibitItemPrimary(BrowserView):
+class ExhibitItemContent(Item):
     """View providing default values for fields in view and for indexes"""
 
-    @view.memoize
     def _get_referenced(self):
-        uid = getattr(self.context, 'collection_item')
+        uid = getattr(self, 'collection_item')
         if not uid:
             return
-        return uuidToObject(uid)
+        obj = uuidToObject(uid)
+        if not _checkPermission('View', obj):
+            # Raise AttributeError if the current user cannot access
+            # the referenced object.
+            raise AttributeError, 'Referenced Object: %s not accessible'%uid
+        return obj
 
-    def _text_output(self, text_value, mimetype, raw):
-        transformer = ITransformer(self.context)
+    def _text_output(self, text_value, mimetype, raw=False):
+        transformer = ITransformer(self)
         if mimetype is None and not raw:
             return text_value.output.encode(text_value.encoding)
         elif raw:
@@ -164,34 +174,54 @@ class ExhibitItemPrimary(BrowserView):
         else:
             return transformer(text_value, mimetype).encode(text_value.encoding)
 
+    @property
+    def collection_item_url(self):
+        """Returns the url of the referenced object"""
+        ref = self._get_referenced()
+        return ref and ref.absolute_url()
+
     def Title(self):
         """Returns the title of the object or referenced object"""
-        title = self.context.Title()
+        title = self.title
         if not title:
             referenced = self._get_referenced()
             if referenced is not None:
                 title = referenced.Title()
+        else:
+            title = title.encode('utf-8')
         return title
 
     def Description(self):
         """Returns the description of the object or referenced object"""
-        desc = self.context.Description()
+        desc = self.description
         if not desc:
             referenced = self._get_referenced()
             if referenced is not None:
                 desc = referenced.Description()
+        else:
+            desc = desc.encode('utf-8')
         return desc
 
-    @view.memoize
+    def Subject(self):
+        """Returns the description of the object or referenced object"""
+        subject = self.subject
+        if not subject:
+            referenced = self._get_referenced()
+            if referenced is not None:
+                subject = referenced.Subject()
+        else:
+            subject = [s.encode('utf-8') for s in subject]
+        return subject
+
     def getText(self, mimetype=None, raw=False, **kwargs):
         """Returns the transformed and encoded full text of the object
         or referenced object"""
         text = None
         transformed = None
-        text_value = self.context.text
+        text_value = self.text
         if text_value:
             transformed = self._text_output(text_value, 'text/plain').strip()
-            text = self._text_output(text_value, mimetype, raw)
+            text = self._text_output(text_value, mimetype)
         if not text_value or not transformed:
             referenced = self._get_referenced()
             if referenced is not None and hasattr(referenced, 'getRawText'):
@@ -208,28 +238,15 @@ class ExhibitItemNamer(grok.Adapter):
 
     @property
     def title(self):
-        request = getRequest()
-        return ExhibitItemPrimary(self.context, request).Title()
+        """Use the DC title not the one stored on the instance which
+        may be blank"""
+        return self.context.Title()
 
-
-@indexer(IExhibitItem)
-def titleIndexer(obj):
-    request = getRequest()
-    return ExhibitItemPrimary(obj, request).Title()
-grok.global_adapter(titleIndexer, name="Title")
-
-@indexer(IExhibitItem)
-def descriptionIndexer(obj):
-    request = getRequest()
-    return ExhibitItemPrimary(obj, request).Description()
-grok.global_adapter(descriptionIndexer, name="Description")
 
 @indexer(IExhibitItem)
 def textIndexer(obj):
-    request = getRequest()
-    primary = ExhibitItemPrimary(obj, request)
-    return '%s\n%s\n%s'%(primary.getText(mimetype='text/plain'),
-                         primary.Title(), primary.Description())
+    return '%s\n%s\n%s'%(obj.getText(mimetype='text/plain'),
+                         obj.Title(), obj.Description())
 grok.global_adapter(textIndexer, name="SearchableText")
 
 @indexer(IExhibitItem)

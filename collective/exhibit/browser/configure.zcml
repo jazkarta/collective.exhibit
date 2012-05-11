@@ -10,6 +10,18 @@
     name="view"
     template="exhibit.pt"
     permission="zope2.View"
-  />
+    />
+
+  <browser:page for="..content.exhibititem.IExhibitItem"
+    name="view"
+    template="exhibititem.pt"
+    permission="zope2.View"
+    />
+
+  <browser:page for="..content.exhibitsection.IExhibitSection"
+    name="view"
+    template="exhibitsection_gallery.pt"
+    permission="zope2.View"
+    />
 
 </configure>

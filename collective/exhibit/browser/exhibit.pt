@@ -16,15 +16,19 @@
 <div tal:content="structure context/text/output">
 </div>
 <h3 class="exhibit-subtitle">Contents</h3>
-<ul class="exhibit-contents"
-    tal:define="pages python:[p for p in context.values() if p.portal_type=='Document'];
-                sections python:[p for p in context.values() if p.portal_type=='collective.exhibit.exhibitsection'];"
+<ul id="exhibit-contents"
+    tal:define="pages python:context.listFolderContents({'portal_type': ['Document', 'Topic']});
+                sections python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibitsection'});"
                 >
-<li tal:repeat="page pages">
-<a href="page/getURL" tal:content="page/Title">page</a>
+<li class="PageLink" tal:repeat="page pages">
+<a href="#"
+   tal:attributes="href page/absolute_url"
+   tal:content="page/Title">page</a>
 </li>
-<li tal:repeat="section sections">
-<a href="section/getURL" tal:content="section/Title">page</a>
+<li class="SectionLink" tal:repeat="section sections">
+<a href="#"
+   tal:attributes="href section/absolute_url"
+   tal:content="section/Title">section</a>
 </li>
 </ul>
 </metal:main>
