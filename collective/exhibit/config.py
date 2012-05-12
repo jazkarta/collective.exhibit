@@ -2,3 +2,5 @@
 """
 
 PROJECTNAME = 'collective.exhibit'
+
+EXHIBIT_TEMPLATES = 'portal-exhibit-templates'

@@ -1,27 +1,34 @@
 from five import grok
 from zope import schema
 from zope.schema.vocabulary import SimpleVocabulary
-from zope.schema.vocabulary import SimpleTerm
+from zope.schema.interfaces import IContextSourceBinder
 from z3c.form import field
 from z3c.form import interfaces
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope.app.container.interfaces import IObjectAddedEvent
 
+from Products.CMFCore.utils import getToolByName
 from plone.z3cform.textlines import TextLinesFieldWidget
 from plone.directives import form, dexterity
 from plone.app.textfield import RichText
 from plone.dexterity.utils import createContentInContainer
 
+from collective.exhibit.config import EXHIBIT_TEMPLATES
 from collective.exhibit import exhibitMessageFactory as _
 
 
-exhibit_pages = SimpleVocabulary(
-    [SimpleTerm(value=u'introduction:Introduction', title=_(u'Introduction')),
-     SimpleTerm(value=u'about:About this exhibit', title=_(u'About this exhibit')),
-     SimpleTerm(value=u'acknowlegements:Acknowledgements', title=_(u'Acknowledgements')),
-     SimpleTerm(value=u'browse:Browse all items', title=_(u'Browse all items')),
-     SimpleTerm(value=u'timeline:Timeline', title=_(u'Timeline'))]
-    )
+@grok.provider(IContextSourceBinder)
+def exhibit_pages(context):
+    pages = []
+    portal_url = getToolByName(context, 'portal_url')
+    site = portal_url.getPortalObject()
+    exhibit_templates = site.restrictedTraverse(EXHIBIT_TEMPLATES)
+    for page in exhibit_templates.listFolderContents():
+        term = SimpleVocabulary.createTerm(page.getId(),
+                                           str(page.getId()),
+                                           page.Title)
+        pages.append(term)
+    return SimpleVocabulary(pages)
 
 
 class IExhibit(form.Schema):
@@ -37,10 +44,12 @@ class IExhibit(form.Schema):
 
     pages = schema.Set(title=_(u'Exhibit Pages'),
                        required=False,
-                       value_type=schema.Choice(vocabulary=exhibit_pages))
+                       description=u'Select any pages from the global site templates that you want to be included on the exhibit.',
+                       value_type=schema.Choice(source=exhibit_pages))
 
     sections = schema.Set(title=_(u'Exhibit Sections'),
                           required=False,
+                          description=u'Add the titles of any sections that you wish to add to the exhibit, one per line.',
                           value_type=schema.ASCIILine())
 
 
@@ -71,7 +80,10 @@ def createExhibitContent(exhibit, event):
     for section in exhibit.sections:
         createContentInContainer(exhibit, 'collective.exhibit.exhibitsection',
                                  title=section)
-    for page in exhibit.pages:
-        page_id, page_title = page.split(':', 1)
-        exhibit.invokeFactory('Document', page_id, title=page_title)
-        
+
+    portal_url = getToolByName(exhibit, 'portal_url')
+    site = portal_url.getPortalObject()
+    exhibit_templates = site.restrictedTraverse(EXHIBIT_TEMPLATES)
+    page_ids = [page for page in exhibit.pages]
+    pages = exhibit_templates.manage_copyObjects(ids=page_ids)
+    exhibit.manage_pasteObjects(pages)    
