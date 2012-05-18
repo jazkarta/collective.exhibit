@@ -1,6 +1,7 @@
 from five import grok
 from Acquisition import aq_inner, aq_parent
 from zope import schema
+from zope.interface import invariant, Invalid
 from zope.publisher.interfaces import NotFound
 from zope.traversing.interfaces import TraversalError
 
@@ -21,6 +22,14 @@ from Products.CMFCore.utils import getToolByName, _checkPermission
 from collective.exhibit import exhibitMessageFactory as _
 
 
+class MustHaveTitle(Invalid):
+    __doc__ = _(u'If there is no referenced item, you must set the title.')
+
+class MustHaveImage(Invalid):
+    __doc__ = _(u'If the referenced item does not have an image field, '
+                'you must upload an image.')
+
+
 class IExhibitItem(form.Schema):
     """An Exhibit Item.  Often a reference to another object in
     the site/collection."""
@@ -36,7 +45,8 @@ class IExhibitItem(form.Schema):
     title = schema.TextLine(
         title = _(u'Title'),
         description = _(u'Leave this blank to use the title '
-                        'from the referenced item'),
+                        'from the referenced item.  You must set the '
+                        'title if you do not choose a referenced item.'),
         required = False
         )
 
@@ -51,8 +61,10 @@ class IExhibitItem(form.Schema):
 
     image = NamedImage(title=_(u'Image'),
                        description = _(u'Leave this blank to use the '
-                                       'primary image from the '
-                                       'referenced item'),
+                                       'primary image from the referenced '
+                                       'item.  You must upload an image if '
+                                       'the referenced item has no image '
+                                       'field.'),
                        required=False,
                        )
 
@@ -70,6 +82,43 @@ class IExhibitItem(form.Schema):
     show_more_link = schema.Bool(title=_(u'Show more info link'),
                                  default=True)
 
+    @invariant
+    def validateHasTitle(data):
+        """Verifies that there is a title, either from the referenced
+        item or explicitly set"""
+        if not data.collection_item:
+            if not data.title:
+                raise MustHaveTitle(_(u'You must either choose a Referenced '
+                                      'Item or set a Title.'))
+
+    @invariant
+    def validateHasImage(data):
+        """Verifies that either the referenced object has an image or
+        an image has been explicitly set"""
+        if data.image is None:
+            if data.collection_item:
+                obj = uuidToObject(data.collection_item)
+                image_name = _get_image_field_name(obj)
+                if image_name is None:
+                    raise MustHaveImage(_(u'The Referenced Item does not have '
+                                          'an image.  Either upload an '
+                                          'Image, or choose a referenced item '
+                                          'with an image field.'))
+            else:
+                raise MustHaveImage(_(u"You must either choose a Referenced "
+                                      "Item or upload an Image."))
+
+
+def _get_image_field_name(obj, default_name='image'):
+    """Try to find an image field on an object"""
+    if hasattr(obj, 'Schema'):
+        schema = obj.Schema()
+        if default_name in schema.keys():
+            return default_name
+        for field in schema.fields():
+            if field.type == 'image':
+                return field.__name__
+    return None
 
 class ExhibitItemScaling(ImageScaling):
     """ view used for generating (and storing) image scales """
@@ -87,21 +136,6 @@ class ExhibitItemScaling(ImageScaling):
             if brains:
                 return brains[0]._unrestrictedGetObject()
 
-    @view.memoize
-    def _get_referenced_image_name(self, obj, name):
-        # Choose the first image field from the referenced object schema
-        if hasattr(obj, 'Schema'):
-            schema = obj.Schema()
-            if name in schema.keys():
-                return name
-            for field in schema.fields():
-                if field.type == 'image':
-                    name = field.__name__
-                    break
-            else:
-                name = None
-        return name
-
     def publishTraverse(self, request, name):
         """used for traversal via publisher, i.e. when using as a url"""
         scale = None
@@ -117,7 +151,7 @@ class ExhibitItemScaling(ImageScaling):
                 # XXX: We assume the referenced object is either
                 # Archetypes content or has an image field named
                 # 'image'
-                name = self._get_referenced_image_name(obj, name)
+                name = _get_image_field_name(obj, name)
                 if name:
                     if scale:
                         self._new_url = '%s/@@images/%s/%s'%(obj.absolute_url(),
@@ -138,7 +172,7 @@ class ExhibitItemScaling(ImageScaling):
         if image is None:
             obj = self._get_referenced()
             if obj is not None:
-                name = self._get_referenced_image_name(obj, name)
+                name = _get_image_field_name(obj, name)
                 image = obj.restrictedTraverse('@@images').traverse(name,
                                                                     morePath)
         return image
