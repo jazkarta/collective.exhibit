@@ -31,7 +31,7 @@ class IExhibitItem(form.Schema):
                                     source=UUIDSourceBinder(),
                                     required=False,
                                     )
-    form.widget(collection_item='plone.formwidget.autocomplete.AutocompleteFieldWidget')
+    form.widget(collection_item='plone.formwidget.contenttree.ContentTreeFieldWidget')
 
     title = schema.TextLine(
         title = _(u'Title'),

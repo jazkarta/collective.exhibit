@@ -23,12 +23,14 @@
     <tal:items tal:repeat="item items">
       <li tal:define="item_url item/absolute_url;
                       item_title item/Title|nothing;
-                      orig_url item/collection_item_url|string:'Cannot Access'"
+                      orig_url item/collection_item_url|string:'Cannot Access';
+                      image item/@@images/image/mini|nothing"
           tal:condition="python:orig_url != 'Cannot Access'">
         <a href="#"
            tal:attributes="title item_title;
                            href item_url;">
           <img class="ExhibitItemThumb"
+               tal:condition="nocall:image"
                tal:attributes="src string:${item_url}/@@images/image/mini;
                                alt item_title;" />
           <span class="ExhibitItemTitle" tal:content="item_title">Title</span>

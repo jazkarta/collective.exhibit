@@ -20,7 +20,7 @@
 
 <metal:main fill-slot="content-core"
             tal:define="image_view context/@@images;
-                        image_preview image_view/image/preview;
+                        image_preview image_view/image/preview|nothing;
                         image_url string:${context/absolute_url}/@@images/image">
   <a href=""
      class="ExhibitItemImage"

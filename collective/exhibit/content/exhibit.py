@@ -41,38 +41,29 @@ class IExhibit(form.Schema):
                     output_mime_type='text/x-html-safe',
                     default=u'',
                     )
+    form.primary('text')
 
     pages = schema.Set(title=_(u'Exhibit Pages'),
                        required=False,
                        description=u'Select any pages from the global site templates that you want to be included on the exhibit.',
                        value_type=schema.Choice(source=exhibit_pages))
+    form.widget(pages=CheckBoxFieldWidget)
 
     sections = schema.Set(title=_(u'Exhibit Sections'),
                           required=False,
                           description=u'Add the titles of any sections that you wish to add to the exhibit, one per line.',
                           value_type=schema.ASCIILine())
+    form.omitted('pages', 'sections')
+    form.no_omit(interfaces.IAddForm, 'pages')
+    form.no_omit(interfaces.IAddForm, 'sections')
 
 
 class AddForm(dexterity.AddForm):
     grok.name('collective.exhibit.exhibit')
 
-    fields = field.Fields(IExhibit)
-    fields['pages'].widgetFactory = CheckBoxFieldWidget
-
     def updateWidgets(self):
         super(AddForm, self).updateWidgets()
         self.widgets['sections'].rows = 10
-
-
-class EditForm(dexterity.EditForm):
-    grok.context(IExhibit)
-
-    fields = field.Fields(IExhibit)
-
-    def updateWidgets(self):
-        super(EditForm, self).updateWidgets()
-        self.widgets['pages'].mode = interfaces.HIDDEN_MODE
-        self.widgets['sections'].mode = interfaces.DISPLAY_MODE
 
 
 @grok.subscribe(IExhibit, IObjectAddedEvent)
@@ -86,4 +77,4 @@ def createExhibitContent(exhibit, event):
     exhibit_templates = site.restrictedTraverse(EXHIBIT_TEMPLATES)
     page_ids = [page for page in exhibit.pages]
     pages = exhibit_templates.manage_copyObjects(ids=page_ids)
-    exhibit.manage_pasteObjects(pages)    
+    exhibit.manage_pasteObjects(pages)
