@@ -46,6 +46,7 @@ class IExhibitItem(form.Schema):
                                     required=False,
                                     )
     form.widget(collection_item='plone.formwidget.contenttree.ContentTreeFieldWidget')
+    form.primary('collection_item')
 
     title = schema.TextLine(
         title = _(u'Title'),

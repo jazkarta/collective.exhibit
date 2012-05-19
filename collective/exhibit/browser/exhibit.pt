@@ -13,7 +13,18 @@
 <body>
 
 <metal:main fill-slot="content-core">
-<div tal:content="structure context/text/output">
+<a class="ExhibitImage"
+   tal:define="image_view context/@@images;
+               image_preview image_view/image/preview|nothing;
+               image_url string:${context/absolute_url}/@@images/image"
+   tal:attributes="href image_url;
+                   title context/Title"
+   tal:content="structure image_preview">
+  <img src="some_image.jpg" alt="title" />
+</a>
+<div class="ExhibitText"
+     tal:condition="context/text"
+     tal:content="structure context/text/output">
 </div>
 <h3 class="exhibit-subtitle">Contents</h3>
 <ul id="exhibit-contents"

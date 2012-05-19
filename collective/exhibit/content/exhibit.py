@@ -12,6 +12,7 @@ from plone.z3cform.textlines import TextLinesFieldWidget
 from plone.directives import form, dexterity
 from plone.app.textfield import RichText
 from plone.dexterity.utils import createContentInContainer
+from plone.namedfile.field import NamedBlobImage
 
 from collective.exhibit.config import EXHIBIT_TEMPLATES
 from collective.exhibit import exhibitMessageFactory as _
@@ -42,6 +43,9 @@ class IExhibit(form.Schema):
                     default=u'',
                     )
     form.primary('text')
+
+    image = NamedBlobImage(title=_(u'Image'),
+                           required=False)
 
     pages = schema.Set(title=_(u'Exhibit Pages'),
                        required=False,

@@ -1,7 +1,5 @@
-from five import grok
-from zope import schema
-
 from plone.directives import form, dexterity
+from plone.namedfile.field import NamedBlobImage
 from plone.app.textfield import RichText
 from collective.exhibit import exhibitMessageFactory as _
 
@@ -16,3 +14,6 @@ class IExhibitSection(form.Schema):
                     output_mime_type='text/x-html-safe',
                     default=u'',
                     )
+
+    image = NamedBlobImage(title=_(u'Image'),
+                           required=False)
