@@ -1,18 +1,23 @@
+import itertools
 from five import grok
 from Acquisition import aq_inner, aq_parent
 from zope import schema
 from zope.interface import invariant, Invalid
+from zope.component import queryUtility
 from zope.publisher.interfaces import NotFound
 from zope.traversing.interfaces import TraversalError
 
 from plone.directives import form, dexterity
+from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.content import Item
+from plone.dexterity.utils import getAdditionalSchemata
 from plone.formwidget.contenttree import UUIDSourceBinder
 from plone.app.uuid.utils import uuidToObject
 from plone.app.content.interfaces import INameFromTitle
 
 from plone.app.textfield import RichText
 from plone.app.textfield.interfaces import ITransformer
+from plone.namedfile.interfaces import INamedImageField
 from plone.namedfile.field import NamedImage
 from plone.namedfile.scaling import ImageScaling
 from plone.memoize import view
@@ -110,7 +115,8 @@ class IExhibitItem(form.Schema):
 
 
 def _get_image_field_name(obj, default_name='image'):
-    """Try to find an image field on an object"""
+    """Try to find an image field on an object, if there's a field
+    with the requested default name, use it."""
     if hasattr(obj, 'Schema'):
         schema = obj.Schema()
         if default_name in schema.keys():
@@ -118,6 +124,19 @@ def _get_image_field_name(obj, default_name='image'):
         for field in schema.fields():
             if field.type == 'image':
                 return field.__name__
+    else:
+        fti = queryUtility(IDexterityFTI, name=obj.portal_type)
+        if fti:
+            schema = fti.lookupSchema()
+            additional = getAdditionalSchemata(context=obj,
+                                               portal_type=obj.portal_type)
+            for schemata in itertools.chain([schema], additional):
+                names = schemata.names()
+                if default_name in names:
+                    return default_name
+                for fname in schemata.names():
+                    if INamedImageField.providedBy(schemata.get(fname)):
+                        return fname
     return None
 
 class ExhibitItemScaling(ImageScaling):
@@ -148,9 +167,6 @@ class ExhibitItemScaling(ImageScaling):
         except (NotFound, AttributeError):
             obj = self._get_referenced()
             if obj is not None:
-                # XXX: We assume the referenced object is either
-                # Archetypes content or has an image field named
-                # 'image'
                 name = _get_image_field_name(obj, name)
                 if name:
                     if scale:
