@@ -23,6 +23,7 @@
 
  <!-- enabled behaviors -->
  <property name="behaviors">
+     <element value="collective.exhibit.content.exhibitsection.IBulkItemAdd" />
      <element value="plone.app.content.interfaces.INameFromTitle" />
      <element value="plone.app.dexterity.behaviors.metadata.IDublinCore" />
      <element value="plone.app.dexterity.behaviors.exclfromnav.IExcludeFromNavigation" />

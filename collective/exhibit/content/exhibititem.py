@@ -37,16 +37,17 @@ class MustHaveImage(Invalid):
 
 class IExhibitItem(form.Schema):
     """An Exhibit Item.  Often a reference to another object in
-    the site/collection."""
+    the site."""
 
-    collection_item = schema.Choice(title=_(u'Referenced Item'),
-                                    description = _(u'Chose an item from the '
-                                                    'collection'),
+    referenced_item = schema.Choice(title=_(u'Referenced Item'),
+                                    description = _(u'Chose an existing '
+                                                    'content item from the '
+                                                    'site'),
                                     source=UUIDSourceBinder(),
                                     required=False,
                                     )
-    form.widget(collection_item='plone.formwidget.contenttree.ContentTreeFieldWidget')
-    form.primary('collection_item')
+    form.widget(referenced_item='plone.formwidget.contenttree.ContentTreeFieldWidget')
+    form.primary('referenced_item')
 
     title = schema.TextLine(
         title = _(u'Title'),
@@ -75,7 +76,7 @@ class IExhibitItem(form.Schema):
                        )
 
     text = RichText(title=_(u'Description'),
-                    description=_(u'Describe the collection item.  Leave '
+                    description=_(u'Describe the exhibit item.  Leave '
                                   'this blank to use the description '
                                   'from the referenced item.'),
                     required=False,
@@ -92,7 +93,7 @@ class IExhibitItem(form.Schema):
     def validateHasTitle(data):
         """Verifies that there is a title, either from the referenced
         item or explicitly set"""
-        if not data.collection_item:
+        if not data.referenced_item:
             if not data.title:
                 raise MustHaveTitle(_(u'You must either choose a Referenced '
                                       'Item or set a Title.'))
@@ -102,8 +103,8 @@ class IExhibitItem(form.Schema):
         """Verifies that either the referenced object has an image or
         an image has been explicitly set"""
         if data.image is None:
-            if data.collection_item:
-                obj = uuidToObject(data.collection_item)
+            if data.referenced_item:
+                obj = uuidToObject(data.referenced_item)
                 image_name = _get_image_field_name(obj)
                 if image_name is None:
                     raise MustHaveImage(_(u'The Referenced Item does not have '
@@ -147,7 +148,7 @@ class ExhibitItemScaling(ImageScaling):
     def _get_referenced(self):
         """Do an unrestricted lookup to ensure that we don't fail
         during traversal"""
-        uid = getattr(self.context, 'collection_item')
+        uid = getattr(self.context, 'referenced_item')
         if not uid:
             return
         catalog = getToolByName(self.context, 'portal_catalog', None)
@@ -206,7 +207,7 @@ class ExhibitItemContent(Item):
     """View providing default values for fields in view and for indexes"""
 
     def _get_referenced(self):
-        uid = getattr(self, 'collection_item')
+        uid = getattr(self, 'referenced_item')
         if not uid:
             return
         obj = uuidToObject(uid)
@@ -226,7 +227,7 @@ class ExhibitItemContent(Item):
             return transformer(text_value, mimetype).encode(text_value.encoding)
 
     @property
-    def collection_item_url(self):
+    def referenced_item_url(self):
         """Returns the url of the referenced object"""
         ref = self._get_referenced()
         return ref and ref.absolute_url()

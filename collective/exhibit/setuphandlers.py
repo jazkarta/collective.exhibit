@@ -6,6 +6,7 @@ from collective.exhibit import exhibitMessageFactory as _
 def configureExhibitsFolder(portal):
     folder = portal.restrictedTraverse('portal-exhibit-templates')
     folder.setExcludeFromNav(True)
+    folder.reindexObject()
 
 
 def exhibitSetup(context):

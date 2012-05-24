@@ -26,21 +26,28 @@
      tal:condition="context/text"
      tal:content="structure context/text/output">
 </div>
-<h3 class="exhibit-subtitle">Contents</h3>
+<h3 class="exhibit-subtitle">Exhibit Sections</h3>
 <ul id="exhibit-contents"
-    tal:define="pages python:context.listFolderContents({'portal_type': ['Document', 'Topic']});
-                sections python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibitsection'});"
-                >
-<li class="PageLink" tal:repeat="page pages">
-<a href="#"
-   tal:attributes="href page/absolute_url"
-   tal:content="page/Title">page</a>
-</li>
-<li class="SectionLink" tal:repeat="section sections">
-<a href="#"
-   tal:attributes="href section/absolute_url"
-   tal:content="section/Title">section</a>
-</li>
+    tal:define="sections python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibitsection'});">
+  <tal:sections repeat="section sections">
+  <li class="SectionLink"
+      tal:define="item_url section/absolute_url;
+                  item_title section/Title|nothing;
+                  image section/@@images/image/mini|nothing">
+    <a href="#"
+       tal:attributes="title item_title;
+                       href item_url;">
+      <img class="ExhibitSectionThumb"
+           tal:condition="nocall:image"
+           tal:attributes="src string:${item_url}/@@images/image/thumb;
+                           alt item_title;" />
+      <span class="ExhibitSectionTitle" tal:content="item_title">Title</span>
+    </a>
+    <div class="ExhibitSectionDescription" tal:content="section/Description">
+      Description
+    </div>
+  </li>
+  </tal:sections>
 </ul>
 </metal:main>
 

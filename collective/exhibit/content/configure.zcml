@@ -9,7 +9,15 @@
   <!-- configure your content components here -->
   <grok:grok package="." />
 
-  <browser:page
+    <plone:behavior
+        title="Bulk Exibit Item Add"
+        description="Adds exhibit items from a list of references"
+        provides=".exhibitsection.IBulkItemAdd"
+        factory=".exhibitsection.BulkItemAdd"
+        for=".exhibitsection.IExhibitSection"
+        />
+
+    <browser:page
       name="images"
       for=".exhibititem.IExhibitItem"
       class=".exhibititem.ExhibitItemScaling"

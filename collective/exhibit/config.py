@@ -3,4 +3,4 @@
 
 PROJECTNAME = 'collective.exhibit'
 
-EXHIBIT_TEMPLATES = 'portal-exhibit-templates'
+EXHIBIT_TEMPLATES = 'portal-exhibit-templates/templates'
