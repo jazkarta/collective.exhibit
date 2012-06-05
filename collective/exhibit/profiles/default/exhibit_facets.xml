@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<object name="explore-exhibit" meta_type="ATFolder">
+ <criteria>
+  <criterion name="c2">
+   <property name="widget">text</property>
+   <property name="title">Search</property>
+   <property name="position">center</property>
+   <property name="section">default</property>
+   <property name="hidden">0</property>
+   <property name="index">SearchableText</property>
+   <property name="default"></property>
+  </criterion>
+  <criterion name="c3">
+   <property name="widget">criteria</property>
+   <property name="title">Current search</property>
+   <property name="position">center</property>
+   <property name="section">default</property>
+   <property name="hidden">0</property>
+  </criterion>
+  <criterion name="c7">
+   <property name="widget">checkbox</property>
+   <property name="title">Section</property>
+   <property name="position">right</property>
+   <property name="section">default</property>
+   <property name="hidden">0</property>
+   <property name="index">ExhibitSection</property>
+   <property name="operator">or</property>
+   <property name="vocabulary"></property>
+   <property name="catalog">portal_catalog</property>
+   <property name="maxitems">0</property>
+   <property name="sortreversed">0</property>
+   <property name="count">1</property>
+   <property name="hidezerocount">1</property>
+   <property name="default"></property>
+  </criterion>
+  <criterion name="c6">
+   <property name="widget">tagscloud</property>
+   <property name="title">Tags</property>
+   <property name="position">right</property>
+   <property name="section">default</property>
+   <property name="hidden">0</property>
+   <property name="index">Subject</property>
+   <property name="vocabulary"></property>
+   <property name="catalog">portal_catalog</property>
+   <property name="maxitems">50</property>
+   <property name="maxchars">0</property>
+   <property name="colormin">A1BE7E</property>
+   <property name="colormax">95B229</property>
+   <property name="sortreversed">0</property>
+   <property name="cloud">list</property>
+   <property name="sizemin">10</property>
+   <property name="sizemax">20</property>
+   <property name="height">200</property>
+   <property name="count">1</property>
+   <property name="hidezerocount">1</property>
+   <property name="default"></property>
+  </criterion>
+  <criterion name="c0">
+   <property name="widget">resultsperpage</property>
+   <property name="title">Results per page</property>
+   <property name="position">bottom</property>
+   <property name="section">default</property>
+   <property name="hidden">1</property>
+   <property name="start">0</property>
+   <property name="end">20</property>
+   <property name="step">5</property>
+   <property name="default">5</property>
+  </criterion>
+  <criterion name="c1">
+   <property name="widget">tal</property>
+   <property name="title">Type</property>
+   <property name="position">bottom</property>
+   <property name="section">default</property>
+   <property name="hidden">1</property>
+   <property name="index">portal_type</property>
+   <property name="default">string:collective.exhibit.exhibititem</property>
+  </criterion>
+  <criterion name="c5">
+   <property name="widget">tal</property>
+   <property name="title">path</property>
+   <property name="position">bottom</property>
+   <property name="section">default</property>
+   <property name="hidden">1</property>
+   <property name="index">path</property>
+   <property name="default">python:'/'.join(context.aq_parent.getPhysicalPath())</property>
+  </criterion>
+ </criteria>
+</object>
