@@ -47,13 +47,13 @@ class IExhibit(form.Schema):
     image = NamedBlobImage(title=_(u'Image'),
                            required=False)
 
-    pages = schema.Set(title=_(u'Exhibit Pages'),
+    pages = schema.List(title=_(u'Exhibit Pages'),
                        required=False,
                        description=u'Select any pages from the global site templates that you want to be included on the exhibit.',
                        value_type=schema.Choice(source=exhibit_pages))
     form.widget(pages=CheckBoxFieldWidget)
 
-    sections = schema.Set(title=_(u'Exhibit Sections'),
+    sections = schema.List(title=_(u'Exhibit Sections'),
                           required=False,
                           description=u'Add the titles of any sections that you wish to add to the exhibit, one per line.',
                           value_type=schema.ASCIILine())
