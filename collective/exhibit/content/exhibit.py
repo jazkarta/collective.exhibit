@@ -1,5 +1,6 @@
 from five import grok
 from zope import schema
+from zope.component import getUtility, getMultiAdapter
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.interfaces import IContextSourceBinder
 from z3c.form import field
@@ -13,6 +14,9 @@ from plone.directives import form, dexterity
 from plone.app.textfield import RichText
 from plone.dexterity.utils import createContentInContainer
 from plone.namedfile.field import NamedBlobImage
+from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import IPortletAssignment
+from plone.portlets.interfaces import IPortletAssignmentMapping
 
 from collective.exhibit.config import EXHIBIT_TEMPLATES
 from collective.exhibit import exhibitMessageFactory as _
@@ -72,6 +76,7 @@ class AddForm(dexterity.AddForm):
 
 @grok.subscribe(IExhibit, IObjectAddedEvent)
 def createExhibitContent(exhibit, event):
+    from collective.exhibit.portlets.navigation import Assignment
     for section in exhibit.sections:
         createContentInContainer(exhibit, 'collective.exhibit.exhibitsection',
                                  title=section)
@@ -82,3 +87,8 @@ def createExhibitContent(exhibit, event):
     page_ids = [page for page in exhibit.pages]
     pages = exhibit_templates.manage_copyObjects(ids=page_ids)
     exhibit.manage_pasteObjects(pages)
+
+    manager = getUtility(IPortletManager, name='plone.leftcolumn', context=exhibit)
+    mapping = getMultiAdapter((exhibit, manager), IPortletAssignmentMapping)
+    assignment = Assignment()
+    mapping['exhibit_navigation_portlet'] = assignment

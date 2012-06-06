@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<portlets
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="plone">
+  <portlet 
+    addview="collective.exhibit.portlets.Navigation"
+    title="Exhibit Navigation Portlet"
+    description="A portlet that displays the pages and sections of an exhibit."
+    i18n:attributes="description description_exhibit_nav_portlet">
+    <for interface="plone.app.portlets.interfaces.IColumn" />
+    <for interface="plone.app.portlets.interfaces.IDashboard" />
+  </portlet>
+</portlets>
