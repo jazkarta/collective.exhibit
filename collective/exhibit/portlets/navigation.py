@@ -35,6 +35,7 @@ class Renderer(base.Renderer):
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
 
+        context = aq_inner(self.context)
         exhibit = None
         while exhibit is None:
             if IExhibit.providedBy(context):
@@ -67,8 +68,7 @@ class Renderer(base.Renderer):
                 continue
             page = self.exhibit.restrictedTraverse(page_id)
             pages.append(page)
-        return {'exhibit_title': self.exhibit.Title(),
-                'exhibit_url': self.exhibit.absolute_url(),
+        return {'exhibit': self.exhibit,
                 'pages': pages,
                 'sections': sections,
                 'browse_url': browse_url,

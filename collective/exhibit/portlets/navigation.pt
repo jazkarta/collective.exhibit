@@ -1,12 +1,22 @@
 <tal:block i18n:domain="plone">
 <dl class="portlet portletNavigationTree" tal:define="contents view/exhibit_contents;">
 
+    <a class="ExhibitImage"
+         tal:define="image_view contents/exhibit/@@images;
+                     image_preview image_view/image/thumb|nothing;
+                     image_url string:${contents/exhibit/absolute_url}/@@images/image/large"
+         tal:attributes="href image_url;
+                         title contents/exhibit/Title"
+         tal:content="structure image_preview">
+        <img src="some_image.jpg" alt="title" />
+    </a>
+
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
         <a href="#"
            class="tile"
-           tal:attributes="href contents/exhibit_url"
-           tal:content="contents/exhibit_title"></a>
+           tal:attributes="href contents/exhibit/absolute_url"
+           tal:content="contents/exhibit/Title"></a>
         <span class="portletTopRight"></span>
     </dt>
 
