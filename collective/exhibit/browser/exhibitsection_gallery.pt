@@ -15,8 +15,8 @@
 <metal:main fill-slot="content-core">
   <a class="ExhibitImage"
      tal:define="image_view context/@@images;
-                 image_preview image_view/image/preview|nothing;
-                 image_url string:${context/absolute_url}/@@images/image"
+                 image_preview image_view/image/large|nothing;
+                 image_url string:${context/absolute_url}/@@images/image/large"
      tal:attributes="href image_url;
                      title context/Title"
      tal:content="structure image_preview">
