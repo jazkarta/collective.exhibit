@@ -35,10 +35,6 @@ class Renderer(base.Renderer):
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
 
-        context = aq_inner(self.context)
-        portal_state = getMultiAdapter((context, self.request), name=u'plone_portal_state')
-        self.portal_url = portal_state.portal_url()  # the URL of the portal object
-
         exhibit = None
         while exhibit is None:
             if IExhibit.providedBy(context):
@@ -60,7 +56,7 @@ class Renderer(base.Renderer):
     @memoize
     def _data(self):
         if 'explore-exhibit' in self.exhibit.pages:
-            browse_url = '%s/explore-exhibit' % self.portal_url
+            browse_url = '%s/explore-exhibit' % self.exhibit.absolute_url()
         else:
             browse_url = None
         sections = self.exhibit.listFolderContents({'portal_type': 'collective.exhibit.exhibitsection'})
