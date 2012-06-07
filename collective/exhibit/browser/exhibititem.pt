@@ -9,8 +9,7 @@
   <metal:js fill-slot="javascript_head_slot">
     <script>
       $(function () {
-          $('a.FullExhibitItemLink').prepOverlay({subtype: 'ajax', filter: '#content-core'});
-          $('a.ExhibitItemImage').prepOverlay({subtype: 'image'});
+        $('.exhibitItemPreview').tooltip({ position: "bottom center", relative: true});
       });
     </script>
   </metal:js>
@@ -20,8 +19,8 @@
 
 <metal:main fill-slot="content-core"
             tal:define="image_view context/@@images;
-                        image_preview image_view/image/preview|nothing;
-                        image_url string:${context/absolute_url}/@@images/image">
+                        image_preview image_view/image/large|nothing;
+                        image_url string:${context/absolute_url}/@@images/image/large">
   <a href=""
      class="ExhibitItemImage"
      tal:condition="nocall:image_preview"
@@ -39,6 +38,29 @@
                  show_link context/show_more_link|nothing"
      tal:condition="python:item_url and show_link"
      tal:attributes="href item_url">More information ...</a>
+
+<div class="exhibitItemListing">
+  <div tal:repeat="item python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'})"
+       style="float:left; margin:10px 10px 5px 0px">
+    <a class="exhibitItemPreview" tal:attributes="href item/absolute_url"
+       tal:define="image_view item/@@images;
+                   image_preview image_view/image/thumb|nothing;">
+      <img tal:replace="structure image_preview" src="some_image.jpg" />
+    </a>
+    <div class="tooltip" style="display:none;height:300px;width:300px;background-color:#ffffff;border:1px solid #
+cc9;padding:3px;">
+    <a tal:define="image_view item/@@images;
+                   image_preview image_view/image/preview|nothing;"
+       tal:attributes="href item/absolute_url;
+                       title item/Title">
+      <img tal:replace="structure image_preview" src="some_image.jpg" />
+    </a>
+    <h3 tal:content="item/Title">Title</h3>
+    <p tal:content="item/Description">Description</p>
+    </div>
+  </div>
+</div>
+
 </metal:main>
 
 </body>
