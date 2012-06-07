@@ -40,6 +40,7 @@
      tal:attributes="href item_url">More information ...</a>
 
 <div class="exhibitItemListing">
+  <h3>Exhibit Items</h3>
   <div tal:repeat="item python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'})"
        style="float:left; margin:10px 10px 5px 0px">
     <a class="exhibitItemPreview" tal:attributes="href item/absolute_url"
