@@ -10,6 +10,7 @@
     <script>
       $(function () {
         $('.exhibitItemPreview').tooltip({ position: "bottom center", relative: true});
+        //$('.FullExhibitItemLink').prepOverlay({subtype: 'ajax', filter: '#content > *'});
       });
     </script>
   </metal:js>
@@ -34,9 +35,8 @@
   </div>
   <a class="FullExhibitItemLink"
      href="#"
-     tal:define="item_url context/collection_item_url|nothing;
-                 show_link context/show_more_link|nothing"
-     tal:condition="python:item_url and show_link"
+     tal:define="item_url context/referenced_item_url|nothing;"
+     tal:condition="python:item_url"
      tal:attributes="href item_url">More information ...</a>
 
 <div class="exhibitItemListing">

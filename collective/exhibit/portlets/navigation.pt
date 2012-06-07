@@ -3,9 +3,8 @@
 
     <a class="ExhibitImage"
          tal:define="image_view contents/exhibit/@@images;
-                     image_preview image_view/image/thumb|nothing;
-                     image_url string:${contents/exhibit/absolute_url}/@@images/image/large"
-         tal:attributes="href image_url;
+                     image_preview image_view/image/thumb|nothing;"
+         tal:attributes="href contents/exhibit/absolute_url;
                          title contents/exhibit/Title"
          tal:content="structure image_preview">
         <img src="some_image.jpg" alt="title" />
