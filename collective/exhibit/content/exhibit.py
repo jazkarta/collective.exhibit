@@ -77,8 +77,9 @@ class AddForm(dexterity.AddForm):
 @grok.subscribe(IExhibit, IObjectAddedEvent)
 def createExhibitContent(exhibit, event):
     from collective.exhibit.portlets.navigation import Assignment
-    for section in exhibit.sections:
-        createContentInContainer(exhibit, 'collective.exhibit.exhibitsection',
+    if exhibit.sections:
+        for section in exhibit.sections:
+            createContentInContainer(exhibit, 'collective.exhibit.exhibitsection',
                                  title=section)
 
     portal_url = getToolByName(exhibit, 'portal_url')
