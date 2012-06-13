@@ -17,6 +17,11 @@ from plone.namedfile.field import NamedBlobImage
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignment
 from plone.portlets.interfaces import IPortletAssignmentMapping
+from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.constants import USER_CATEGORY
+from plone.portlets.constants import GROUP_CATEGORY
+from plone.portlets.constants import CONTENT_TYPE_CATEGORY
+from plone.portlets.constants import CONTEXT_CATEGORY
 
 from collective.exhibit.config import EXHIBIT_TEMPLATES
 from collective.exhibit import exhibitMessageFactory as _
@@ -93,3 +98,6 @@ def createExhibitContent(exhibit, event):
     mapping = getMultiAdapter((exhibit, manager), IPortletAssignmentMapping)
     assignment = Assignment()
     mapping['exhibit_navigation_portlet'] = assignment
+    blacklist = getMultiAdapter((exhibit, manager), ILocalPortletAssignmentManager)
+    for category in (GROUP_CATEGORY, CONTENT_TYPE_CATEGORY,CONTEXT_CATEGORY,USER_CATEGORY):
+        blacklist.setBlacklistStatus(category, 1)
