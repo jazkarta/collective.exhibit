@@ -1,20 +1,18 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:grok="http://namespaces.zope.org/grok"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="collective.exhibit">
+
+  <!-- configure view components here -->
+  <grok:grok package="." />
 
   <include package="plone.app.contentmenu" />
 
   <browser:page for="..content.exhibit.IExhibit"
     name="view"
     template="exhibit.pt"
-    permission="zope2.View"
-    />
-
-  <browser:page for="..content.exhibititem.IExhibitItem"
-    name="view"
-    template="exhibititem.pt"
     permission="zope2.View"
     />
 
