@@ -20,12 +20,9 @@ class Assignment(base.Assignment):
         return _(u"Exhibit Navigation")
 
 
-class AddForm(base.AddForm):
-    form_fields = form.Fields(INavPortlet)
-    label = _(u"Add Exhibit Navigation Portlet")
-    description = _(u"This portlet displays the pages and sections of an exhibit.")
+class AddForm(base.NullAddForm):
 
-    def create(self, data):
+    def create(self):
         return Assignment()
 
 
