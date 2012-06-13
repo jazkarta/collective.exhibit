@@ -13,10 +13,11 @@
 <body>
 
 <metal:main fill-slot="content-core">
+<div tal:define="sections python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibitsection'});">
 <a class="ExhibitImage"
    tal:define="image_view context/@@images;
-               image_preview image_view/image/preview|nothing;
-               image_url string:${context/absolute_url}/@@images/image"
+               image_preview image_view/image/large|nothing;
+               image_url string:${context/absolute_url}/@@images/image/large"
    tal:attributes="href image_url;
                    title context/Title"
    tal:content="structure image_preview">
@@ -26,11 +27,11 @@
      tal:condition="context/text"
      tal:content="structure context/text/output">
 </div>
+<tal:block condition="python:sections and len(sections) > 1">
 <h3 class="exhibit-subtitle">Exhibit Sections</h3>
-<ul id="exhibit-contents"
-    tal:define="sections python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibitsection'});">
-  <tal:sections repeat="section sections">
-  <li class="SectionLink"
+<div id="exhibit-contents">
+  <div tal:repeat="section sections">
+  <div  class="SectionLink"
       tal:define="item_url section/absolute_url;
                   item_title section/Title|nothing;
                   image section/@@images/image/mini|nothing">
@@ -46,9 +47,11 @@
     <div class="ExhibitSectionDescription" tal:content="section/Description">
       Description
     </div>
-  </li>
-  </tal:sections>
-</ul>
+  </div>
+  </div>
+</div>
+</tal:block>
+</div>
 </metal:main>
 
 </body>

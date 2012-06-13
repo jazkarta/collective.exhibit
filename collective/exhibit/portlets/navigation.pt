@@ -1,0 +1,51 @@
+<tal:block i18n:domain="plone">
+<dl class="portlet portletNavigationTree" tal:define="contents view/exhibit_contents;">
+
+    <a class="ExhibitImage"
+         tal:define="image_view contents/exhibit/@@images;
+                     image_preview image_view/image/thumb|nothing;"
+         tal:attributes="href contents/exhibit/absolute_url;
+                         title contents/exhibit/Title"
+         tal:content="structure image_preview">
+        <img src="some_image.jpg" alt="title" />
+    </a>
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href="#"
+           class="tile"
+           tal:attributes="href contents/exhibit/absolute_url"
+           tal:content="contents/exhibit/Title"></a>
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <tal:items>
+        <div class="exhibit-pages">
+            <dd class="portletItem" tal:repeat="page contents/pages">
+                <a href=""
+                   tal:attributes="href page/absolute_url;
+                                   title page/Description;">
+                    <tal:title content="page/pretty_title_or_id">
+                        Title
+                    </tal:title>
+                </a>
+            </dd>
+        </div>
+        <div class="browse-and-explore" tal:condition="contents/browse_url">
+            <p><a tal:attributes="href contents/browse_url">Browse and Explore</a></p>
+        </div>
+        <div class="exhibit-sections">
+            <dd class="portletItem" tal:repeat="section contents/sections">
+                <a href=""
+                   tal:attributes="href section/absolute_url;
+                                   title section/Description;">
+                    <tal:title content="section/pretty_title_or_id">
+                        Title
+                    </tal:title>
+                </a>
+            </dd>
+        </div>
+    </tal:items>
+
+</dl>
+</tal:block>

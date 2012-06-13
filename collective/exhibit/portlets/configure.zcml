@@ -7,6 +7,12 @@
        without this, we may get a permission lookup error -->
   <include package="plone.app.portlets" />
 
-	<!-- -*- extra stuff goes here -*- -->
+    <plone:portlet
+        name="collective.exhibit.portlets.Navigation"
+        interface=".navigation.INavPortlet"
+        assignment=".navigation.Assignment"
+        renderer=".navigation.Renderer"
+        addview=".navigation.AddForm"
+        />
 
 </configure>
