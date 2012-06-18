@@ -20,6 +20,17 @@
     </dt>
 
     <tal:items>
+        <div class="exhibit-sections">
+            <dd class="portletItem" tal:repeat="section contents/sections">
+                <a href=""
+                   tal:attributes="href section/absolute_url;
+                                   title section/Description;">
+                    <tal:title content="section/pretty_title_or_id">
+                        Title
+                    </tal:title>
+                </a>
+            </dd>
+        </div>
         <div class="exhibit-pages">
             <dd class="portletItem" tal:repeat="page contents/pages">
                 <a href=""
@@ -33,17 +44,6 @@
         </div>
         <div class="browse-and-explore" tal:condition="contents/browse_url">
             <p><a tal:attributes="href contents/browse_url">Browse and Explore</a></p>
-        </div>
-        <div class="exhibit-sections">
-            <dd class="portletItem" tal:repeat="section contents/sections">
-                <a href=""
-                   tal:attributes="href section/absolute_url;
-                                   title section/Description;">
-                    <tal:title content="section/pretty_title_or_id">
-                        Title
-                    </tal:title>
-                </a>
-            </dd>
         </div>
     </tal:items>
 
