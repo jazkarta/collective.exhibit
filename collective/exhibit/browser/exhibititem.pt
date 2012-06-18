@@ -4,13 +4,28 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
       metal:use-macro="context/main_template/macros/master"
+      tal:define="item_url context/referenced_item_url|nothing;"
       i18n:domain="plone">
 <head>
   <metal:js fill-slot="javascript_head_slot">
+o   
+    <script tal:define="item_url context/referenced_item_url|nothing;"
+            tal:content="string:var exhibit_item_url = '${item_url}';">
+    </script>
     <script>
       $(function () {
-        $('.exhibitItemPreview').tooltip({ position: "bottom center", relative: true});
-        //$('.FullExhibitItemLink').prepOverlay({subtype: 'ajax', filter: '#content > *'});
+        $('#ExhibitItemView').load(exhibit_item_url + ' #content');
+        $('.ExhibitItemPreview').tooltip({ position: "bottom center", relative: true});
+        $('.FullExhibitItemLink').click(function() { 
+            $('#ExhibitItemView').show("slide", { direction: "up" }, 1000);
+            $('.FullExhibitItemLink').hide();
+            $('.CloseExhibitItemLink').show();
+        });
+        $('.CloseExhibitItemLink').click(function() { 
+            $('#ExhibitItemView').hide("slide", { direction: "up" }, 1000);
+            $('.FullExhibitItemLink').show();
+            $('.CloseExhibitItemLink').hide();
+        });
       });
     </script>
   </metal:js>
@@ -21,6 +36,7 @@
 <metal:main fill-slot="content-core"
             tal:define="image_view context/@@images;
                         image_preview image_view/image/large|nothing;
+                        item_url context/referenced_item_url|nothing;
                         image_url string:${context/absolute_url}/@@images/image/large">
   <a href=""
      class="ExhibitItemImage"
@@ -35,9 +51,14 @@
   </div>
   <a class="FullExhibitItemLink"
      href="#"
-     tal:define="item_url context/referenced_item_url|nothing;"
-     tal:condition="python:item_url"
-     tal:attributes="href item_url">More information ...</a>
+     tal:condition="python:item_url">More information ...</a>
+  <a class="CloseExhibitItemLink"
+     href="#" style="display: none;"
+     tal:condition="python:item_url">Close</a>
+  <p>&nbsp;</p>
+
+<div id="ExhibitItemView" style="display: none;background-color:#e0e0e0;padding: 5px;">
+</div>
 
 <div class="exhibitItemListing">
   <h3>Exhibit Items</h3>
