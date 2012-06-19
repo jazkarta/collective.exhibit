@@ -38,11 +38,17 @@
          tal:define="error errors/selected_types | nothing"
          tal:attributes="class python:'field error' if error else 'field'">
       
-      <input type="checkbox"
-             name="selected_types"
-             id="selected_types"
-             />      
       <label for="selected_types" i18n:translate="">Select Item Types</label>
+      <br />
+      <select multiple name="selected_types" id="selected_types" size="10">     
+        <tal:option repeat="selectable view/selectable_types">
+            <option tal:content="selectable/title" i18n:translate=""
+                    tal:attributes="value selectable/id;
+                                    selected python:selectable['id'] in view.current_types and 'selected' or None">
+                    Content type
+            </option>
+        </tal:option>
+      </select>
       
       <div class="formHelp" i18n:translate="">
         Select all content types that can be referenced as exhibit types.
