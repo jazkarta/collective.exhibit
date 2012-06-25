@@ -19,11 +19,13 @@
             $('#ExhibitItemView').show("slide", { direction: "up" }, 1000);
             $('.FullExhibitItemLink').hide();
             $('.CloseExhibitItemLink').show();
+            return false;
         });
         $('.CloseExhibitItemLink').click(function() { 
             $('#ExhibitItemView').hide("slide", { direction: "up" }, 1000);
             $('.FullExhibitItemLink').show();
             $('.CloseExhibitItemLink').hide();
+            return false;
         });
       });
     </script>
