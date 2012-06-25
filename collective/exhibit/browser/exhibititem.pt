@@ -68,7 +68,7 @@
                    image_preview image_view/image/thumb|nothing;">
       <img tal:replace="structure image_preview" src="some_image.jpg" />
     </a>
-    <div class="tooltip" style="display:none;height:300px;width:300px;background-color:#ffffff;border:1px solid #
+    <div class="tooltip" style="display:none;height:90px;width:250px;background-color:#ffffff;border:1px solid #
 cc9;padding:3px;">
     <h3 tal:content="item/Title">Title</h3>
     <p tal:content="item/Description">Description</p>
