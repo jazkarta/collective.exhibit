@@ -8,7 +8,6 @@
       i18n:domain="plone">
 <head>
   <metal:js fill-slot="javascript_head_slot">
-o   
     <script tal:define="item_url context/referenced_item_url|nothing;"
             tal:content="string:var exhibit_item_url = '${item_url}';">
     </script>
@@ -60,11 +59,11 @@ o
 <div id="ExhibitItemView" style="display: none;background-color:#e0e0e0;padding: 5px;">
 </div>
 
-<div class="exhibitItemListing">
+<div class="ExhibitItemListing">
   <h3>Exhibit Items</h3>
   <div tal:repeat="item python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'})"
        style="float:left; margin:10px 10px 5px 0px">
-    <a class="exhibitItemPreview" tal:attributes="href item/absolute_url"
+    <a class="ExhibitItemPreview" tal:attributes="href item/absolute_url"
        tal:define="image_view item/@@images;
                    image_preview image_view/image/thumb|nothing;">
       <img tal:replace="structure image_preview" src="some_image.jpg" />
