@@ -2,8 +2,9 @@ import itertools
 from five import grok
 from Acquisition import aq_inner, aq_parent
 from zope import schema
-from zope.interface import invariant, Invalid
+from zope.interface import invariant, Invalid, implements
 from zope.component import queryUtility
+from zope.component import getUtility
 from zope.publisher.interfaces import NotFound
 from zope.traversing.interfaces import TraversalError
 
@@ -12,6 +13,7 @@ from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.content import Item
 from plone.dexterity.utils import getAdditionalSchemata
 from plone.formwidget.contenttree import UUIDSourceBinder
+from plone.formwidget.contenttree.interfaces import IContentFilter
 from plone.app.uuid.utils import uuidToObject
 from plone.app.content.interfaces import INameFromTitle
 
@@ -24,8 +26,29 @@ from plone.memoize import view
 from plone.indexer import indexer
 from Products.CMFCore.utils import getToolByName, _checkPermission
 
+from plone.registry.interfaces import IRegistry
+from collective.exhibit.interfaces import IExhibitSettings
+
 from collective.exhibit import exhibitMessageFactory as _
 
+
+class SelectableItemsFilter(object):
+    implements(IContentFilter)
+    
+    def __init__(self):
+        self.criteria = {}
+
+    def __call__(self, brain, index_data):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IExhibitSettings)
+        content_type = index_data.get('portal_type', None)
+        return content_type in settings.exhibit_item_types
+
+class ExhibitUUIDSourceBinder(UUIDSourceBinder):
+
+    def __init__(self, navigation_tree_query=None, **kw):
+        self.selectable_filter = SelectableItemsFilter()
+        self.navigation_tree_query = navigation_tree_query
 
 class MustHaveTitle(Invalid):
     __doc__ = _(u'If there is no referenced item, you must set the title.')
@@ -43,7 +66,7 @@ class IExhibitItem(form.Schema):
                                     description = _(u'Chose an existing '
                                                     'content item from the '
                                                     'site'),
-                                    source=UUIDSourceBinder(),
+                                    source=ExhibitUUIDSourceBinder(),
                                     required=False,
                                     )
     form.widget(referenced_item='plone.formwidget.contenttree.ContentTreeFieldWidget')

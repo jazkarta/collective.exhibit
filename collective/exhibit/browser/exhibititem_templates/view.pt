@@ -4,13 +4,29 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
       metal:use-macro="context/main_template/macros/master"
+      tal:define="item_url context/referenced_item_url|nothing;"
       i18n:domain="plone">
 <head>
   <metal:js fill-slot="javascript_head_slot">
+    <script tal:define="item_url context/referenced_item_url|nothing;"
+            tal:content="string:var exhibit_item_url = '${item_url}/view';">
+    </script>
     <script>
       $(function () {
-        $('.exhibitItemPreview').tooltip({ position: "bottom center", relative: true});
-        //$('.FullExhibitItemLink').prepOverlay({subtype: 'ajax', filter: '#content > *'});
+        $('#ExhibitItemView').load(exhibit_item_url + ' #content');
+        $('.ExhibitItemPreview').tooltip({ position: "bottom center", relative: true});
+        $('.FullExhibitItemLink').click(function() { 
+            $('#ExhibitItemView').show("slide", { direction: "up" }, 1000);
+            $('.FullExhibitItemLink').hide();
+            $('.CloseExhibitItemLink').show();
+            return false;
+        });
+        $('.CloseExhibitItemLink').click(function() { 
+            $('#ExhibitItemView').hide("slide", { direction: "up" }, 1000);
+            $('.FullExhibitItemLink').show();
+            $('.CloseExhibitItemLink').hide();
+            return false;
+        });
       });
     </script>
   </metal:js>
@@ -21,6 +37,7 @@
 <metal:main fill-slot="content-core"
             tal:define="image_view context/@@images;
                         image_preview image_view/image/large|nothing;
+                        item_url context/referenced_item_url|nothing;
                         image_url string:${context/absolute_url}/@@images/image/large">
   <a href=""
      class="ExhibitItemImage"
@@ -35,27 +52,26 @@
   </div>
   <a class="FullExhibitItemLink"
      href="#"
-     tal:define="item_url context/referenced_item_url|nothing;"
-     tal:condition="python:item_url"
-     tal:attributes="href item_url">More information ...</a>
+     tal:condition="python:item_url">More information ...</a>
+  <a class="CloseExhibitItemLink"
+     href="#" style="display: none;"
+     tal:condition="python:item_url">Close</a>
+  <p>&nbsp;</p>
 
-<div class="exhibitItemListing">
+<div id="ExhibitItemView" style="display: none;background-color:#e0e0e0;padding: 5px;">
+</div>
+
+<div class="ExhibitItemListing">
   <h3>Exhibit Items</h3>
   <div tal:repeat="item python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'})"
        style="float:left; margin:10px 10px 5px 0px">
-    <a class="exhibitItemPreview" tal:attributes="href item/absolute_url"
+    <a class="ExhibitItemPreview" tal:attributes="href item/absolute_url"
        tal:define="image_view item/@@images;
                    image_preview image_view/image/thumb|nothing;">
       <img tal:replace="structure image_preview" src="some_image.jpg" />
     </a>
-    <div class="tooltip" style="display:none;height:300px;width:300px;background-color:#ffffff;border:1px solid #
+    <div class="tooltip" style="display:none;height:90px;width:250px;background-color:#ffffff;border:1px solid #
 cc9;padding:3px;">
-    <a tal:define="image_view item/@@images;
-                   image_preview image_view/image/preview|nothing;"
-       tal:attributes="href item/absolute_url;
-                       title item/Title">
-      <img tal:replace="structure image_preview" src="some_image.jpg" />
-    </a>
     <h3 tal:content="item/Title">Title</h3>
     <p tal:content="item/Description">Description</p>
     </div>

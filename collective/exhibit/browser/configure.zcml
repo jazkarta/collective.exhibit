@@ -22,6 +22,14 @@
     permission="zope2.View"
     />
 
+  <browser:page
+      name="exhibit-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".controlpanel.ExhibitItemContentTypes"
+      template="types_panel.pt"
+      permission="cmf.ManagePortal"
+      />
+
   <browser:resource
       name="exhibitsection.png"
       file="exhibitsection.png"

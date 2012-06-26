@@ -1,0 +1,81 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/prefs_main_template/macros/master"
+    i18n:domain="collective.exhibit">
+
+<body>
+
+<metal:main fill-slot="prefs_configlet_main">
+  <a href=""
+     id="setup-link"
+     tal:attributes="href string:$portal_url/plone_control_panel"
+     i18n:translate="">
+    Site Setup
+  </a> &rsaquo;
+    
+  <h1 class="documentFirstHeading"
+      i18n:translate=""
+      tal:condition="view/label"
+      tal:content="view/label">
+    Do something
+  </h1>
+  
+  <div class="documentDescription" i18n:translate=""
+       tal:condition="view/description"
+       tal:content="view/description">
+    Description
+  </div>
+  
+  <form name="select_types"
+        method="post" 
+        tal:attributes="action request/URL"
+        tal:define="errors view/errors">
+    
+    <div class="field"
+         tal:define="error errors/selected_types | nothing"
+         tal:attributes="class python:'field error' if error else 'field'">
+      
+      <label for="selected_types" i18n:translate="">Select Item Types</label>
+      <br />
+      <select multiple name="selected_types" id="selected_types" size="10">     
+        <tal:option repeat="selectable view/selectable_types">
+            <option tal:content="selectable/title" i18n:translate=""
+                    tal:attributes="value selectable/id;
+                                    selected python:selectable['id'] in view.current_types and 'selected' or None">
+                    Content type
+            </option>
+        </tal:option>
+      </select>
+      
+      <div class="formHelp" i18n:translate="">
+        Select all content types that can be referenced as exhibit types.
+      </div>
+      
+      <div tal:content="error" tal:condition="error" />
+      
+    </div>
+    
+    <div class="formControls">
+      <input type="submit"
+             name="form.button.Select"
+             class="context"
+             value="Select"
+             i18n:attributes="value" />
+      
+      <input type="submit"
+             name="form.button.Cancel"
+             class="context"
+             value="Cancel"
+             i18n:attributes="value" />
+    </div>
+      
+    <tal:auth replace="structure context/@@authenticator/authenticator" />
+      
+  </form>  
+</metal:main>>
+
+</body>
+</html>
