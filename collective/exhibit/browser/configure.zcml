@@ -34,5 +34,12 @@
       name="exhibitsection.png"
       file="exhibitsection.png"
       />
+  
+  <browser:page
+      name="faceted-preview-item"
+      for="..content.exhibititem.IExhibitItem"
+      template="faceted-item.pt"
+      permission="zope2.View"
+      />
 
 </configure>

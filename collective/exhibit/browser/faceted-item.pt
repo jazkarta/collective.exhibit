@@ -1,0 +1,20 @@
+<div class="photoAlbumEntry facetedExhibitItem">
+  <a tal:define="
+      description context/Description|string:;
+      title context/pretty_title_or_id|string:;
+      desc_or_title python:description or title;
+      url context/absolute_url|string:#;
+      image_view context/@@images;
+      image_tag image_view/image/thumb|nothing;"
+    tal:attributes="href url; title description">
+
+    <span class="photoAlbumEntryWrapper" tal:condition="image_tag"
+          tal:content="structure image_tag">
+      <img src="#" />      
+    </span>
+
+    <span class="photoAlbumEntryTitle" tal:content="context/pretty_title_or_id|string:">Title</span>
+    <span class="photoAlbumEntryDescription" tal:content="description">Description</span>
+
+  </a>
+</div>
