@@ -14,6 +14,8 @@
      <element value="Document" />
      <element value="Image" />
      <element value="File" />
+     <element value="Topic" />
+     <element value="Collection" />
  </property>
  
  <!-- schema interface -->

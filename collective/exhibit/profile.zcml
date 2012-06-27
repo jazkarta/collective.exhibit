@@ -41,5 +41,15 @@
         import_steps="plone.app.registry controlpanel"
         />
   </genericsetup:upgradeSteps>
+  <genericsetup:upgradeSteps
+      source="1001"
+      destination="1002"
+      sortkey="2"
+      profile="collective.exhibit:default">
+    <upgradeDepends
+        title="Update addable types"
+        import_steps="typeinfo"
+        />
+  </genericsetup:upgradeSteps>
 
 </configure>
