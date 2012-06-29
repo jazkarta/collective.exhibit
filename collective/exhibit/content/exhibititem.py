@@ -259,7 +259,10 @@ class ExhibitItemContent(Item):
         """Returns the title of the object or referenced object"""
         title = self.title
         if not title:
-            referenced = self._get_referenced()
+            try:
+                referenced = self._get_referenced()
+            except AttributeError:
+                return None
             if referenced is not None:
                 title = referenced.Title()
         else:

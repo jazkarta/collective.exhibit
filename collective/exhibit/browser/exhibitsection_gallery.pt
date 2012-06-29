@@ -31,11 +31,10 @@
       tal:define="items python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'});">
     <tal:items tal:repeat="item items">
       <div tal:define="item_url item/absolute_url;
-                      item_title item/Title|nothing;
-                      orig_url item/collection_item_url|string:'Cannot Access';
-                      image item/@@images/image/mini|nothing"
-          tal:condition="python:orig_url != 'Cannot Access'">
-        <div class="ExhibitItemImage">
+                      item_title item/Title|nothing;"
+          tal:condition="item_title">
+        <div class="ExhibitItemImage"
+             tal:define="image item/@@images/image/mini|nothing">
           <a href="#"
              tal:attributes="title item_title;
                              href item_url;">
