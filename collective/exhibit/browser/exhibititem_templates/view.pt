@@ -16,7 +16,8 @@
         $('#ExhibitItemView').load(exhibit_item_url + ' #content');
         $('.ExhibitItemPreview').tooltip({ position: "bottom right",
                                            relative: true,
-                                           effect: "fade"});
+                                           effect: "fade",
+                                           offset: [-10,0]});
         $('.FullExhibitItemLink').click(function() { 
             $('#ExhibitItemView').show("slide", { direction: "up" }, 1000);
             $('.FullExhibitItemLink').hide();
