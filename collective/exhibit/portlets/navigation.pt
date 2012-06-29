@@ -31,19 +31,18 @@
                 </a>
             </dd>
         </div>
+        <h3>Information</h3>
         <div class="exhibit-pages">
             <dd class="portletItem" tal:repeat="page contents/pages">
                 <a href=""
                    tal:attributes="href page/absolute_url;
+                                   class string:item-${page/id};
                                    title page/Description;">
                     <tal:title content="page/pretty_title_or_id">
                         Title
                     </tal:title>
                 </a>
             </dd>
-        </div>
-        <div class="browse-and-explore" tal:condition="contents/browse_url">
-            <p><a tal:attributes="href contents/browse_url">Browse and Explore</a></p>
         </div>
     </tal:items>
 
