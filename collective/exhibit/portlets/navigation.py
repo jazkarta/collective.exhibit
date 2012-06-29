@@ -53,18 +53,12 @@ class Renderer(base.Renderer):
 
     @memoize
     def _data(self):
-        if 'explore-exhibit' in self.exhibit.pages:
+        if 'explore-exhibit' in self.exhibit.objectIds():
             browse_url = '%s/explore-exhibit' % self.exhibit.absolute_url()
         else:
             browse_url = None
         sections = self.exhibit.listFolderContents({'portal_type': 'collective.exhibit.exhibitsection'})
-        pages = []
-        for page_id in self.exhibit.pages:
-            # this needs to be located separately so it's handled by browse_url
-            if page_id == 'explore-exhibit':
-                continue
-            page = self.exhibit.restrictedTraverse(page_id)
-            pages.append(page)
+        pages = self.exhibit.listFolderContents({'portal_type': 'Document'})
         return {'exhibit': self.exhibit,
                 'pages': pages,
                 'sections': sections,
