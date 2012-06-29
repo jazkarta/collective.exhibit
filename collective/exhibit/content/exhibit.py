@@ -35,10 +35,11 @@ def exhibit_pages(context):
     site = portal_url.getPortalObject()
     exhibit_templates = site.restrictedTraverse(EXHIBIT_TEMPLATES)
     for page in exhibit_templates.listFolderContents():
-        term = SimpleVocabulary.createTerm(page.getId(),
-                                           str(page.getId()),
-                                           page.Title)
-        pages.append(term)
+        if page.getId() not in context.objectIds():
+            term = SimpleVocabulary.createTerm(page.getId(),
+                                               str(page.getId()),
+                                               page.Title)
+            pages.append(term)
     return SimpleVocabulary(pages)
 
 
@@ -108,10 +109,6 @@ def editExhibitContent(exhibit, event):
     portal_url = getToolByName(exhibit, 'portal_url')
     site = portal_url.getPortalObject()
     exhibit_templates = site.restrictedTraverse(EXHIBIT_TEMPLATES)
-    templates = exhibit_templates.objectIds()
-    contents = exhibit.objectIds()
-    del_page_ids = [page for page in templates if page in contents and page not in exhibit.pages]
-    exhibit.manage_delObjects(ids=del_page_ids)
     contents = exhibit.objectIds()
     add_page_ids = [page for page in exhibit.pages if page not in contents]
     pages = exhibit_templates.manage_copyObjects(ids=add_page_ids)
