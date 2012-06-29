@@ -53,14 +53,10 @@ class Renderer(base.Renderer):
 
     @memoize
     def _data(self):
-        if 'explore-exhibit' in self.exhibit.objectIds():
-            browse_url = '%s/explore-exhibit' % self.exhibit.absolute_url()
-        else:
-            browse_url = None
         sections = self.exhibit.listFolderContents({'portal_type': 'collective.exhibit.exhibitsection'})
-        pages = self.exhibit.listFolderContents({'portal_type': 'Document'})
+        pages = [page for page in self.exhibit.listFolderContents()
+                 if page.portal_type != 'collective.exhibit.exhibitsection']
         return {'exhibit': self.exhibit,
                 'pages': pages,
                 'sections': sections,
-                'browse_url': browse_url,
                }
