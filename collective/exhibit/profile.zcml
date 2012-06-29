@@ -51,5 +51,15 @@
         import_steps="typeinfo"
         />
   </genericsetup:upgradeSteps>
+  <genericsetup:upgradeSteps
+      source="1002"
+      destination="1003"
+      sortkey="2"
+      profile="collective.exhibit:default">
+    <upgradeDepends
+        title="Update css and resources"
+        import_steps="cssregistry typeinfo controlpanel"
+        />
+  </genericsetup:upgradeSteps>
 
 </configure>

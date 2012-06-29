@@ -5,7 +5,7 @@
  <!-- Basic metadata -->
  <property name="title" i18n:translate="">Exhibit Section</property>
  <property name="description" i18n:translate="">An Exhibit Section</property>
- <property name="content_icon">++resource++exhibitsection.png</property>
+ <property name="content_icon">++resource++exhibit-images/exhibitsection.png</property>
  <property name="allow_discussion">False</property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>

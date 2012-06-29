@@ -14,7 +14,9 @@
     <script>
       $(function () {
         $('#ExhibitItemView').load(exhibit_item_url + ' #content');
-        $('.ExhibitItemPreview').tooltip({ position: "bottom center", relative: true});
+        $('.ExhibitItemPreview').tooltip({ position: "bottom right",
+                                           relative: true,
+                                           effect: "fade"});
         $('.FullExhibitItemLink').click(function() { 
             $('#ExhibitItemView').show("slide", { direction: "up" }, 1000);
             $('.FullExhibitItemLink').hide();
@@ -50,28 +52,30 @@
   <div class="ExhibitItemText" tal:content="structure context/getText">
     Full Text
   </div>
+  <a class="ReferencedItemLink"
+     tal:attributes="href string:${item_url}/edit"
+     tal:condition="python:item_url and checkPermission('Modify portal content', context)">Edit referenced item</a>
   <a class="FullExhibitItemLink"
      href="#"
+     tal:attributes="href item_url"
      tal:condition="python:item_url">More information ...</a>
   <a class="CloseExhibitItemLink"
      href="#" style="display: none;"
      tal:condition="python:item_url">Close</a>
-  <p>&nbsp;</p>
 
-<div id="ExhibitItemView" style="display: none;background-color:#e0e0e0;padding: 5px;">
+<div id="ExhibitItemView" style="display: none;">
 </div>
 
 <div class="ExhibitItemListing">
   <h3>Exhibit Items</h3>
   <tal:listing repeat="item python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'})">
   <div class="ListingItem"
-       tal:define="image_view item/@@images"
-       style="float:left; margin:10px 10px 5px 0px">
+       tal:define="image_view item/@@images">
     <a class="ExhibitItemPreview" tal:attributes="href item/absolute_url"
        tal:define="image_preview image_view/image/thumb|nothing;">
       <img tal:replace="structure image_preview" src="some_image.jpg" />
     </a>
-    <div class="tooltip" style="display:none;width:200px;background-color:#ffffff;border:1px solid #cc9;padding:3px;">
+    <div class="tooltip">
     <img tal:condition="nothing" tal:replace="structure image_view/image/mini|nothing" src="some_image.jpg" />
     <h3 tal:content="item/Title">Title</h3>
     <p tal:content="item/Description">Description</p>

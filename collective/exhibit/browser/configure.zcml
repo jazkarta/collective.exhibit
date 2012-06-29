@@ -30,16 +30,20 @@
       permission="cmf.ManagePortal"
       />
 
-  <browser:resource
-      name="exhibitsection.png"
-      file="exhibitsection.png"
-      />
-  
   <browser:page
       name="faceted-preview-item"
       for="..content.exhibititem.IExhibitItem"
       template="faceted-item.pt"
       permission="zope2.View"
+      />
+
+  <browser:resource
+      name="exhibits.css"
+      file="exhibits.css"
+      />
+  <browser:resourceDirectory
+      name="exhibit-images"
+      directory="images"
       />
 
 </configure>
