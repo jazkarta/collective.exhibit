@@ -7,6 +7,7 @@ from z3c.form import field
 from z3c.form import interfaces
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope.app.container.interfaces import IObjectAddedEvent
+from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 
 from Products.CMFCore.utils import getToolByName
 from plone.z3cform.textlines import TextLinesFieldWidget
@@ -66,8 +67,7 @@ class IExhibit(form.Schema):
                           required=False,
                           description=u'Add the titles of any sections that you wish to add to the exhibit, one per line.',
                           value_type=schema.ASCIILine())
-    form.omitted('pages', 'sections')
-    form.no_omit(interfaces.IAddForm, 'pages')
+    form.omitted('sections')
     form.no_omit(interfaces.IAddForm, 'sections')
 
 
@@ -101,3 +101,18 @@ def createExhibitContent(exhibit, event):
     blacklist = getMultiAdapter((exhibit, manager), ILocalPortletAssignmentManager)
     for category in (GROUP_CATEGORY, CONTENT_TYPE_CATEGORY,CONTEXT_CATEGORY,USER_CATEGORY):
         blacklist.setBlacklistStatus(category, 1)
+
+
+@grok.subscribe(IExhibit, IObjectModifiedEvent)
+def editExhibitContent(exhibit, event):
+    portal_url = getToolByName(exhibit, 'portal_url')
+    site = portal_url.getPortalObject()
+    exhibit_templates = site.restrictedTraverse(EXHIBIT_TEMPLATES)
+    templates = exhibit_templates.objectIds()
+    contents = exhibit.objectIds()
+    del_page_ids = [page for page in templates if page in contents and page not in exhibit.pages]
+    exhibit.manage_delObjects(ids=del_page_ids)
+    contents = exhibit.objectIds()
+    add_page_ids = [page for page in exhibit.pages if page not in contents]
+    pages = exhibit_templates.manage_copyObjects(ids=add_page_ids)
+    exhibit.manage_pasteObjects(pages)
