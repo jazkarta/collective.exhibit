@@ -14,8 +14,8 @@
         <span class="portletTopLeft"></span>
         <a href="#"
            class="tile"
-           tal:attributes="href contents/exhibit/absolute_url">
-          This Exhibit
+           tal:attributes="href contents/exhibit/absolute_url"
+           tal:content="contents/exhibit/Title"></a>
         </a>
         <span class="portletTopRight"></span>
     </dt>
