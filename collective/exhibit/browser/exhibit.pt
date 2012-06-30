@@ -18,6 +18,7 @@
      tal:condition="context/text"
      tal:content="structure context/text/output">
 </div>
+<span class="visualClear">&nbsp;</span>
 <tal:block condition="python:sections and len(sections) > 1">
 <h3 class="exhibit-subtitle">Exhibit Sections</h3>
 <div id="exhibit-contents">
