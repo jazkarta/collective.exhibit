@@ -13,13 +13,19 @@
     </script>
     <script>
       $(function () {
-        $('#ExhibitItemView').load(exhibit_item_url + ' #content');
+        var map_init = false;
         $('.ExhibitItemPreview').tooltip({ position: "bottom right",
                                            relative: true,
                                            effect: "fade",
                                            offset: [-10,0]});
         $('.FullExhibitItemLink').click(function() { 
-            $('#ExhibitItemView').show("slide", { direction: "up" }, 1000);
+            $('#ExhibitItemView').show("slide", { direction: "up" }, 1000,
+                function () {
+                    // init any maps on slidedown, they get distorted otherswise
+                    map_init == false && typeof mapsGoogleMaps != 'undefined' && mapsGoogleMaps.init();
+                    map_init = true;
+                }
+            );
             $('.FullExhibitItemLink').hide();
             $('.CloseExhibitItemLink').show();
             return false;
@@ -30,6 +36,10 @@
             $('.CloseExhibitItemLink').hide();
             return false;
         });
+      });
+      // Do this onload so we don't load any included google maps prematurely
+      $(window).load(function () {
+            $('#ExhibitItemView').load(exhibit_item_url + ' #content > *');
       });
     </script>
   </metal:js>
