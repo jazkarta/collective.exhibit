@@ -1,5 +1,6 @@
 from five import grok
 from AccessControl.SecurityManagement import getSecurityManager
+from AccessControl.PermissionRole import rolesForPermissionOn
 from Products.statusmessages.interfaces import IStatusMessage
 
 from collective.exhibit.content.exhibititem import IExhibitItem
@@ -19,18 +20,15 @@ class View(grok.View):
             referenced = self.context._get_referenced()
         except AttributeError:
             referenced = None
-        if referenced is not None:
-            can_edit = sm.checkPermission('Modify portal content', self.context)
-            view_this = [bool(r['selected']) for r in
-                         self.context.rolesOfPermission('View')
-                         if r['name'] == 'Anonymous'][0]
-            view_ref = [bool(r['selected']) for r in
-                        referenced.rolesOfPermission('View')
-                        if r['name'] == 'Anonymous'][0]
+        if (referenced is not None and
+              sm.checkPermission('Modify portal content', self.context)):
+            view_this = 'Anonymous' in rolesForPermissionOn('View',
+                                                            self.context)
+            view_ref = 'Anonymous' in rolesForPermissionOn('View', referenced)
             # If the current user is an editor, and the exhibit item
             # item is visible to anonymous users, but the referenced
             # item is not, show a warning:
-            if can_edit and view_this and not view_ref:
+            if view_this and not view_ref:
                 IStatusMessage(self.request).add(_('The referenced item is '
                                                    'not published, so this '
                                                    'exhibit item will not be '
