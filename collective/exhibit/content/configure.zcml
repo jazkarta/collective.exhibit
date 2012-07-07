@@ -17,6 +17,14 @@
         for=".exhibitsection.IExhibitSection"
         />
 
+    <plone:behavior
+        title="Initial Exhibit Sections"
+        description="Adds empty exhibit sections from a list of names"
+        provides=".exhibit.IInitialSections"
+        factory=".exhibit.InitialSections"
+        for=".exhibit.IExhibit"
+        />
+
     <browser:page
       name="images"
       for=".exhibititem.IExhibitItem"
