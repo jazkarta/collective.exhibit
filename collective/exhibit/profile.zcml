@@ -61,5 +61,15 @@
         import_steps="cssregistry typeinfo controlpanel"
         />
   </genericsetup:upgradeSteps>
+  <genericsetup:upgradeSteps
+      source="1003"
+      destination="1004"
+      sortkey="1"
+      profile="collective.exhibit:default">
+    <upgradeDepends
+        title="Update exhibit behaviors"
+        import_steps="typeinfo"
+        />
+  </genericsetup:upgradeSteps>
 
 </configure>

@@ -8,11 +8,14 @@ from z3c.form import interfaces
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope.app.container.interfaces import IObjectAddedEvent
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
+from zope.container.interfaces import IContainerModifiedEvent
 
 from Products.CMFCore.utils import getToolByName
 from plone.directives import form, dexterity
 from plone.app.textfield import RichText
 from plone.dexterity.utils import createContentInContainer
+from plone.behavior.interfaces import IBehaviorAssignable
+from plone.dexterity.interfaces import IDexterityContent
 from plone.namedfile.field import NamedBlobImage
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
@@ -64,16 +67,17 @@ class IExhibit(form.Schema):
 
 
 class IInitialSections(form.Schema):
-    form.fieldset('initial_sections', label=_(u'Initial Sections'),
+    form.fieldset('initial_sections', label=_(u'Add Sections'),
                   fields=['sections'])
 
     sections = schema.List(title=_(u'Exhibit Sections'),
                           required=False,
                           description=u'Add the titles of any sections that you wish to add to the exhibit, one per line.',
-                          value_type=schema.ASCIILine())
+                          value_type=schema.TextLine())
 
     form.omitted('sections')
     form.no_omit(interfaces.IAddForm, 'sections')
+    form.no_omit(interfaces.IEditForm, 'sections')
 
 alsoProvides(IInitialSections, form.IFormFieldProvider)
 
@@ -98,15 +102,9 @@ class InitialSections(object):
 @grok.subscribe(IExhibit, IObjectAddedEvent)
 def createExhibitContent(exhibit, event):
     from collective.exhibit.portlets.navigation import Assignment
-    exhibit_sections = exhibit._v_sections
-    if exhibit_sections:
-        for section in exhibit_sections:
-            createContentInContainer(exhibit, 'collective.exhibit.exhibitsection',
-                                 title=section)
-
     portal_url = getToolByName(exhibit, 'portal_url')
     site = portal_url.getPortalObject()
-    exhibit_templates = site.restrictedTraverse(EXHIBIT_TEMPLATES)
+    exhibit_templates = site.unrestrictedTraverse(EXHIBIT_TEMPLATES)
     page_ids = [page for page in exhibit.pages]
     pages = exhibit_templates.manage_copyObjects(ids=page_ids)
     exhibit.manage_pasteObjects(pages)
@@ -122,10 +120,30 @@ def createExhibitContent(exhibit, event):
 
 @grok.subscribe(IExhibit, IObjectModifiedEvent)
 def editExhibitContent(exhibit, event):
+    # Don't call again when items are added to avoid recursion
+    if IContainerModifiedEvent.providedBy(event):
+        return
     portal_url = getToolByName(exhibit, 'portal_url')
     site = portal_url.getPortalObject()
-    exhibit_templates = site.restrictedTraverse(EXHIBIT_TEMPLATES)
+    exhibit_templates = site.unrestrictedTraverse(EXHIBIT_TEMPLATES)
     contents = exhibit.objectIds()
     add_page_ids = [page for page in exhibit.pages if page not in contents]
     pages = exhibit_templates.manage_copyObjects(ids=add_page_ids)
     exhibit.manage_pasteObjects(pages)
+
+
+@grok.subscribe(IDexterityContent, IObjectAddedEvent)
+@grok.subscribe(IDexterityContent, IObjectModifiedEvent)
+def addExhibitSections(obj, event):
+    # Don't call again when items are added to avoid recursion, and
+    # only call on items with assigned behavior
+    if (IContainerModifiedEvent.providedBy(event) or
+        not IBehaviorAssignable(obj, None).supports(IInitialSections)):
+        return
+    exhibit_sections = getattr(obj, '_v_sections', [])
+    for section in exhibit_sections:
+        section = section.strip()
+        if section:
+            createContentInContainer(obj,
+                                     'collective.exhibit.exhibitsection',
+                                     title=section)
