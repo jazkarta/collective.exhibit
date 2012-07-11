@@ -271,13 +271,11 @@ class ExhibitItemContent(Item):
 
     def Description(self):
         """Returns the description of the object or referenced object"""
-        desc = self.description
+        desc = self.description.encode('utf-8')
         if not desc:
             referenced = self._get_referenced()
             if referenced is not None:
                 desc = referenced.Description()
-        else:
-            desc = desc.encode('utf-8')
         return desc
 
     def Subject(self):
