@@ -3,20 +3,17 @@ from zope import schema
 from zope.component import getUtility, getMultiAdapter
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.interfaces import IContextSourceBinder
-from z3c.form import field
 from z3c.form import interfaces
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope.app.container.interfaces import IObjectAddedEvent
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 
 from Products.CMFCore.utils import getToolByName
-from plone.z3cform.textlines import TextLinesFieldWidget
 from plone.directives import form, dexterity
 from plone.app.textfield import RichText
 from plone.dexterity.utils import createContentInContainer
 from plone.namedfile.field import NamedBlobImage
 from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import IPortletAssignment
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.constants import USER_CATEGORY
