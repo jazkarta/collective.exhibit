@@ -51,7 +51,7 @@
             tal:define="image_view context/@@images;
                         image_preview image_view/image/large|nothing;
                         item_url context/referenced_item_url|nothing;
-                        image_url string:${context/absolute_url}/@@images/image/large">
+                        image_url string:${context/absolute_url}/@@images/image">
   <a href=""
      class="ExhibitItemImage"
      tal:condition="nocall:image_preview"
