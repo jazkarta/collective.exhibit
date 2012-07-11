@@ -1,6 +1,7 @@
 from five import grok
 from zope import schema
-from zope.component import getUtility, getMultiAdapter
+from zope.interface import implements, alsoProvides
+from zope.component import getUtility, getMultiAdapter, adapts
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.interfaces import IContextSourceBinder
 from z3c.form import interfaces
@@ -61,27 +62,45 @@ class IExhibit(form.Schema):
                        value_type=schema.Choice(source=exhibit_pages))
     form.widget(pages=CheckBoxFieldWidget)
 
+
+class IInitialSections(form.Schema):
+    form.fieldset('initial_sections', label=_(u'Initial Sections'),
+                  fields=['sections'])
+
     sections = schema.List(title=_(u'Exhibit Sections'),
                           required=False,
                           description=u'Add the titles of any sections that you wish to add to the exhibit, one per line.',
                           value_type=schema.ASCIILine())
+
     form.omitted('sections')
     form.no_omit(interfaces.IAddForm, 'sections')
 
+alsoProvides(IInitialSections, form.IFormFieldProvider)
 
-class AddForm(dexterity.AddForm):
-    grok.name('collective.exhibit.exhibit')
 
-    def updateWidgets(self):
-        super(AddForm, self).updateWidgets()
-        self.widgets['sections'].rows = 10
+class InitialSections(object):
+    implements(IInitialSections)
+    adapts(IExhibit)
+
+    def __init__(self, context):
+        self.context = context
+        self.context._v_sections = []
+
+    def _get_items(self):
+        return self.context._v_sections
+
+    def _set_items(self, values):
+        self.context._v_sections = values
+
+    sections = property(_get_items, _set_items)
 
 
 @grok.subscribe(IExhibit, IObjectAddedEvent)
 def createExhibitContent(exhibit, event):
     from collective.exhibit.portlets.navigation import Assignment
-    if exhibit.sections:
-        for section in exhibit.sections:
+    exhibit_sections = exhibit._v_sections
+    if exhibit_sections:
+        for section in exhibit_sections:
             createContentInContainer(exhibit, 'collective.exhibit.exhibitsection',
                                  title=section)
 
