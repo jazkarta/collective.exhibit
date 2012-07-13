@@ -24,6 +24,7 @@
             <dd class="portletItem" tal:repeat="section contents/sections">
                 <a href=""
                    tal:attributes="href section/absolute_url;
+                                   class string:section-${section/id};
                                    title section/Description;">
                     <tal:title content="section/pretty_title_or_id">
                         Title
@@ -36,7 +37,7 @@
             <dd class="portletItem" tal:repeat="page contents/pages">
                 <a href=""
                    tal:attributes="href page/absolute_url;
-                                   class string:item-${page/id};
+                                   class string:page-${page/id};
                                    title page/Description;">
                     <tal:title content="page/pretty_title_or_id">
                         Title
