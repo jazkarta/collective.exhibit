@@ -64,7 +64,7 @@
   <genericsetup:upgradeSteps
       source="1003"
       destination="1004"
-      sortkey="1"
+      sortkey="3"
       profile="collective.exhibit:default">
     <upgradeDepends
         title="Update exhibit behaviors"
