@@ -34,7 +34,7 @@ def exhibit_pages(context):
     pages = []
     portal_url = getToolByName(context, 'portal_url')
     site = portal_url.getPortalObject()
-    exhibit_templates = site.restrictedTraverse(EXHIBIT_TEMPLATES)
+    exhibit_templates = site.unrestrictedTraverse(EXHIBIT_TEMPLATES)
     for page in exhibit_templates.listFolderContents():
         if page.getId() not in context.objectIds():
             term = SimpleVocabulary.createTerm(page.getId(),
