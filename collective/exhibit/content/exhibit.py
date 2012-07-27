@@ -94,7 +94,7 @@ class InitialSections(object):
         return self.context._v_sections
 
     def _set_items(self, values):
-        self.context._v_sections = values
+        self.context._v_sections = values or []
 
     sections = property(_get_items, _set_items)
 
