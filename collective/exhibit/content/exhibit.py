@@ -67,12 +67,9 @@ class IExhibit(form.Schema):
 
 
 class IInitialSections(form.Schema):
-    form.fieldset('initial_sections', label=_(u'Add Sections'),
-                  fields=['sections'])
-
     sections = schema.List(title=_(u'Exhibit Sections'),
-                          required=False,
-                          description=u'Add the titles of any sections that you wish to add to the exhibit, one per line.',
+                          required=True,
+                          description=u'Add the titles of any sections that you wish to add to the exhibit, one per line. You must add at least one section.',
                           value_type=schema.TextLine())
 
     form.omitted('sections')
