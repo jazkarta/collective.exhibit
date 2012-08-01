@@ -32,7 +32,6 @@
                 </a>
             </dd>
         </div>
-        <h3>Information</h3>
         <div class="exhibit-pages">
             <dd class="portletItem" tal:repeat="page contents/pages">
                 <a href=""
