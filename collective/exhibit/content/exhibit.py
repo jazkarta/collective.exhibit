@@ -74,7 +74,6 @@ class IInitialSections(form.Schema):
 
     form.omitted('sections')
     form.no_omit(interfaces.IAddForm, 'sections')
-    form.no_omit(interfaces.IEditForm, 'sections')
 
 alsoProvides(IInitialSections, form.IFormFieldProvider)
 
