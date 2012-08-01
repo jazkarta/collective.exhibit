@@ -14,7 +14,9 @@
     </span>
 
     <span class="photoAlbumEntryTitle" tal:content="context/pretty_title_or_id|string:">Title</span>
-    <span class="photoAlbumEntryDescription" tal:content="description">Description</span>
+    <span class="photoAlbumEntryDescription"
+          tal:condition="nothing"
+          tal:content="description">Description</span>
 
   </a>
 </div>
