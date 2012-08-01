@@ -55,7 +55,8 @@ class Renderer(base.Renderer):
     def _data(self):
         sections = self.exhibit.listFolderContents({'portal_type': 'collective.exhibit.exhibitsection'})
         pages = [page for page in self.exhibit.listFolderContents()
-                 if page.portal_type != 'collective.exhibit.exhibitsection']
+                 if page.portal_type != 'collective.exhibit.exhibitsection' and
+                 not page.exclude_from_nav()]
         return {'exhibit': self.exhibit,
                 'pages': pages,
                 'sections': sections,
