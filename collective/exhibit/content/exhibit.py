@@ -61,7 +61,7 @@ class IExhibit(form.Schema):
 
     pages = schema.List(title=_(u'Exhibit Pages'),
                        required=False,
-                       description=u'Select any pages from the global site templates that you want to be included on the exhibit.',
+                       description=u'Select any pages from the global site templates that you want to be included on the exhibit. (If this list is blank, it means that you have already added all of the global site templates.)',
                        value_type=schema.Choice(source=exhibit_pages))
     form.widget(pages=CheckBoxFieldWidget)
 
