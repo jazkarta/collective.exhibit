@@ -44,7 +44,7 @@ def faceted_navigation(context):
         existing = folder.keys()
         if 'explore-exhibit' not in existing:
             _createObjectByType('Folder', folder, id='explore-exhibit',
-                                title=_(u'Explore Exhibit'))
+                                title=_(u'Browse & Explore'))
             faceted = folder['explore-exhibit']
             alsoProvides(faceted, IHidePloneRightColumn)
             # We need to constrain types in order to allow an ATCT
