@@ -13,7 +13,7 @@ dl.portletNavigationTree.exhibitNavigationPortlet dd.portletItem a {border:none 
 #exhibit-contents .SectionLink a img {display:block; margin-bottom:10px; }
 #exhibit-contents .SectionLink a .ExhibitSectionTitle {display:block; padding:10px; }
 #exhibit-contents .SectionLink .ExhibitSectionDescription {padding:10px; }
-#exhibit-section-items .ExhibitItem {background:#fff; display:block; float:left; margin-right:10px; width:185px; }
+#exhibit-section-items .ExhibitItem {display:block; float:left; margin-right:10px; width:185px; }
 #exhibit-section-items .ExhibitItemDescription a {width:100%; display:block; }
 
 img.ExhibitSectionThumb, img.ExhibitItemThumb {max-width: 100%; max-height: 140px; display:block; margin: 0 auto;}
