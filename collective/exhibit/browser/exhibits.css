@@ -9,7 +9,7 @@ dl.portletNavigationTree.exhibitNavigationPortlet dd.portletItem a {border:none 
 .exhibitNavigationPortlet div.exhibit-pages dd.portletItem {margin-bottom:20px; margin-left:10px; }
 
 #exhibit-contents .SectionLink {background:#fff; display:block; float:left; margin-right:10px; width:185px; }
-#exhibit-contents .SectionLink a {color:#835300; display:block; font-size:14px; line-height:20px; text-transform:uppercase; width:100%;  border-bottom: none !important; }
+#exhibit-contents .SectionLink a {display:block; line-height:20px; width:100%;  border-bottom: none !important; }
 #exhibit-contents .SectionLink a img {display:block; margin-bottom:10px; }
 #exhibit-contents .SectionLink a .ExhibitSectionTitle {display:block; padding:10px; }
 #exhibit-contents .SectionLink .ExhibitSectionDescription {padding:10px; }
