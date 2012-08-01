@@ -79,18 +79,22 @@
 </div>
 
 <div class="ExhibitItemListing">
-  <h3>Exhibit Items</h3>
+  <h3>More Exhibit Items</h3>
   <tal:listing repeat="item python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'})">
   <div class="ListingItem"
        tal:define="image_view item/@@images;
-                   item_title item/Title|nothing;"
-       tal:condition="item_title">
-    <a class="ExhibitItemPreview" tal:attributes="href item/absolute_url"
-       tal:define="image_preview image_view/image/thumb|nothing;">
-      <img tal:replace="structure image_preview" src="some_image.jpg" />
+                   item_title item/Title|nothing;
+                   item_url item/absolute_url;
+                   image_preview image_view/image/thumb|nothing;"
+       tal:condition="image_preview">
+    <a class="ExhibitItemPreview"
+       tal:attributes="href item_url">
+      <img class="ExhibitItemThumb"
+           tal:attributes="src string:${item_url}/@@images/image/thumb;
+                           alt item_title;" />
     </a>
     <div class="tooltip">
-      <h3 tal:content="item_title">Title</h3>
+      <div class="ExhibitItemTitle" tal:content="item_title">Title</div>
       <p tal:content="item/Description">Description</p>
     </div>
   </div>

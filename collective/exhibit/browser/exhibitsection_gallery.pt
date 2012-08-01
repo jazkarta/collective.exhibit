@@ -22,14 +22,14 @@
   <div id="exhibit-section-items"
       tal:define="items python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'});">
     <tal:items tal:repeat="item items">
-      <div tal:define="item_url item/absolute_url;
-                      item_title item/Title|nothing;"
+      <div class="ExhibitItem"
+           tal:define="item_url item/absolute_url;
+                       item_title item/Title|nothing;"
           tal:condition="item_title">
         <div class="ExhibitItemImage"
              tal:define="image item/@@images/image/mini|nothing">
           <a href="#"
-             tal:attributes="title item_title;
-                             href item_url;">
+             tal:attributes="href item_url;">
             <img class="ExhibitItemThumb"
                  tal:condition="nocall:image"
                  tal:attributes="src string:${item_url}/@@images/image/mini;
@@ -38,9 +38,10 @@
         </div>
         <div class="ExhibitItemDescription">
           <a href="#"
-             tal:attributes="title item_title;
-                             href item_url;">
-            <span class="ExhibitItemTitle" tal:content="item_title">Title</span>
+             class="ExhibitItemTitle"
+             tal:attributes="href item_url;"
+             tal:content="item_title">
+            Title
           </a>
           <p tal:content="item/Description">Description</p>
         </div>

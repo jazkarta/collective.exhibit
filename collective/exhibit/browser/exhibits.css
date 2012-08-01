@@ -13,12 +13,11 @@ dl.portletNavigationTree.exhibitNavigationPortlet dd.portletItem a {border:none 
 #exhibit-contents .SectionLink a img {display:block; margin-bottom:10px; }
 #exhibit-contents .SectionLink a .ExhibitSectionTitle {display:block; padding:10px; }
 #exhibit-contents .SectionLink .ExhibitSectionDescription {padding:10px; }
-#exhibit-section-items > div, #exhibit-section-items > div > div {background:#fff; display:block; float:left; margin-right:10px; width:185px; }
+#exhibit-section-items .ExhibitItem {background:#fff; display:block; float:left; margin-right:10px; width:185px; }
 #exhibit-section-items .ExhibitItemDescription a {width:100%; display:block; }
 
-
 img.ExhibitSectionThumb, img.ExhibitItemThumb {max-width: 100%; max-height: 140px; display:block; margin: 0 auto;}
-.ExhibitItemListing {background:#fff; padding:10px 10px 10px; margin:15px 0px; position:relative; }
+.ExhibitItemListing {padding:10px 10px 10px; margin:15px 0px; position:relative; }
 .ExhibitItemListing h3 {margin:0px 0px 10px; }
 
 .ExhibitItemListing .ListingItem {display:inline-block; position:relative;  margin:10px 10px 5px 0px; text-align: center; }
