@@ -27,7 +27,7 @@ class IBulkItemAdd(form.Schema):
     """Allow bulk addition of exhibit items when creating sections"""
 
     exhibit_items = schema.List(title=_(u'Item References'),
-                                description=_(u'Choose content to be used as'
+                                description=_(u'Choose content to be used as '
                                               'a basis for your exhibit '
                                               'items.'),
                                 value_type=schema.Choice(
