@@ -8,8 +8,12 @@
       i18n:domain="plone">
 <head>
   <metal:js fill-slot="javascript_head_slot">
+    <script>
+      var exhibit_item_url;
+    </script>
     <script tal:define="item_url context/referenced_item_url|nothing;"
-            tal:content="string:var exhibit_item_url = '${item_url}/view';">
+            tal:condition="item_url"
+            tal:content="string:exhibit_item_url = '${item_url}/view';">
     </script>
     <script>
       $(function () {
@@ -38,9 +42,11 @@
         });
       });
       // Do this onload so we don't load any included google maps prematurely
-      $(window).load(function () {
-            $('#ExhibitItemView').load(exhibit_item_url + ' #content > *');
-      });
+      if (exhibit_item_url) {
+          $(window).load(function () {
+                $('#ExhibitItemView').load(exhibit_item_url + ' #content > *');
+          });
+      }
     </script>
   </metal:js>
 </head>
