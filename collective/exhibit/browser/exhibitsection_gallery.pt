@@ -17,8 +17,8 @@
        tal:content="structure context/text/output|nothing">
     Full text
   </div>
-  <h3>Exhibit Items</h3>
   <span class="visualClear">&nbsp;</span>
+  <h3>Exhibit Items</h3>
   <div id="exhibit-section-items"
       tal:define="items python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'});">
     <tal:items tal:repeat="item items">
