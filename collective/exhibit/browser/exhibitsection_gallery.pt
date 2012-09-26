@@ -12,12 +12,22 @@
 
 <body>
 
-<metal:main fill-slot="content-core">
+<metal:main fill-slot="content-core"
+            tal:define="show_image context/show_image|nothing;
+                        image_view context/@@images;
+                        image_preview image_view/image/portrait|nothing;
+                        item_url context/referenced_item_url|nothing;
+                        image_url string:${context/absolute_url}/@@images/image">
+  <div class="ExhibitSectionImage"
+     tal:condition="python:show_image and image_preview"
+     tal:content="structure image_preview">
+    <img src="some_image.jpg" alt="title" />
+  </div>
   <div class="ExhibitSectionText"
        tal:content="structure context/text/output|nothing">
     Full text
   </div>
-  <span class="visualClear">&nbsp;</span>
+  <div class="visualClear">&nbsp;</div>
   <h3>Exhibit Items</h3>
   <div id="exhibit-section-items"
       tal:define="items python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'});">

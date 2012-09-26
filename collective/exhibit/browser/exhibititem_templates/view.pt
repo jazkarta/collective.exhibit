@@ -69,7 +69,7 @@
   <div class="ExhibitItemText" tal:content="structure context/getText">
     Full Text
   </div>
-  <span class="visualClear">&nbsp;</span>
+  <div class="visualClear">&nbsp;</div>
   <a class="ReferencedItemLink"
      tal:attributes="href string:${item_url}"
      tal:condition="python:item_url and checkPermission('Modify portal content', context)">Go To Referenced Item</a>

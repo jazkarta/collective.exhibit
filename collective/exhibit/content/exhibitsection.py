@@ -23,6 +23,8 @@ class IExhibitSection(form.Schema):
     image = NamedBlobImage(title=_(u'Image'),
                            required=False)
 
+    show_image = schema.Bool(title=_(u'Show image in default view'))
+
 class IBulkItemAdd(form.Schema):
     """Allow bulk addition of exhibit items when creating sections"""
 
