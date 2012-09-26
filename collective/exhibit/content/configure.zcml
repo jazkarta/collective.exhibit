@@ -24,7 +24,13 @@
         factory=".exhibit.InitialSections"
         for=".exhibit.IExhibit"
         />
-
+    <plone:behavior
+        title="Categorization"
+        description="Adds keywords and language setting (with keyword widget)"
+        provides=".exhibititem.IKeywordCategorization"
+        factory="plone.app.dexterity.behaviors.metadata.Categorization"
+        for="plone.dexterity.interfaces.IDexterityContent"
+        />
     <browser:page
       name="images"
       for=".exhibititem.IExhibitItem"

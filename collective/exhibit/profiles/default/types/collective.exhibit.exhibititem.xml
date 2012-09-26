@@ -20,7 +20,7 @@
 
  <!-- enabled behaviors -->
  <property name="behaviors">
-     <element value="plone.app.dexterity.behaviors.metadata.ICategorization" />
+     <element value="collective.exhibit.content.exhibititem.IKeywordCategorization" />
      <element value="plone.app.dexterity.behaviors.metadata.IOwnership" />
      <element value="plone.app.dexterity.behaviors.metadata.IPublication" />
  </property>

@@ -71,5 +71,15 @@
         import_steps="typeinfo"
         />
   </genericsetup:upgradeSteps>
+  <genericsetup:upgradeSteps
+      source="1004"
+      destination="1005"
+      sortkey="3"
+      profile="collective.exhibit:default">
+    <upgradeDepends
+        title="Update exhibititem categorization"
+        import_steps="typeinfo"
+        />
+  </genericsetup:upgradeSteps>
 
 </configure>

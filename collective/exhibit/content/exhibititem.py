@@ -2,7 +2,7 @@ import itertools
 from five import grok
 from Acquisition import aq_inner, aq_parent
 from zope import schema
-from zope.interface import invariant, Invalid, implements
+from zope.interface import invariant, Invalid, implements, alsoProvides
 from zope.component import queryUtility
 from zope.component import getUtility
 from zope.publisher.interfaces import NotFound
@@ -30,11 +30,13 @@ from plone.registry.interfaces import IRegistry
 from collective.exhibit.interfaces import IExhibitSettings
 
 from collective.exhibit import exhibitMessageFactory as _
-
+from collective.z3cform.keywordwidget.field import Keywords
+from plone.app.dexterity.behaviors.metadata import ICategorization
+from plone.autoform.interfaces import IFormFieldProvider
 
 class SelectableItemsFilter(object):
     implements(IContentFilter)
-    
+
     def __init__(self):
         self.criteria = {}
 
@@ -138,6 +140,20 @@ class IExhibitItem(form.Schema):
                 raise MustHaveImage(_(u"You must either choose a Referenced "
                                       "Item or upload an Image."))
 
+class IKeywordCategorization(ICategorization):
+    # Override Subjects
+    subjects = Keywords(title = _(u'label_categories',
+                                      default=u'Categories'),
+                    description = _(u'help_categories',
+                                    default=u'Also known as keywords, '
+                                    'tags or labels, these help you '
+                                    'categorize your content.'),
+                    required = False,
+                    index_name='Subject',
+        )
+    form.widget(subjects='collective.z3cform.keywordwidget.widget.KeywordFieldWidget')
+
+alsoProvides(IKeywordCategorization, IFormFieldProvider)
 
 def _get_image_field_name(obj, default_name='image'):
     """Try to find an image field on an object, if there's a field
