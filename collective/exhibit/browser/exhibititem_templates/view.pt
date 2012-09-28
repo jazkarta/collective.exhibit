@@ -54,13 +54,14 @@
 <body>
 
 <metal:main fill-slot="content-core"
-            tal:define="image_view context/@@images;
+            tal:define="show_image context/show_image|nothing;
+                        image_view context/@@images;
                         image_preview image_view/image/large|nothing;
                         item_url context/referenced_item_url|nothing;
                         image_url string:${context/absolute_url}/@@images/image">
   <a href=""
      class="ExhibitItemImage"
-     tal:condition="nocall:image_preview"
+     tal:condition="python:show_image and image_preview"
      tal:attributes="href image_url;
                      title context/Title"
      tal:content="structure image_preview">

@@ -100,6 +100,9 @@ class IExhibitItem(form.Schema):
                        required=False,
                        )
 
+    show_image = schema.Bool(title=_(u'Show image in default view'),
+                             default=True)
+
     text = RichText(title=_(u'Description'),
                     description=_(u'Describe the exhibit item.  Leave '
                                   'this blank to use the description '
