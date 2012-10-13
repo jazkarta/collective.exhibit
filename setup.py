@@ -16,11 +16,11 @@ long_description = (
     + '\n' +
     read('CHANGES.txt')
     + '\n' +
-    'Detailed Documentation\n'
-    '**********************\n'
-    + '\n' +
-    read('collective', 'exhibit', 'README.txt')
-    + '\n' +
+    #'Detailed Documentation\n'
+    #'**********************\n'
+    #+ '\n' +
+    #read('collective', 'exhibit', 'README.txt')
+    #+ '\n' +
     'Contributors\n'
     '************\n'
     + '\n' +
