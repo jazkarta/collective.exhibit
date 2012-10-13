@@ -101,7 +101,7 @@ def createExhibitContent(exhibit, event):
     portal_url = getToolByName(exhibit, 'portal_url')
     site = portal_url.getPortalObject()
     exhibit_templates = site.unrestrictedTraverse(EXHIBIT_TEMPLATES)
-    page_ids = [page for page in exhibit.pages]
+    page_ids = [page for page in (exhibit.pages or [])]
     pages = exhibit_templates.manage_copyObjects(ids=page_ids)
     exhibit.manage_pasteObjects(pages)
 
@@ -123,7 +123,8 @@ def editExhibitContent(exhibit, event):
     site = portal_url.getPortalObject()
     exhibit_templates = site.unrestrictedTraverse(EXHIBIT_TEMPLATES)
     contents = exhibit.objectIds()
-    add_page_ids = [page for page in exhibit.pages if page not in contents]
+    add_page_ids = [page for page in (exhibit.pages or [])
+                    if page not in contents]
     pages = exhibit_templates.manage_copyObjects(ids=add_page_ids)
     exhibit.manage_pasteObjects(pages)
 

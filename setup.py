@@ -29,8 +29,6 @@ long_description = (
     'Download\n'
     '********\n')
 
-tests_require = ['zope.testing']
-
 setup(name='collective.exhibit',
       version=version,
       description="Content product for creating multi-section exhibits for museums and similar sites",
@@ -57,9 +55,7 @@ setup(name='collective.exhibit',
                         'plone.namedfile[blobs]',
                         'collective.z3cform.keywordwidget',
                         ],
-      tests_require=tests_require,
-      extras_require=dict(tests=tests_require),
-      test_suite='collective.exhibit.tests.test_docs.test_suite',
+      extras_require=dict(test=['plone.app.testing',]),
       entry_points="""
 [z3c.autoinclude.plugin]
 target = plone
