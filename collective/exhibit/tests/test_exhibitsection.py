@@ -39,9 +39,9 @@ class ExhibitTest(unittest.TestCase):
         fti = queryUtility(IDexterityFTI,
                            name='collective.exhibit.exhibitsection')
         factory = fti.factory
-        exhibit = createObject(factory)
+        section = createObject(factory)
 
-        self.assertEquals(str(type(exhibit)),
+        self.assertEquals(str(type(section)),
                           "<class 'plone.dexterity.content.Container'>")
 
     def test_adding_alone(self):
