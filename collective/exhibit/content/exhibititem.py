@@ -34,23 +34,13 @@ from collective.z3cform.keywordwidget.field import Keywords
 from plone.app.dexterity.behaviors.metadata import ICategorization
 from plone.autoform.interfaces import IFormFieldProvider
 
-class SelectableItemsFilter(object):
-    implements(IContentFilter)
-
-    def __init__(self):
-        self.criteria = {}
-
-    def __call__(self, brain, index_data):
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(IExhibitSettings)
-        content_type = index_data.get('portal_type', None)
-        return content_type in settings.exhibit_item_types
-
 class ExhibitUUIDSourceBinder(UUIDSourceBinder):
 
-    def __init__(self, navigation_tree_query=None, **kw):
-        self.selectable_filter = SelectableItemsFilter()
-        self.navigation_tree_query = navigation_tree_query
+    def __call__(self, context):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IExhibitSettings)
+        self.selectable_filter.criteria['portal_type'] = list(settings.exhibit_item_types)
+        return super(ExhibitUUIDSourceBinder, self).__call__(context)
 
 class MustHaveTitle(Invalid):
     __doc__ = _(u'If there is no referenced item, you must set the title.')

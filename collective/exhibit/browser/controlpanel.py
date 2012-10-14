@@ -35,7 +35,6 @@ class ExhibitItemContentTypes(ControlPanelView):
         self.errors = {}
         submitted = False
         form = self.request.form
-        count = 0
 
         if 'form.button.Cancel' in form:
             IStatusMessage(self.request).add(_(u'Changes canceled.'))
@@ -50,6 +49,8 @@ class ExhibitItemContentTypes(ControlPanelView):
             registry = getUtility(IRegistry)
             settings = registry.forInterface(IExhibitSettings)
             selected = form.get('selected_types', None)
+            if isinstance(selected, basestring):
+                selected = (selected,)
             settings.exhibit_item_types = tuple(selected)
 
         if submitted and not self.errors:
