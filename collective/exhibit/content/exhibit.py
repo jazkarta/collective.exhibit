@@ -39,7 +39,7 @@ def exhibit_pages(context):
         if page.getId() not in context.objectIds():
             term = SimpleVocabulary.createTerm(page.getId(),
                                                str(page.getId()),
-                                               page.Title)
+                                               page.Title())
             pages.append(term)
     return SimpleVocabulary(pages)
 

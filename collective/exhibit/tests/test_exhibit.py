@@ -99,7 +99,10 @@ class ExhibitTest(unittest.TestCase):
 
     def test_create_sections_on_edit(self):
         exhibit = self._createOne()
-        IInitialSections(exhibit).sections =  ['Section One', 'Section Two']
+        section_adapter = IInitialSections(exhibit)
+        section_adapter.sections =  ['Section One', 'Section Two']
+        self.assertEquals(section_adapter.sections,
+                          ['Section One', 'Section Two'])
         notify(ObjectModifiedEvent(exhibit))
         self.assertEquals(exhibit.objectIds(),
                           ['section-one', 'section-two'])
