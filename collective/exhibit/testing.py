@@ -16,7 +16,17 @@ class CollectiveExhibit(PloneSandboxLayer):
         xmlconfig.file('configure.zcml',
                        collective.exhibit,
                        context=configurationContext)
-
+        try:
+            # Optionally install eea.facetednavigation zcml for tests
+            import eea.facetednavigation
+            xmlconfig.file('meta.zcml',
+                           eea.facetednavigation,
+                           context=configurationContext)
+            xmlconfig.file('configure.zcml',
+                           eea.facetednavigation,
+                           context=configurationContext)
+        except ImportError:
+            pass
     def setUpPloneSite(self, portal):
         applyProfile(portal, 'collective.exhibit:default')
 
