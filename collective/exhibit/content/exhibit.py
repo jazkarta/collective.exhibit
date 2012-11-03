@@ -11,7 +11,7 @@ from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.container.interfaces import IContainerModifiedEvent
 
 from Products.CMFCore.utils import getToolByName
-from plone.directives import form, dexterity
+from plone.directives import form
 from plone.app.textfield import RichText
 from plone.dexterity.utils import createContentInContainer
 from plone.behavior.interfaces import IBehaviorAssignable
@@ -26,6 +26,7 @@ from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 from plone.portlets.constants import CONTEXT_CATEGORY
 
 from collective.exhibit.config import EXHIBIT_TEMPLATES
+from collective.exhibit.config import EXHIBIT_STYLESHEETS
 from collective.exhibit import exhibitMessageFactory as _
 
 
@@ -36,6 +37,21 @@ def exhibit_pages(context):
     site = portal_url.getPortalObject()
     exhibit_templates = site.unrestrictedTraverse(EXHIBIT_TEMPLATES)
     for page in exhibit_templates.listFolderContents():
+        if page.getId() not in context.objectIds():
+            term = SimpleVocabulary.createTerm(page.getId(),
+                                               str(page.getId()),
+                                               page.Title())
+            pages.append(term)
+    return SimpleVocabulary(pages)
+
+
+@grok.provider(IContextSourceBinder)
+def exhibit_stylesheets(context):
+    pages = []
+    portal_url = getToolByName(context, 'portal_url')
+    site = portal_url.getPortalObject()
+    exhibit_stylesheets = site.unrestrictedTraverse(EXHIBIT_STYLESHEETS)
+    for page in exhibit_stylesheets.listFolderContents():
         if page.getId() not in context.objectIds():
             term = SimpleVocabulary.createTerm(page.getId(),
                                                str(page.getId()),
@@ -58,6 +74,11 @@ class IExhibit(form.Schema):
 
     image = NamedBlobImage(title=_(u'Image'),
                            required=False)
+
+    stylesheet = schema.Choice(title=_(u'Exhibit Stylesheet'),
+                       required=False,
+                       description=u'Select an stylesheet from the global site stylesheets.)',
+                       source=exhibit_stylesheets)
 
     pages = schema.List(title=_(u'Exhibit Pages'),
                        required=False,
@@ -110,7 +131,7 @@ def createExhibitContent(exhibit, event):
     assignment = Assignment()
     mapping['exhibit_navigation_portlet'] = assignment
     blacklist = getMultiAdapter((exhibit, manager), ILocalPortletAssignmentManager)
-    for category in (GROUP_CATEGORY, CONTENT_TYPE_CATEGORY,CONTEXT_CATEGORY,USER_CATEGORY):
+    for category in (GROUP_CATEGORY, CONTENT_TYPE_CATEGORY, CONTEXT_CATEGORY, USER_CATEGORY):
         blacklist.setBlacklistStatus(category, 1)
 
 

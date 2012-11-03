@@ -1,0 +1,37 @@
+body {background-color: white;}
+body #header h2 a { color: #ffffff;}
+
+dl.portlet.exhibitNavigationPortlet {padding: 0; background-color:#e0e0e0;}
+.exhibitNavigationPortlet a.ExhibitImage img {width:180px; height:auto;}
+.portletWrapper dl.portlet.exhibitNavigationPortlet dt.portletHeader {background-color:#a0a0f0; color:#fff; }
+.exhibitNavigationPortlet dt.portletHeader a.title {color:#fff; font-size:13px; line-height:18px; }
+.exhibitNavigationPortlet dt.portletHeader a.title:hover {color:#fff !important; }
+.exhibitNavigationPortlet div.exhibit-sections {background-color:#c0c0c0; }
+.exhibitNavigationPortlet div.exhibit-pages{background-color:#e0e0e0; }
+.exhibitNavigationPortlet div.exhibit-sections dd.portletItem {border-bottom:1px solid #edeae6; }
+.exhibitNavigationPortlet div.exhibit-sections dd.portletItem a {color:#373330; font-family:Georgia, Palatino, serif; font-size:14px; line-height:22px; }
+.exhibitNavigationPortlet div.exhibit-sections dd.portletItem a:hover {color:#fff !important; }
+.exhibitNavigationPortlet div.exhibit-pages dd.portletItem {border-bottom:1px solid #fff;}
+.exhibitNavigationPortlet div.exhibit-pages dd.portletItem a {color:#000000; font-family:Georgia, Palatino, serif; font-size:12px; line-height:17px; }
+.exhibitNavigationPortlet div.exhibit-pages dd.portletItem a:hover {color:#ffffff;}
+.exhibitNavigationPortlet div.exhibit-pages dd.portletItem a.page-explore-exhibit {border:none !important; color:#9f7000 !important; font-size:12px; letter-spacing:.4px; line-height:16px; margin-bottom:20px; text-transform:uppercase; }
+
+#exhibit-contents { }
+#exhibit-contents .SectionLink {background-color:#c0c0c0;}
+#exhibit-contents .SectionLink h4  {margin: 10px 10px 5px 10px;}
+#exhibit-contents .SectionLink h4 a:link,
+#exhibit-contents .SectionLink h4 a:visited,
+#exhibit-contents .SectionLink h4 a:hover {color: #000000;}
+#exhibit-contents .SectionLink .ExhibitSectionDescription  {color:#ffffff; font-size:12px; line-height:18px; }
+
+#content legend, h3 { color: #a0a0f0; }
+#exhibit-section-items { }
+#exhibit-section-items .ExhibitItemDescription {color:#ffffff; font-size:12px; line-height:18px; }
+
+#exhibit-section-items .ExhibitItemImage {width: 185px; height: 140px; vertical-align: bottom; display: table-cell; text-align: left;}
+#exhibit-section-items .ExhibitItemImage img {max-height: 140px; max-width: 185px; margin: 0;}
+#exhibit-section-items .ExhibitItemDescription {margin-top: 5px;}
+
+#content .ExhibitItemTitle, #content a.ExhibitItemTitle {color:#a0a0f0; font-family:Georgia, Palatino, serif; font-size:13px; line-height:20px; text-transform:none;}
+
+#exhibit-section-items .ExhibitItemDescription p, #content .ListingItem .tooltip p {color:#43403c; font-size:11px; line-height:15px; margin-top: 5px;}

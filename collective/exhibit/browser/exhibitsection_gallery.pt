@@ -6,6 +6,12 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
 <head>
+  <metal:css fill-slot="style_slot">
+    <link href="" rel="stylesheet" type="text/css"
+          tal:condition="context/stylesheet"
+          tal:define="stylesheet context/stylesheet"
+          tal:attributes="href python:context.portal_url.getPortalObject()['portal-exhibit-templates']['stylesheets'][stylesheet].absolute_url()" />
+  </metal:css>
   <metal:js fill-slot="javascript_head_slot">
   </metal:js>
 </head>

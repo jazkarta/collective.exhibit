@@ -9,6 +9,15 @@
   <includeDependencies package="." />
   <five:registerPackage package="." initialize=".initialize" />
 
+  <!-- Allow files to be created by generic setup structure step. -->
+  <five:implements
+        class="Products.ATContentTypes.content.file.ATFile"
+        interface="Products.GenericSetup.interfaces.IDAVAware"
+   />
+  <five:implements
+        class="plone.app.blob.content.ATBlob"
+        interface="Products.GenericSetup.interfaces.IDAVAware"
+   />
 
   <!-- Include the sub-packages that use their own configure.zcml files. -->
   <include file="permissions.zcml" />
