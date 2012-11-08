@@ -17,6 +17,7 @@
      <element value="File" />
      <element value="Topic" />
      <element value="Collection" />
+     <element value="BibliographyFolder" />
  </property>
  
  <!-- schema interface -->
