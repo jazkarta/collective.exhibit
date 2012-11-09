@@ -21,6 +21,14 @@
    <depends name="exhibit-setup" />
   </genericsetup:importStep>
 
+  <genericsetup:importStep
+      name="add-facetednav-ex-bib"
+      handler="collective.exhibit.setuphandlers.bibliography_faceted_navigation"
+      title="Faceted Nav"
+      description="Adds faceted navigation search template for bibliography">
+   <depends name="exhibit-setup" />
+  </genericsetup:importStep>
+
   <!-- Register the installation GenericSetup extension profile -->
   <genericsetup:registerProfile
       name="default"

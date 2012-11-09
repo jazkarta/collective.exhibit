@@ -41,4 +41,10 @@
   
   <!-- -*- extra stuff goes here -*- -->
 
+  <utility
+      name="collective.exhibit.bibliography_types"
+      component=".exhibit.bibliography_types"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      />
+
 </configure>

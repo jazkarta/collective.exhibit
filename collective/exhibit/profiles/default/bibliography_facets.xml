@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<object name="explore-bibliography" meta_type="ATFolder">
+ <criteria>
+  <criterion name="c2">
+   <property name="widget">text</property>
+   <property name="title">Search</property>
+   <property name="position">center</property>
+   <property name="section">default</property>
+   <property name="hidden">0</property>
+   <property name="index">SearchableText</property>
+   <property name="default"></property>
+  </criterion>
+  <criterion name="c3">
+   <property name="widget">criteria</property>
+   <property name="title">Current search</property>
+   <property name="position">center</property>
+   <property name="section">default</property>
+   <property name="hidden">0</property>
+  </criterion>
+  <criterion name="c7">
+   <property name="widget">checkbox</property>
+   <property name="title">Year</property>
+   <property name="position">right</property>
+   <property name="section">default</property>
+   <property name="hidden">0</property>
+   <property name="index">publication_year</property>
+   <property name="operator">or</property>
+   <property name="vocabulary"></property>
+   <property name="catalog">portal_catalog</property>
+   <property name="maxitems">0</property>
+   <property name="sortreversed">0</property>
+   <property name="count">1</property>
+   <property name="hidezerocount">1</property>
+   <property name="default"></property>
+  </criterion>
+  <criterion name="c6">
+   <property name="widget">checkbox</property>
+   <property name="title">Authors</property>
+   <property name="position">right</property>
+   <property name="section">default</property>
+   <property name="hidden">0</property>
+   <property name="index">Authors</property>
+   <property name="operator">or</property>
+   <property name="vocabulary"></property>
+   <property name="catalog">portal_catalog</property>
+   <property name="maxitems">0</property>
+   <property name="sortreversed">0</property>
+   <property name="count">1</property>
+   <property name="hidezerocount">1</property>
+   <property name="default"></property>
+  </criterion>
+  <criterion name="c1">
+   <property name="widget">checkbox</property>
+   <property name="title">Reference Type</property>
+   <property name="position">right</property>
+   <property name="section">default</property>
+   <property name="hidden">0</property>
+   <property name="index">portal_type</property>
+   <property name="operator">or</property>
+   <property
+      name="vocabulary">collective.exhibit.bibliography_types</property>
+   <property name="catalog"></property>
+   <property name="maxitems">0</property>
+   <property name="sortreversed">0</property>
+   <property name="count">1</property>
+   <property name="hidezerocount">1</property>
+   <property name="default">
+    <element value="IncollectionReference"/>
+    <element value="ProceedingsReference"/>
+    <element value="ArticleReference"/>
+    <element value="ManualReference"/>
+    <element value="InbookReference"/>
+    <element value="UnpublishedReference"/>
+    <element value="MastersthesisReference"/>
+    <element value="WebpublishedReference"/>
+    <element value="PhdthesisReference"/>
+    <element value="PreprintReference"/>
+    <element value="BookReference"/>
+    <element value="BookletReference"/>
+    <element value="TechreportReference"/>
+    <element value="MiscReference"/>
+    <element value="ConferenceReference"/>
+    <element value="InproceedingsReference"/>
+   </property>
+  </criterion>
+  <criterion name="c0">
+   <property name="widget">resultsperpage</property>
+   <property name="title">Results per page</property>
+   <property name="position">bottom</property>
+   <property name="section">default</property>
+   <property name="hidden">1</property>
+   <property name="start">0</property>
+   <property name="end">20</property>
+   <property name="step">5</property>
+   <property name="default">5</property>
+  </criterion>
+  <criterion name="c5">
+   <property name="widget">tal</property>
+   <property name="title">path</property>
+   <property name="position">bottom</property>
+   <property name="section">default</property>
+   <property name="hidden">1</property>
+   <property name="index">path</property>
+   <property
+      name="default">python:'/'.join(context.aq_parent.getPhysicalPath())</property>
+  </criterion>
+ </criteria>
+</object>
+

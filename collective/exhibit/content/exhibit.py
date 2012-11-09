@@ -60,6 +60,17 @@ def exhibit_stylesheets(context):
     return SimpleVocabulary(pages)
 
 
+@grok.provider(IContextSourceBinder)
+def bibliography_types(context):
+    types = []
+    portal_bibliography = getToolByName(context, 'portal_bibliography')
+    bib_types = portal_bibliography.getReferenceTypes()
+    for rtype in bib_types:
+        term = SimpleVocabulary.createTerm(rtype, rtype, rtype)
+        types.append(term)
+    return SimpleVocabulary(types)
+
+
 class IExhibit(form.Schema):
     """An Exhibit"""
 
