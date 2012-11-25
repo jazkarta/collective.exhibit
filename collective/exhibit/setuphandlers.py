@@ -63,7 +63,7 @@ def faceted_navigation(context):
 
 
 def bibliography_faceted_navigation(context):
-    xmlconfig = context.readDataFile('bibliography_facets.xml')
+    xmlconfig = context.readDataFile('ex_bibliography_facets.xml')
     if xmlconfig is None or not HAS_EEA:
         return
     portal = context.getSite()
