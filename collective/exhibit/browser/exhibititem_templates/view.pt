@@ -88,12 +88,15 @@
 <div class="ExhibitItemListing">
   <h3>More Exhibit Items</h3>
   <tal:listing repeat="item python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'})">
-  <div class="ListingItem"
+  <div tal:attributes="class python:'ListingItem%s' % (context == item and ' CurrentListingItem' or '')"
        tal:define="image_view item/@@images;
                    item_title item/Title|nothing;
                    item_url item/absolute_url;
                    image_preview image_view/image/thumb|nothing;"
        tal:condition="image_preview">
+    <script tal:condition="python:context == item" tal:content="python:'var current_exhibit_item_index=%d' % repeat['item'].index">
+    </script>
+
     <a class="ExhibitItemPreview"
        tal:attributes="href item_url">
       <img class="ExhibitItemThumb"
