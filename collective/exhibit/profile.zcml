@@ -89,5 +89,15 @@
         import_steps="typeinfo"
         />
   </genericsetup:upgradeSteps>
+  <genericsetup:upgradeSteps
+      source="1005"
+      destination="1006"
+      sortkey="3"
+      profile="collective.exhibit:default">
+    <upgradeDepends
+        title="Allow exhibit sections as default pages"
+        import_steps="propertiestool"
+        />
+  </genericsetup:upgradeSteps>
 
 </configure>

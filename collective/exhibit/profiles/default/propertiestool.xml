@@ -1,0 +1,7 @@
+<object name="portal_properties" meta_type="Plone Properties Tool">
+  <object name="site_properties" meta_type="Plone Property Sheet">
+    <property name="default_page_types" purge="False">
+      <element value="collective.exhibit.exhibitsection" />
+    </property>
+  </object>
+</object>
