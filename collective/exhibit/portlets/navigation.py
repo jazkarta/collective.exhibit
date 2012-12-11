@@ -1,6 +1,4 @@
 from zope.interface import implements
-from zope.component import getMultiAdapter
-from zope.formlib import form
 from Acquisition import aq_inner, aq_parent
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -38,7 +36,7 @@ class Renderer(base.Renderer):
             if IExhibit.providedBy(context):
                 exhibit = context
             context = aq_parent(context)
-        self.exhibit = exhibit 
+        self.exhibit = exhibit
 
     def render(self):
         return self._template()
@@ -56,7 +54,8 @@ class Renderer(base.Renderer):
         sections = self.exhibit.listFolderContents({'portal_type': 'collective.exhibit.exhibitsection'})
         pages = [page for page in self.exhibit.listFolderContents()
                  if page.portal_type != 'collective.exhibit.exhibitsection' and
-                 not page.exclude_from_nav()]
+                 not (callable(page.exclude_from_nav) and page.exclude_from_nav()
+                  or page.exclude_from_nav)]
         return {'exhibit': self.exhibit,
                 'pages': pages,
                 'sections': sections,
