@@ -13,6 +13,7 @@ from zope.container.interfaces import IContainerModifiedEvent
 from Products.CMFCore.utils import getToolByName
 from plone.directives import form
 from plone.app.textfield import RichText
+from plone.app.textfield.value import RichTextValue
 from plone.dexterity.utils import createContentInContainer
 from plone.behavior.interfaces import IBehaviorAssignable
 from plone.dexterity.interfaces import IDexterityContent
@@ -27,6 +28,7 @@ from plone.portlets.constants import CONTEXT_CATEGORY
 
 from collective.exhibit.config import EXHIBIT_TEMPLATES
 from collective.exhibit.config import EXHIBIT_STYLESHEETS
+from collective.exhibit.config import EXHIBIT_HOMEPAGES
 from collective.exhibit import exhibitMessageFactory as _
 
 
@@ -36,6 +38,21 @@ def exhibit_pages(context):
     portal_url = getToolByName(context, 'portal_url')
     site = portal_url.getPortalObject()
     exhibit_templates = site.unrestrictedTraverse(EXHIBIT_TEMPLATES)
+    for page in exhibit_templates.listFolderContents():
+        if page.getId() not in context.objectIds():
+            term = SimpleVocabulary.createTerm(page.getId(),
+                                               str(page.getId()),
+                                               page.Title())
+            pages.append(term)
+    return SimpleVocabulary(pages)
+
+
+@grok.provider(IContextSourceBinder)
+def exhibit_homepages(context):
+    pages = []
+    portal_url = getToolByName(context, 'portal_url')
+    site = portal_url.getPortalObject()
+    exhibit_templates = site.unrestrictedTraverse(EXHIBIT_HOMEPAGES)
     for page in exhibit_templates.listFolderContents():
         if page.getId() not in context.objectIds():
             term = SimpleVocabulary.createTerm(page.getId(),
@@ -73,6 +90,13 @@ def bibliography_types(context):
 
 class IExhibit(form.Schema):
     """An Exhibit"""
+
+    homepage = schema.Choice(title=_(u'Template Text'),
+                       required=False,
+                       description=u'Select a template to use for the default text or leave blank to enter custom text below',
+                       source=exhibit_homepages)
+    form.omitted('homepage')
+    form.no_omit(interfaces.IAddForm, 'homepage')
 
     text = RichText(title=_(u'Text'),
                     required=False,
@@ -144,6 +168,14 @@ def createExhibitContent(exhibit, event):
     blacklist = getMultiAdapter((exhibit, manager), ILocalPortletAssignmentManager)
     for category in (GROUP_CATEGORY, CONTENT_TYPE_CATEGORY, CONTEXT_CATEGORY, USER_CATEGORY):
         blacklist.setBlacklistStatus(category, 1)
+
+    # Homepage text
+    homepage_id = getattr(exhibit, 'homepage', None)
+    if homepage_id is not None:
+        homepage_templates = site.unrestrictedTraverse(EXHIBIT_HOMEPAGES)
+        homepage = homepage_templates[homepage_id]
+        exhibit.text = RichTextValue(unicode(homepage.getText(), 'utf8'),
+                                     'text/html', 'text/html')
 
 
 @grok.subscribe(IExhibit, IObjectModifiedEvent)
