@@ -21,28 +21,21 @@
 
     <tal:items>
         <div class="exhibit-sections">
-            <dd class="portletItem" tal:repeat="section contents/sections">
+		<tal:item repeat="section contents/sections">
+		<dd tal:define="stype section/portal_type;
+                               is_section python:stype=='collective.exhibit.exhibitsection';
+		               section_class python:is_section and 'section' or stype;"
+                   tal:attributes="id string:section-${section/id};
+		   class string:portletItem exhibit-item exhibit-${section_class};">
                 <a href=""
                    tal:attributes="href section/absolute_url;
-                                   class string:section-${section/id};
-                                   title section/Description;">
-                    <tal:title content="section/pretty_title_or_id">
+                                   title section/Description|section/Title;">
+                    <tal:title content="section/pretty_title_or_id|section/Title">
                         Title
                     </tal:title>
                 </a>
             </dd>
-        </div>
-        <div class="exhibit-pages">
-            <dd class="portletItem" tal:repeat="page contents/pages">
-                <a href=""
-                   tal:attributes="href page/absolute_url;
-                                   class string:page-${page/id};
-                                   title page/Description;">
-                    <tal:title content="page/pretty_title_or_id">
-                        Title
-                    </tal:title>
-                </a>
-            </dd>
+	    </tal:item>
         </div>
     </tal:items>
 

@@ -44,19 +44,12 @@ class Renderer(base.Renderer):
     @property
     def available(self):
         """Show the portlet only if there are one or more elements."""
-        return len(self._data()['pages']) + len(self._data()['sections'])
+        return len(self._data()['sections'])
 
     def exhibit_contents(self):
         return self._data()
 
     @memoize
     def _data(self):
-        sections = self.exhibit.listFolderContents({'portal_type': 'collective.exhibit.exhibitsection'})
-        pages = [page for page in self.exhibit.listFolderContents()
-                 if page.portal_type != 'collective.exhibit.exhibitsection' and
-                 not (callable(page.exclude_from_nav) and page.exclude_from_nav()
-                  or page.exclude_from_nav)]
-        return {'exhibit': self.exhibit,
-                'pages': pages,
-                'sections': sections,
-               }
+        sections = self.exhibit.listFolderContents()
+        return {'exhibit': self.exhibit, 'sections': sections}
