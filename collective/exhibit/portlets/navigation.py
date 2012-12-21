@@ -1,4 +1,5 @@
 from zope.interface import implements
+from zope.formlib import form
 from Acquisition import aq_inner, aq_parent
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -13,15 +14,26 @@ from collective.exhibit.content.exhibit import IExhibit
 class Assignment(base.Assignment):
     implements(INavPortlet)
 
+    css_class=u''
+
     @property
     def title(self):
         return _(u"Exhibit Navigation")
 
 
-class AddForm(base.NullAddForm):
+class AddForm(base.AddForm):
+    form_fields = form.Fields(INavPortlet)
+    label = _(u"Add Navigation Portlet")
+    description = _(u"This portlet displays exhibit navigation.")
 
-    def create(self):
-        return Assignment()
+    def create(self, data):
+        return Assignment(css_class=data.get('css_class', u''))
+
+
+class EditForm(base.EditForm):
+    form_fields = form.Fields(INavPortlet)
+    label = _(u"Add Navigation Portlet")
+    description = _(u"This portlet displays exhibit navigation.")
 
 
 class Renderer(base.Renderer):
@@ -48,6 +60,9 @@ class Renderer(base.Renderer):
 
     def exhibit_contents(self):
         return self._data()
+
+    def css_class(self):
+        return (self.data.css_class or u'').encode('utf8')
 
     @memoize
     def _data(self):

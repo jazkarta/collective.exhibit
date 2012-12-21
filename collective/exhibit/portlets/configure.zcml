@@ -13,6 +13,7 @@
         assignment=".navigation.Assignment"
         renderer=".navigation.Renderer"
         addview=".navigation.AddForm"
+        editview=".navigation.EditForm"
         />
 
 </configure>

@@ -1,5 +1,6 @@
 <tal:block i18n:domain="plone">
-<dl class="portlet portletNavigationTree exhibitNavigationPortlet" tal:define="contents view/exhibit_contents;">
+<dl class="portlet portletNavigationTree exhibitNavigationPortlet" tal:define="contents view/exhibit_contents;"
+    tal:attributes="class string:portlet portletNavigationTree exhibitNavigationPortlet ${view/css_class}">
 
     <a class="ExhibitImage"
          tal:define="image_view contents/exhibit/@@images;
@@ -23,10 +24,11 @@
         <div class="exhibit-sections">
 		<tal:item repeat="section contents/sections">
 		<dd tal:define="stype section/portal_type;
-                               is_section python:stype=='collective.exhibit.exhibitsection';
-		               section_class python:is_section and 'section' or stype;"
-                   tal:attributes="id string:section-${section/id};
-		   class string:portletItem exhibit-item exhibit-${section_class};">
+                        is_section python:stype=='collective.exhibit.exhibitsection';
+                        section_class python:is_section and 'section' or stype;"
+            tal:condition="not:section/exclude_from_nav|python:True"
+            tal:attributes="id string:section-${section/id};
+                            class string:portletItem exhibit-item exhibit-${section_class};">
                 <a href=""
                    tal:attributes="href section/absolute_url;
                                    title section/Description|section/Title;">
