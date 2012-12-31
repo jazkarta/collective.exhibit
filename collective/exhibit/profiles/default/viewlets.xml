@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<object>
+    <order manager="plone.htmlhead.links">
+        <viewlet name="collective.exhibit.head" insert-after="*" />
+    </order>
+</object>

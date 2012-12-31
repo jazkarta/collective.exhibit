@@ -46,4 +46,17 @@
       directory="images"
       />
 
+  <browser:page
+      name="is-exhibit"
+      for="*"
+      permission="zope.Public"
+      class=".helpers.IsExhibitContent"
+      />
+
+  <browser:viewlet
+      name="collective.exhibit.head"
+      manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
+      class=".helpers.ExhibitCSSViewlet"
+      permission="zope2.View" />
+
 </configure>

@@ -99,5 +99,16 @@
         import_steps="propertiestool"
         />
   </genericsetup:upgradeSteps>
+  <genericsetup:upgradeSteps
+      source="1006"
+      destination="1007"
+      sortkey="1"
+      profile="collective.exhibit:default">
+    <upgradeDepends
+        title="Add CSS Viewlet"
+        import_steps="viewlets"
+        />
+  </genericsetup:upgradeSteps>
+
 
 </configure>
