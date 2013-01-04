@@ -1,7 +1,7 @@
 from zope import schema
 from zope.interface import alsoProvides
 from z3c.form.interfaces import IEditForm, IAddForm
-from plone.directives import form, dexterity
+from plone.directives import form
 from plone.dexterity.utils import createContentInContainer
 from plone.namedfile.field import NamedBlobImage
 from plone.app.textfield import RichText
@@ -25,6 +25,11 @@ class IExhibitSection(form.Schema):
 
     show_image = schema.Bool(title=_(u'Show image in default view'))
 
+    section_display = schema.Choice(title=_(u'Section Display'),
+                                    values=(u'Slider', u'Grid', u'List'),
+                                    default=u'Slider')
+
+
 class IBulkItemAdd(form.Schema):
     """Allow bulk addition of exhibit items when creating sections"""
 
@@ -46,6 +51,7 @@ class IBulkItemAdd(form.Schema):
 
 alsoProvides(IBulkItemAdd, form.IFormFieldProvider)
 
+
 class BulkItemAdd(object):
     """Adapter implementing bulk item add"""
 
@@ -54,6 +60,7 @@ class BulkItemAdd(object):
 
     def _get_items(self):
         return []
+
     def _set_items(self, values):
         context = self.context
         for uid in values:

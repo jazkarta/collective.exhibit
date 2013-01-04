@@ -30,9 +30,10 @@
   <div class="visualClear">&nbsp;</div>
   <h3>Exhibit Items</h3>
   <div id="exhibit-section-items"
+      tal:attributes="class python:context.section_display=='Slider' and 'exhibit-section-items-scroller' or ''"
       tal:define="items python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'});">
     <tal:items tal:repeat="item items">
-      <div class="ExhibitItem"
+      <div tal:attributes="class python:context.section_display!='List' and 'ExhibitItem' or ''"
            tal:define="item_url item/absolute_url;
                        item_title item/Title|nothing;"
           tal:condition="item_title">
