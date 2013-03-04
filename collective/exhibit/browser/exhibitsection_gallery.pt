@@ -44,10 +44,11 @@
             <img class="ExhibitItemThumb"
                  tal:condition="nocall:image"
                  tal:attributes="src string:${item_url}/@@images/image/mini;
+		                 class python:context.section_display!='Grid' and 'ExhibitItemThumb' or 'ExhibitGridItemThumb';
                                  alt item_title;" />
           </a>
         </div>
-        <div class="ExhibitItemDescription">
+        <div class="ExhibitItemDescription" tal:condition="python:context.section_display!='Grid'">
           <a href="#"
              class="ExhibitItemTitle"
              tal:attributes="href item_url;"
