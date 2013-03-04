@@ -35,7 +35,9 @@
     <tal:items tal:repeat="item items">
       <div tal:attributes="class python:context.section_display!='List' and 'ExhibitItem' or 'ExhibitListItem'"
            tal:define="item_url item/absolute_url;
-                       item_title item/Title|nothing;"
+	   item_title item/Title|string:;
+	   item_desc item/Description|string:;
+	   item_title_desc python:'%s %s' % (item_title, item_desc)"
           tal:condition="item_title">
         <div class="ExhibitItemImage"
              tal:define="image item/@@images/image/mini|nothing">
@@ -46,7 +48,7 @@
                  tal:attributes="src string:${item_url}/@@images/image/mini;
 		                 class python:context.section_display!='Grid' and 'ExhibitItemThumb' or 'ExhibitGridItemThumb';
                                  alt item_title;
-                                 title item_title" />
+                                 title item_title_desc" />
           </a>
         </div>
         <div class="ExhibitItemDescription" tal:condition="python:context.section_display!='Grid'">
