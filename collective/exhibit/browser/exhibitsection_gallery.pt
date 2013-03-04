@@ -33,7 +33,7 @@
       tal:attributes="class python:context.section_display=='Slider' and 'exhibit-section-items-scroller' or ''"
       tal:define="items python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'});">
     <tal:items tal:repeat="item items">
-      <div tal:attributes="class python:context.section_display!='List' and 'ExhibitItem' or ''"
+      <div tal:attributes="class python:context.section_display!='List' and 'ExhibitItem' or 'ExhibitListItem'"
            tal:define="item_url item/absolute_url;
                        item_title item/Title|nothing;"
           tal:condition="item_title">
