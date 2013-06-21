@@ -274,6 +274,8 @@ class ExhibitItemContent(Item):
                 return None
             if referenced is not None:
                 title = referenced.Title()
+            else:
+                title = ''
         else:
             title = title.encode('utf-8')
         return title
@@ -285,6 +287,8 @@ class ExhibitItemContent(Item):
             referenced = self._get_referenced()
             if referenced is not None:
                 desc = referenced.Description()
+            else:
+                desc = ''
         else:
             desc = desc.encode('utf-8')
         return desc
@@ -296,6 +300,8 @@ class ExhibitItemContent(Item):
             referenced = self._get_referenced()
             if referenced is not None:
                 subject = referenced.Subject()
+            else:
+                subject = []
         else:
             subject = [s.encode('utf-8') for s in subject]
         return subject
