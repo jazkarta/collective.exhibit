@@ -12,6 +12,7 @@ from zope.container.interfaces import IContainerModifiedEvent
 
 from Products.CMFCore.utils import getToolByName
 from plone.directives import form
+from plone.supermodel.model import Schema
 from plone.app.textfield import RichText
 from plone.app.textfield.value import RichTextValue
 from plone.dexterity.utils import createContentInContainer
@@ -88,7 +89,7 @@ def bibliography_types(context):
     return SimpleVocabulary(types)
 
 
-class IExhibit(form.Schema):
+class IExhibit(Schema):
     """An Exhibit"""
 
     homepage = schema.Choice(title=_(u'Template Text'),
@@ -122,7 +123,7 @@ class IExhibit(form.Schema):
     form.widget(pages=CheckBoxFieldWidget)
 
 
-class IInitialSections(form.Schema):
+class IInitialSections(Schema):
     sections = schema.List(title=_(u'Exhibit Sections'),
                           required=True,
                           description=u'Add the titles of any sections that you wish to add to the exhibit, one per line. You must add at least one section.',

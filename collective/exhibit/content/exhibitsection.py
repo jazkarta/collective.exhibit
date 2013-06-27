@@ -2,6 +2,7 @@ from zope import schema
 from zope.interface import alsoProvides
 from z3c.form.interfaces import IEditForm, IAddForm
 from plone.directives import form
+from plone.supermodel.model import Schema
 from plone.dexterity.utils import createContentInContainer
 from plone.namedfile.field import NamedBlobImage
 from plone.app.textfield import RichText
@@ -9,7 +10,7 @@ from plone.formwidget.contenttree import UUIDSourceBinder
 from collective.exhibit import exhibitMessageFactory as _
 
 
-class IExhibitSection(form.Schema):
+class IExhibitSection(Schema):
     """An Exhibit Section"""
 
     text = RichText(title=_(u'Text'),
@@ -30,7 +31,7 @@ class IExhibitSection(form.Schema):
                                     default=u'Slider')
 
 
-class IBulkItemAdd(form.Schema):
+class IBulkItemAdd(Schema):
     """Allow bulk addition of exhibit items when creating sections"""
 
     exhibit_items = schema.List(title=_(u'Item References'),

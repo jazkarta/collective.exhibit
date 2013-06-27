@@ -2,18 +2,18 @@ import itertools
 from five import grok
 from Acquisition import aq_inner, aq_parent
 from zope import schema
-from zope.interface import invariant, Invalid, implements, alsoProvides
+from zope.interface import invariant, Invalid, alsoProvides
 from zope.component import queryUtility
 from zope.component import getUtility
 from zope.publisher.interfaces import NotFound
 from zope.traversing.interfaces import TraversalError
 
 from plone.directives import form, dexterity
+from plone.supermodel.model import Schema
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.content import Item
 from plone.dexterity.utils import getAdditionalSchemata
 from plone.formwidget.contenttree import UUIDSourceBinder
-from plone.formwidget.contenttree.interfaces import IContentFilter
 from plone.app.uuid.utils import uuidToObject
 from plone.app.content.interfaces import INameFromTitle
 
@@ -34,6 +34,7 @@ from collective.z3cform.keywordwidget.field import Keywords
 from plone.app.dexterity.behaviors.metadata import ICategorization
 from plone.autoform.interfaces import IFormFieldProvider
 
+
 class ExhibitUUIDSourceBinder(UUIDSourceBinder):
 
     def __call__(self, context):
@@ -50,7 +51,7 @@ class MustHaveImage(Invalid):
                 'you must upload an image.')
 
 
-class IExhibitItem(form.Schema):
+class IExhibitItem(Schema):
     """An Exhibit Item.  Often a reference to another object in
     the site."""
 
