@@ -8,12 +8,13 @@ from zope.component import getUtility
 from zope.publisher.interfaces import NotFound
 from zope.traversing.interfaces import TraversalError
 
-from plone.directives import form, dexterity
+from plone.directives import form
 from plone.supermodel.model import Schema
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.content import Item
 from plone.dexterity.utils import getAdditionalSchemata
-from plone.formwidget.contenttree import UUIDSourceBinder
+from plone.formwidget.contenttree import (UUIDSourceBinder,
+                                          ContentTreeFieldWidget)
 from plone.app.uuid.utils import uuidToObject
 from plone.app.content.interfaces import INameFromTitle
 
@@ -62,7 +63,7 @@ class IExhibitItem(Schema):
                                     source=ExhibitUUIDSourceBinder(),
                                     required=False,
                                     )
-    form.widget(referenced_item='plone.formwidget.contenttree.ContentTreeFieldWidget')
+    form.widget(referenced_item=ContentTreeFieldWidget)
     form.primary('referenced_item')
 
     title = schema.TextLine(
