@@ -23,7 +23,7 @@
                                            effect: "fade",
                                            offset: [-10,0]});
         $('.FullExhibitItemLink').click(function() { 
-            $('#ExhibitItemView').show("slide", { direction: "up" }, 1000,
+            $('#ExhibitItemView').slideDown(1000,
                 function () {
                     // init any maps on slidedown, they get distorted otherswise
                     map_init == false && typeof mapsGoogleMaps != 'undefined' && mapsGoogleMaps.init();
@@ -35,7 +35,7 @@
             return false;
         });
         $('.CloseExhibitItemLink').click(function() { 
-            $('#ExhibitItemView').hide("slide", { direction: "up" }, 1000);
+            $('#ExhibitItemView').slideUp(1000);
             $('.FullExhibitItemLink').show();
             $('.CloseExhibitItemLink').hide();
             return false;
