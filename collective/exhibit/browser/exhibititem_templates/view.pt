@@ -22,7 +22,8 @@
                                            relative: true,
                                            effect: "fade",
                                            offset: [-10,0]});
-        $('.FullExhibitItemLink').click(function() { 
+        $('.FullExhibitItemLink').click(function(ev) {
+            ev.preventDefault();
             $('#ExhibitItemView').slideDown(1000,
                 function () {
                     // init any maps on slidedown, they get distorted otherswise
@@ -34,7 +35,8 @@
             $('.CloseExhibitItemLink').show();
             return false;
         });
-        $('.CloseExhibitItemLink').click(function() { 
+        $('.CloseExhibitItemLink').click(function(ev) { 
+            ev.preventDefault();
             $('#ExhibitItemView').slideUp(1000);
             $('.FullExhibitItemLink').show();
             $('.CloseExhibitItemLink').hide();
