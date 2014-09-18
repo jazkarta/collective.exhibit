@@ -57,7 +57,7 @@
 
 <metal:main fill-slot="content-core"
             tal:define="show_image context/show_image|nothing;
-                        image_view context/@@images;
+                        image_view nocall:context/@@images;
                         image_preview image_view/image/large|nothing;
                         item_url context/referenced_item_url|nothing;
                         image_url string:${context/absolute_url}/@@images/image">

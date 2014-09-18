@@ -7,6 +7,7 @@ from zope.component import queryUtility
 from zope.component import getUtility
 from zope.publisher.interfaces import NotFound
 from zope.traversing.interfaces import TraversalError
+from zope.location.interfaces import LocationError
 
 from plone.directives import form
 from plone.supermodel.model import Schema
@@ -23,6 +24,7 @@ from plone.app.textfield.interfaces import ITransformer
 from plone.namedfile.interfaces import INamedImageField
 from plone.namedfile.field import NamedImage
 from plone.namedfile.scaling import ImageScaling
+from plone.namedfile.scaling import ImmutableTraverser
 from plone.memoize import view
 from plone.indexer import indexer
 from Products.CMFCore.utils import getToolByName, _checkPermission
@@ -218,7 +220,9 @@ class ExhibitItemScaling(ImageScaling):
         morePath = furtherPath[:]
         try:
             image = super(ExhibitItemScaling, self).traverse(name, furtherPath)
-        except (TraversalError, AttributeError):
+            if isinstance(image, ImmutableTraverser):
+                image = image.traverse(name, [])
+        except (TraversalError, AttributeError, LocationError):
             image = None
 
         if image is None:
@@ -227,6 +231,8 @@ class ExhibitItemScaling(ImageScaling):
                 name = _get_image_field_name(obj, name)
                 image = obj.restrictedTraverse('@@images').traverse(name,
                                                                     morePath)
+                if image:
+                    furtherPath.pop()
         return image
 
     def redirector(self, REQUEST=None):
