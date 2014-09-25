@@ -60,8 +60,6 @@
                         image_preview context/@@images/image/large|nothing;
                         item_url context/referenced_item_url|nothing;
                         image_url string:${context/absolute_url}/@@images/image">
-  Image Preview: <tal:debug replace="image_preview" /><br />
-  <tal:debug replace="image_url" />
   <a href=""
      class="ExhibitItemImage"
      tal:condition="python:show_image and image_preview"
