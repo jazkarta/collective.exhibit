@@ -219,7 +219,7 @@ class ExhibitItemScaling(ImageScaling):
         """ used for path traversal, i.e. in zope page templates """
         morePath = furtherPath[:]
         try:
-            image = super(ExhibitItemScaling, self).traverse(name, furtherPath)
+            image = super(ExhibitItemScaling, self).traverse(name, morePath)
             if isinstance(image, ImmutableTraverser):
                 image = image.traverse(name, [])
         except (TraversalError, AttributeError, LocationError):
@@ -231,8 +231,7 @@ class ExhibitItemScaling(ImageScaling):
                 name = _get_image_field_name(obj, name)
                 image = obj.restrictedTraverse('@@images').traverse(name,
                                                                     morePath)
-                if image:
-                    furtherPath.pop()
+        furtherPath.pop()
         return image
 
     def redirector(self, REQUEST=None):

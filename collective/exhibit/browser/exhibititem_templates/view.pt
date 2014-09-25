@@ -57,10 +57,11 @@
 
 <metal:main fill-slot="content-core"
             tal:define="show_image context/show_image|nothing;
-                        image_view nocall:context/@@images;
-                        image_preview image_view/image/large|nothing;
+                        image_preview context/@@images/image/large|nothing;
                         item_url context/referenced_item_url|nothing;
                         image_url string:${context/absolute_url}/@@images/image">
+  Image Preview: <tal:debug replace="image_preview" /><br />
+  <tal:debug replace="image_url" />
   <a href=""
      class="ExhibitItemImage"
      tal:condition="python:show_image and image_preview"
@@ -91,10 +92,9 @@
   <h3>More Exhibit Items</h3>
   <tal:listing repeat="item python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'})">
   <div tal:attributes="class python:'ListingItem%s' % (context == item and ' CurrentListingItem' or '')"
-       tal:define="image_view item/@@images;
-                   item_title item/Title|nothing;
+       tal:define="item_title item/Title|nothing;
                    item_url item/absolute_url;
-                   image_preview image_view/image/thumb|nothing;"
+                   image_preview context/@@images/image/thumb|nothing;"
        tal:condition="image_preview">
     <script tal:condition="python:context == item" tal:content="python:'var current_exhibit_item_index=%d' % repeat['item'].index">
     </script>
