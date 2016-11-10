@@ -155,6 +155,10 @@ alsoProvides(IKeywordCategorization, IFormFieldProvider)
 def _get_image_field_name(obj, default_name='image'):
     """Try to find an image field on an object, if there's a field
     with the requested default name, use it."""
+    if obj.portal_type == 'Rare Book':
+        if obj.contentIds():
+            return 'image'
+
     if hasattr(obj, 'Schema'):
         schema = obj.Schema()
         if default_name in schema.keys():
