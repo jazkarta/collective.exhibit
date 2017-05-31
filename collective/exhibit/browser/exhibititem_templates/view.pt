@@ -57,16 +57,16 @@
 
 <metal:main fill-slot="content-core"
             tal:define="show_image context/show_image|nothing;
-                        image_preview context/@@images/image/large|nothing;
                         item_url context/referenced_item_url|nothing;
+                        preview_url string:${context/absolute_url}/@@images/image/preview;
                         image_url string:${context/absolute_url}/@@images/image">
   <a href=""
      class="ExhibitItemImage"
-     tal:condition="python:show_image and image_preview"
+     tal:condition="show_image"
      tal:attributes="href image_url;
-                     title context/Title"
-     tal:content="structure image_preview">
-    <img src="some_image.jpg" alt="title" />
+                     title context/Title">
+    <img src="some_image.jpg" alt="title"
+         tal:attributes="src preview_url; alt context/Title;"/>
   </a>
   <div class="ExhibitItemText" tal:content="structure context/getText">
     Full Text
@@ -86,14 +86,14 @@
 <div id="ExhibitItemView" style="display: none;">
 </div>
 
-<div class="ExhibitItemListing">
+<div class="ExhibitItemListing"
+     tal:define="items python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'})"
+     tal:condition="items">
   <h3>More Exhibit Items</h3>
-  <tal:listing repeat="item python:context.listFolderContents({'portal_type': 'collective.exhibit.exhibititem'})">
+  <tal:listing repeat="item items">
   <div tal:attributes="class python:'ListingItem%s' % (context == item and ' CurrentListingItem' or '')"
        tal:define="item_title item/Title|nothing;
-                   item_url item/absolute_url;
-                   image_preview context/@@images/image/thumb|nothing;"
-       tal:condition="image_preview">
+                   item_url item/absolute_url;">
     <script tal:condition="python:context == item" tal:content="python:'var current_exhibit_item_index=%d' % repeat['item'].index">
     </script>
 

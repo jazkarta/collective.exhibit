@@ -26,7 +26,7 @@
   <div  class="SectionLink"
       tal:define="item_url section/absolute_url;
                   item_title section/Title|nothing;
-                  image section/@@images/image/mini|nothing">
+                  image section/@@images/image|nothing">
     <a href="#"
            tal:attributes="href item_url;">
       <img class="ExhibitSectionThumb"
