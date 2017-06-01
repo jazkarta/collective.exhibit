@@ -6,7 +6,8 @@ from plone.supermodel.model import Schema
 from plone.dexterity.utils import createContentInContainer
 from plone.namedfile.field import NamedBlobImage
 from plone.app.textfield import RichText
-from plone.formwidget.contenttree import UUIDSourceBinder
+from plone.app.vocabularies.catalog import CatalogSource
+from collective.exhibit.browser.helpers import ExhibitRelatedFieldWidget
 from collective.exhibit import exhibitMessageFactory as _
 
 
@@ -39,11 +40,11 @@ class IBulkItemAdd(Schema):
                                               'a basis for your exhibit '
                                               'items.'),
                                 value_type=schema.Choice(
-                                                   source=UUIDSourceBinder()),
+                                                   source=CatalogSource()
+                                ),
                                 required=False,
                                 )
-    form.widget(
-     exhibit_items='plone.formwidget.contenttree.MultiContentTreeFieldWidget')
+    form.widget(exhibit_items=ExhibitRelatedFieldWidget)
     form.fieldset('bulk_add', label=_(u'Bulk Add Exhibit Items'),
                   fields=['exhibit_items'])
     form.omitted('exhibit_items')

@@ -4,7 +4,6 @@ from Acquisition import aq_inner, aq_parent
 from zope import schema
 from zope.interface import invariant, Invalid, alsoProvides
 from zope.component import queryUtility
-from zope.component import getUtility
 from zope.publisher.interfaces import NotFound
 from zope.traversing.interfaces import TraversalError
 from zope.location.interfaces import LocationError
@@ -14,9 +13,8 @@ from plone.supermodel.model import Schema
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.content import Item
 from plone.dexterity.utils import getAdditionalSchemata
-from plone.formwidget.contenttree import (UUIDSourceBinder,
-                                          ContentTreeFieldWidget)
 from plone.app.uuid.utils import uuidToObject
+from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.content.interfaces import INameFromTitle
 
 from plone.app.textfield import RichText
@@ -29,25 +27,16 @@ from plone.memoize import view
 from plone.indexer import indexer
 from Products.CMFCore.utils import getToolByName, _checkPermission
 
-from plone.registry.interfaces import IRegistry
-from collective.exhibit.interfaces import IExhibitSettings
-
 from collective.exhibit import exhibitMessageFactory as _
+from collective.exhibit.browser.helpers import ExhibitRelatedFieldWidget
 from collective.z3cform.keywordwidget.field import Keywords
 from plone.app.dexterity.behaviors.metadata import ICategorization
 from plone.autoform.interfaces import IFormFieldProvider
 
 
-class ExhibitUUIDSourceBinder(UUIDSourceBinder):
-
-    def __call__(self, context):
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(IExhibitSettings)
-        self.selectable_filter.criteria['portal_type'] = list(settings.exhibit_item_types)
-        return super(ExhibitUUIDSourceBinder, self).__call__(context)
-
 class MustHaveTitle(Invalid):
     __doc__ = _(u'If there is no referenced item, you must set the title.')
+
 
 class MustHaveImage(Invalid):
     __doc__ = _(u'If the referenced item does not have an image field, '
@@ -62,10 +51,10 @@ class IExhibitItem(Schema):
                                     description = _(u'Chose an existing '
                                                     'content item from the '
                                                     'site'),
-                                    source=ExhibitUUIDSourceBinder(),
+                                    source=CatalogSource(),
                                     required=False,
                                     )
-    form.widget(referenced_item=ContentTreeFieldWidget)
+    form.widget(referenced_item=ExhibitRelatedFieldWidget)
     form.primary('referenced_item')
 
     title = schema.TextLine(

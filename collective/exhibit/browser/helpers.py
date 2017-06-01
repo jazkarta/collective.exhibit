@@ -1,7 +1,14 @@
+from zope.component import getUtility
+from zope.interface import implementer
+from z3c.form import widget
+from z3c.form.interfaces import IFieldWidget
 from Products.Five.browser import BrowserView
 from Acquisition import aq_chain, aq_inner
 from collective.exhibit.content.exhibit import IExhibit
 from plone.app.layout.viewlets.common import ViewletBase
+from plone.app.widgets.dx import RelatedItemsWidget
+from plone.registry.interfaces import IRegistry
+from collective.exhibit.interfaces import IExhibitSettings
 from collective.exhibit.config import EXHIBIT_STYLESHEETS
 
 
@@ -36,3 +43,24 @@ class ExhibitCSSViewlet(ViewletBase):
             return '<link rel="stylesheet" type="text/css" href="%s"></link>'%(
                 self.css)
         return ''
+
+
+class ExhibitRelatedWidget(RelatedItemsWidget):
+    """
+    This is a related items widget that allows sets the root path to the
+    current archive.
+    """
+    def _base_args(self):
+        args = super(ExhibitRelatedWidget, self)._base_args()
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IExhibitSettings)
+        if getattr(settings, 'exhibit_item_types', None):
+            args.setdefault('pattern_options', {})['selectableTypes'] = list(
+                settings.exhibit_item_types
+            )
+        return args
+
+
+@implementer(IFieldWidget)
+def ExhibitRelatedFieldWidget(field, request, extra=None):
+    return widget.FieldWidget(field, ExhibitRelatedWidget(request))
