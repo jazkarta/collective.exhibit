@@ -74,7 +74,7 @@
   <div class="visualClear">&nbsp;</div>
   <a class="ReferencedItemLink"
      tal:attributes="href string:${item_url}/view"
-     tal:condition="python:item_url and checkPermission('Modify portal content', context)">Go To Referenced Item</a>
+     tal:condition="python:item_url">Go To Referenced Item</a>
   <a class="FullExhibitItemLink"
      href="#"
      tal:attributes="href item_url"
