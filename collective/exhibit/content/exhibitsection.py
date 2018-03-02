@@ -64,6 +64,9 @@ class BulkItemAdd(object):
         return []
 
     def _set_items(self, values):
+        if values is None:
+            return
+
         context = self.context
         for uid in values:
             createContentInContainer(context,
