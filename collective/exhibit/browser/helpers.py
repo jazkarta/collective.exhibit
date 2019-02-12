@@ -6,7 +6,7 @@ from Products.Five.browser import BrowserView
 from Acquisition import aq_chain, aq_inner
 from collective.exhibit.content.exhibit import IExhibit
 from plone.app.layout.viewlets.common import ViewletBase
-from plone.app.widgets.dx import RelatedItemsWidget
+from plone.app.z3cform.widget import RelatedItemsWidget
 from plone.registry.interfaces import IRegistry
 from collective.exhibit.interfaces import IExhibitSettings
 from collective.exhibit.config import EXHIBIT_STYLESHEETS

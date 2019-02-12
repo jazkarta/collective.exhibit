@@ -8,14 +8,14 @@ from AccessControl import Unauthorized
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.decode import processInputs
 from Products.statusmessages.interfaces import IStatusMessage
-from plone.app.controlpanel.form import ControlPanelView
+from plone.app.registry.browser.controlpanel import ControlPanelFormWrapper
 from plone.memoize.instance import memoize
 from plone.registry.interfaces import IRegistry
 
 from collective.exhibit.interfaces import IExhibitSettings
 from collective.exhibit import exhibitMessageFactory as _
 
-class ExhibitItemContentTypes(ControlPanelView):
+class ExhibitItemContentTypes(ControlPanelFormWrapper):
 
     label = _(u'Exhibit Item Content Types')
     description = _(u'Use this control panel to select '
