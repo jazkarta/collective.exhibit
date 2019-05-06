@@ -1,7 +1,8 @@
 from five import grok
 from zope import schema
 from zope.interface import implements, alsoProvides
-from zope.component import getUtility, getMultiAdapter, adapts
+from zope.component import getUtility, adapts
+from zope.component import queryMultiAdapter
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.interfaces import IContextSourceBinder
 from z3c.form import interfaces
@@ -163,12 +164,17 @@ def createExhibitContent(exhibit, event):
     exhibit.manage_pasteObjects(pages)
 
     manager = getUtility(IPortletManager, name='plone.leftcolumn', context=exhibit)
-    mapping = getMultiAdapter((exhibit, manager), IPortletAssignmentMapping)
-    assignment = Assignment()
-    mapping['exhibit_navigation_portlet'] = assignment
-    blacklist = getMultiAdapter((exhibit, manager), ILocalPortletAssignmentManager)
-    for category in (GROUP_CATEGORY, CONTENT_TYPE_CATEGORY, CONTEXT_CATEGORY, USER_CATEGORY):
-        blacklist.setBlacklistStatus(category, 1)
+    mapping = queryMultiAdapter((exhibit, manager), IPortletAssignmentMapping)
+    if mapping is not None:
+        assignment = Assignment()
+        try:
+            mapping[u'exhibit_navigation_portlet'] = assignment
+        except KeyError:
+            pass
+    blacklist = queryMultiAdapter((exhibit, manager), ILocalPortletAssignmentManager)
+    if blacklist is not None:
+        for category in (GROUP_CATEGORY, CONTENT_TYPE_CATEGORY, CONTEXT_CATEGORY, USER_CATEGORY):
+            blacklist.setBlacklistStatus(category, 1)
 
     # Homepage text
     homepage_id = getattr(exhibit, 'homepage', None)
