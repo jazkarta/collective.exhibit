@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="collective.exhibit">
 
@@ -29,12 +30,37 @@
    <depends name="exhibit-setup" />
   </genericsetup:importStep>
 
-  <!-- Register the installation GenericSetup extension profile -->
   <genericsetup:registerProfile
+      zcml:condition="not-have plone-5"
       name="default"
-      title="Exhibit"
-      directory="profiles/default"
-      description=""
+      title="collective.exhibit (Plone 4)"
+      directory="profiles/plone-4"
+      description="Installs collective.exhibit Plone 4."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:registerProfile
+      zcml:condition="have plone-5"
+      name="default"
+      title="collective.exhibit (Plone 5)"
+      directory="profiles/plone-5"
+      description="Installs collective.exhibit for Plone 5."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:registerProfile
+      name="common"
+      title="collective.exhibit (Common)"
+      directory="profiles/common"
+      description="Installs common collective.exhibit properties."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="collective.exhibit (uninstall)"
+      directory="profiles/uninstall"
+      description="Uninstalls collective.exhibit."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
@@ -43,7 +69,7 @@
       source="1000"
       destination="1001"
       sortkey="1"
-      profile="collective.exhibit:default">
+      profile="collective.exhibit:common">
     <upgradeDepends
         title="Add control panel"
         import_steps="plone.app.registry controlpanel"
@@ -53,7 +79,7 @@
       source="1001"
       destination="1002"
       sortkey="2"
-      profile="collective.exhibit:default">
+      profile="collective.exhibit:common">
     <upgradeDepends
         title="Update addable types"
         import_steps="typeinfo"
@@ -63,7 +89,7 @@
       source="1002"
       destination="1003"
       sortkey="2"
-      profile="collective.exhibit:default">
+      profile="collective.exhibit:common">
     <upgradeDepends
         title="Update css and resources"
         import_steps="cssregistry typeinfo controlpanel"
@@ -73,7 +99,7 @@
       source="1003"
       destination="1004"
       sortkey="3"
-      profile="collective.exhibit:default">
+      profile="collective.exhibit:common">
     <upgradeDepends
         title="Update exhibit behaviors"
         import_steps="typeinfo"
@@ -83,7 +109,7 @@
       source="1004"
       destination="1005"
       sortkey="3"
-      profile="collective.exhibit:default">
+      profile="collective.exhibit:common">
     <upgradeDepends
         title="Update exhibititem categorization"
         import_steps="typeinfo"
@@ -93,7 +119,7 @@
       source="1005"
       destination="1006"
       sortkey="3"
-      profile="collective.exhibit:default">
+      profile="collective.exhibit:common">
     <upgradeDepends
         title="Allow exhibit sections as default pages"
         import_steps="propertiestool"
@@ -103,12 +129,20 @@
       source="1006"
       destination="1007"
       sortkey="1"
-      profile="collective.exhibit:default">
+      profile="collective.exhibit:common">
     <upgradeDepends
         title="Add CSS Viewlet"
         import_steps="viewlets"
         />
   </genericsetup:upgradeSteps>
 
+  <genericsetup:upgradeDepends
+      source="*"
+      destination="1008"
+      sortkey="1"
+      profile="collective.exhibit:default"
+      title="Update registry settings"
+      import_steps="plone.app.registry"
+      />
 
 </configure>

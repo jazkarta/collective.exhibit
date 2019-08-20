@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<metadata>
+  <version>1008</version>
+  <dependencies>
+    <dependency>profile-collective.exhibit:common</dependency>
+  </dependencies>
+</metadata>

@@ -58,8 +58,11 @@ def faceted_navigation(context):
             faceted.unrestrictedTraverse('@@faceted_subtyper/enable')()
             # Load default facet config/layout
             importer = faceted.unrestrictedTraverse('@@faceted_exportimport')
-            importer.import_xml(import_file=xmlconfig, redirect=None)
-            notify(FacetedGlobalSettingsChangedEvent(faceted))
+            try:
+                importer.import_xml(import_file=xmlconfig, redirect=None)
+                notify(FacetedGlobalSettingsChangedEvent(faceted))
+            except AttributeError:
+                pass
 
 
 def bibliography_faceted_navigation(context):
@@ -89,5 +92,8 @@ def bibliography_faceted_navigation(context):
             faceted.unrestrictedTraverse('@@faceted_subtyper/enable')()
             # Load default facet config/layout
             importer = faceted.unrestrictedTraverse('@@faceted_exportimport')
-            importer.import_xml(import_file=xmlconfig, redirect=None)
-            notify(FacetedGlobalSettingsChangedEvent(faceted))
+            try:
+                importer.import_xml(import_file=xmlconfig, redirect=None)
+                notify(FacetedGlobalSettingsChangedEvent(faceted))
+            except AttributeError:
+                pass

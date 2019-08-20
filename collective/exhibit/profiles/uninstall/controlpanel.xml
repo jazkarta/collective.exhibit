@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<object name="portal_controlpanel">
+ <configlet title="Collective Exhibit" action_id="exhbit_ItemTypes" remove="True" />
+</object>

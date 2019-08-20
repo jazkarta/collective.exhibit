@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<registry>
+
+  <records prefix="plone" interface="Products.CMFPlone.interfaces.controlpanel.ITypesSchema">
+    <value key="default_page_types" purge="False">
+      <element remove="True">collective.exhibit.exhibitsection</element>
+    </value>
+  </records>
+
+  <records interface="plone.app.querystring.interfaces.IQueryField"
+           prefix="plone.app.querystring.field.ExhibitSection" remove="True" />
+
+  <records prefix="plone.resources/collective-exhibits"
+           interface='Products.CMFPlone.interfaces.IResourceRegistry' remove="True" />
+
+  <records prefix="plone.bundles/collective-exhibits"
+           interface='Products.CMFPlone.interfaces.IBundleRegistry' remove="True" />
+
+  <records interface="collective.exhibit.interfaces.IExhibitSettings" remove="True" />
+
+</registry>

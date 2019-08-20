@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<registry>
+
+  <records prefix="plone" interface="Products.CMFPlone.interfaces.controlpanel.ITypesSchema">
+    <value key="default_page_types" purge="False">
+      <element>collective.exhibit.exhibitsection</element>
+    </value>
+  </records>
+
+  <records interface="plone.app.querystring.interfaces.IQueryField"
+           prefix="plone.app.querystring.field.ExhibitSection">
+    <value key="title">Exhibit Section</value>
+    <value key="description">Exhibit Section</value>
+    <value key="enabled">True</value>
+    <value key="sortable">False</value>
+    <value key="operations">
+      <element>plone.app.querystring.operation.selection.is</element>
+    </value>
+    <value key="group">Metadata</value>
+  </records>
+
+  <records prefix="plone.resources/collective-exhibit"
+           interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+    <value key="css">
+      <element>++resource++exhibits.css</element>
+    </value>
+  </records>
+
+  <records prefix="plone.bundles/collective-exhibit"
+            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="resources">
+      <element>collective-exhibit</element>
+    </value>
+    <value key="enabled">True</value>
+    <value key="csscompilation">++plone++collective.exhibit/collective-exhibit-compiled.css</value>
+  </records>
+
+</registry>

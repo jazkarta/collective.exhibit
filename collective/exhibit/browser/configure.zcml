@@ -3,6 +3,7 @@
     xmlns:grok="http://namespaces.zope.org/grok"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="collective.exhibit">
 
   <!-- configure view components here -->
@@ -58,5 +59,14 @@
       manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
       class=".helpers.ExhibitCSSViewlet"
       permission="zope2.View" />
+
+
+  <!-- Publish static files -->
+  <plone:static
+      zcml:condition="have plone-5"
+      name="collective.exhibit"
+      type="plone"
+      directory="static"
+      />
 
 </configure>

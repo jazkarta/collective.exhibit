@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<object name="explore-bibliography" meta_type="ATFolder">
+<object name="explore-exhibit" meta_type="ATFolder">
  <criteria>
   <criterion name="c2">
    <property name="widget">text</property>
@@ -19,11 +19,11 @@
   </criterion>
   <criterion name="c7">
    <property name="widget">checkbox</property>
-   <property name="title">Year</property>
+   <property name="title">Section</property>
    <property name="position">right</property>
    <property name="section">default</property>
    <property name="hidden">0</property>
-   <property name="index">publication_year</property>
+   <property name="index">ExhibitSection</property>
    <property name="operator">or</property>
    <property name="vocabulary"></property>
    <property name="catalog">portal_catalog</property>
@@ -31,57 +31,27 @@
    <property name="sortreversed">0</property>
    <property name="count">1</property>
    <property name="hidezerocount">1</property>
-   <property name="default"></property>
   </criterion>
   <criterion name="c6">
-   <property name="widget">checkbox</property>
-   <property name="title">Authors</property>
+   <property name="widget">tagscloud</property>
+   <property name="title">Tags</property>
    <property name="position">right</property>
    <property name="section">default</property>
    <property name="hidden">0</property>
-   <property name="index">Authors</property>
-   <property name="operator">or</property>
+   <property name="index">Subject</property>
    <property name="vocabulary"></property>
    <property name="catalog">portal_catalog</property>
-   <property name="maxitems">0</property>
+   <property name="maxitems">50</property>
+   <property name="maxchars">0</property>
+   <property name="colormin">A1BE7E</property>
+   <property name="colormax">95B229</property>
    <property name="sortreversed">0</property>
+   <property name="cloud">list</property>
+   <property name="sizemin">10</property>
+   <property name="sizemax">20</property>
+   <property name="height">200</property>
    <property name="count">1</property>
    <property name="hidezerocount">1</property>
-   <property name="default"></property>
-  </criterion>
-  <criterion name="c1">
-   <property name="widget">checkbox</property>
-   <property name="title">Reference Type</property>
-   <property name="position">right</property>
-   <property name="section">default</property>
-   <property name="hidden">0</property>
-   <property name="index">portal_type</property>
-   <property name="operator">or</property>
-   <property
-      name="vocabulary">collective.exhibit.bibliography_types</property>
-   <property name="catalog"></property>
-   <property name="maxitems">0</property>
-   <property name="sortreversed">0</property>
-   <property name="count">1</property>
-   <property name="hidezerocount">1</property>
-   <property name="default">
-    <element value="IncollectionReference"/>
-    <element value="ProceedingsReference"/>
-    <element value="ArticleReference"/>
-    <element value="ManualReference"/>
-    <element value="InbookReference"/>
-    <element value="UnpublishedReference"/>
-    <element value="MastersthesisReference"/>
-    <element value="WebpublishedReference"/>
-    <element value="PhdthesisReference"/>
-    <element value="PreprintReference"/>
-    <element value="BookReference"/>
-    <element value="BookletReference"/>
-    <element value="TechreportReference"/>
-    <element value="MiscReference"/>
-    <element value="ConferenceReference"/>
-    <element value="InproceedingsReference"/>
-   </property>
   </criterion>
   <criterion name="c0">
    <property name="widget">resultsperpage</property>
@@ -94,6 +64,15 @@
    <property name="step">5</property>
    <property name="default">5</property>
   </criterion>
+  <criterion name="c1">
+   <property name="widget">tal</property>
+   <property name="title">Type</property>
+   <property name="position">bottom</property>
+   <property name="section">default</property>
+   <property name="hidden">1</property>
+   <property name="index">portal_type</property>
+   <property name="default">string:collective.exhibit.exhibititem</property>
+  </criterion>
   <criterion name="c5">
    <property name="widget">tal</property>
    <property name="title">path</property>
@@ -101,9 +80,7 @@
    <property name="section">default</property>
    <property name="hidden">1</property>
    <property name="index">path</property>
-   <property
-      name="default">python:'/'.join(context.aq_parent.getPhysicalPath())</property>
+   <property name="default">python:'/'.join(context.aq_parent.getPhysicalPath())</property>
   </criterion>
  </criteria>
 </object>
-
