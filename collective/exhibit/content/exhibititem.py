@@ -170,6 +170,7 @@ def _get_image_field_name(obj, default_name='image'):
                         return fname
     return None
 
+
 class ExhibitItemScaling(ImageScaling):
     """ view used for generating (and storing) image scales """
 
@@ -193,16 +194,18 @@ class ExhibitItemScaling(ImageScaling):
         if stack:
             scale = stack[-1]
         try:
-            return super(ExhibitItemScaling, self).publishTraverse(request,
-                                                                   name)
+            return super(ExhibitItemScaling, self).publishTraverse(
+                request, name
+            )
         except (NotFound, AttributeError):
             obj = self._get_referenced()
             if obj is not None:
                 name = _get_image_field_name(obj, name)
                 if name:
                     if scale:
-                        self._new_url = '%s/@@images/%s/%s'%(obj.absolute_url(),
-                                                             name, scale)
+                        self._new_url = '%s/@@images/%s/%s' % (
+                            obj.absolute_url(), name, scale
+                        )
                     else:
                         self._new_url = obj.absolute_url() + '/' + name
                     return self.redirector
@@ -212,9 +215,10 @@ class ExhibitItemScaling(ImageScaling):
         """ used for path traversal, i.e. in zope page templates """
         morePath = furtherPath[:]
         try:
-            image = super(ExhibitItemScaling, self).traverse(name, morePath)
+            image = super(ExhibitItemScaling, self).traverse(name, furtherPath)
             if isinstance(image, ImmutableTraverser):
-                image = image.traverse(name, [])
+                furtherPath[:] = []
+                image = image.traverse(name, furtherPath)
         except (TraversalError, AttributeError, LocationError):
             image = None
 
@@ -224,7 +228,7 @@ class ExhibitItemScaling(ImageScaling):
                 name = _get_image_field_name(obj, name)
                 image = obj.restrictedTraverse('@@images').traverse(name,
                                                                     morePath)
-        furtherPath.pop()
+                furtherPath[:] = morePath
         return image
 
     def redirector(self, REQUEST=None):

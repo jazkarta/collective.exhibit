@@ -22,10 +22,19 @@ img.ExhibitSectionThumb, img.ExhibitItemThumb {max-width: 100%; max-height: 140p
 .ExhibitItemListing h3 {margin:0px 0px 10px; }
 
 .ExhibitItemListing .ListingItem {display:inline-block; position:relative;  margin:10px 10px 5px 0px; text-align: center; }
-.ExhibitItemListing .ListingItem a {display:inline-block; width:102px; }
+.ExhibitItemListing .ListingItem a {display:inline-block; width:120px; }
 .ExhibitItemListing .ListingItem img {max-width: 100%; height: auto; }
 .ExhibitItemListing .CurrentListingItem img {border: 4px solid black;}
-.ExhibitItemListing .ListingItem .tooltip {background:url('++resource++exhibit-images/tooltip_bg.png') top left no-repeat transparent; border:none; border-bottom:1px solid #d3d0cc; left:0px !important; padding:15px 10px 0px; width:239px; z-index: 1000; display:none;}
+.ExhibitItemListing .ListingItem .tooltip {
+    border:1px solid #d3d0cc;
+    border-top: none;
+    box-sizing: border-box;
+    left:0px !important;
+    padding:15px 10px 0px;
+    width:100%;
+    z-index: 1000;
+    display:none;
+}
 #content a.FullExhibitItemLink {background:url('++resource++exhibit-images/exhibit-moreinfo.png') top right no-repeat; display:block; height:31px; text-indent:-10000px; width:100%; border: none !important;}
 #content a.CloseExhibitItemLink {background:url('++resource++exhibit-images/exhibit-lessinfo.png') top right no-repeat #e4e0da; display:block; height:31px; text-indent:-10000px; width:100%; border: none !important;}
 

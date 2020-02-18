@@ -145,4 +145,13 @@
       import_steps="plone.app.registry"
       />
 
+  <genericsetup:upgradeDepends
+      source="*"
+      destination="1009"
+      sortkey="1"
+      profile="collective.exhibit:default"
+      title="Update bundle compilation"
+      import_steps="plone.app.registry"
+      />
+
 </configure>
