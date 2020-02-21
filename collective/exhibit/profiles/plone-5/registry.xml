@@ -33,7 +33,7 @@
     </value>
     <value key="enabled">True</value>
     <value key="csscompilation">++plone++collective.exhibit/collective-exhibit-compiled.css</value>
-    <value key="last_compilation">2020-02-18 10:00:00</value>
+    <value key="last_compilation">2020-02-21 10:00:00</value>
   </records>
 
 </registry>
