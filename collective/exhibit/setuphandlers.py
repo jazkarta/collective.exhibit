@@ -2,7 +2,6 @@ from zope.interface import alsoProvides
 from zope.event import notify
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
-from Products.ATContentTypes.lib import constraintypes
 
 from collective.exhibit import exhibitMessageFactory as _
 from config import EXHIBIT_TEMPLATES
@@ -49,9 +48,6 @@ def faceted_navigation(context):
                                 title=_(u'Browse & Explore'))
             faceted = folder['explore-exhibit']
             alsoProvides(faceted, IHidePloneRightColumn)
-            # We need to constrain types in order to allow an ATCT
-            # folder inside a dexterity folder!
-            faceted.setConstrainTypesMode(constraintypes.ENABLED)
             faceted.setLocallyAllowedTypes([])
             faceted.setImmediatelyAddableTypes([])
             # Enable faceted search view
@@ -83,9 +79,6 @@ def bibliography_faceted_navigation(context):
                                 title=_(u'Explore Bibliography'))
             faceted = folder['explore-bibliography']
             alsoProvides(faceted, IHidePloneRightColumn)
-            # We need to constrain types in order to allow an ATCT
-            # folder inside a dexterity folder!
-            faceted.setConstrainTypesMode(constraintypes.ENABLED)
             faceted.setLocallyAllowedTypes([])
             faceted.setImmediatelyAddableTypes([])
             # Enable faceted search view

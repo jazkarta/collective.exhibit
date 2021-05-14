@@ -35,7 +35,6 @@
      <element value="plone.app.dexterity.behaviors.metadata.IDublinCore" />
      <element value="plone.app.dexterity.behaviors.exclfromnav.IExcludeFromNavigation" />
      <element value="plone.app.dexterity.behaviors.nextprevious.INextPreviousToggle" />
-     <element value="plone.app.referenceablebehavior.referenceable.IReferenceable" />
      <element value="collective.exhibit.content.exhibit.IInitialSections" />
  </property>
 
