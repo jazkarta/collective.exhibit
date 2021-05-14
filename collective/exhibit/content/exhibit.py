@@ -1,4 +1,3 @@
-from five import grok
 from zope import schema
 from zope.interface import implements, alsoProvides
 from zope.component import getUtility, adapts
@@ -12,7 +11,6 @@ from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.container.interfaces import IContainerModifiedEvent
 
 from Products.CMFCore.utils import getToolByName
-from plone.directives import form
 from plone.supermodel.model import Schema
 from plone.app.textfield import RichText
 from plone.app.textfield.value import RichTextValue
@@ -33,7 +31,7 @@ from collective.exhibit.config import EXHIBIT_STYLESHEETS
 from collective.exhibit.config import EXHIBIT_HOMEPAGES
 from collective.exhibit import exhibitMessageFactory as _
 
-
+import pdb;pdb.set_trace()
 @grok.provider(IContextSourceBinder)
 def exhibit_pages(context):
     pages = []

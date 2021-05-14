@@ -1,5 +1,4 @@
 import itertools
-from five import grok
 from Acquisition import aq_inner, aq_parent
 from zope import schema
 from zope.interface import invariant, Invalid, alsoProvides
@@ -250,7 +249,7 @@ class ExhibitItemContent(Item):
         if not _checkPermission('View', obj):
             # Raise AttributeError if the current user cannot access
             # the referenced object.
-            raise AttributeError, 'Referenced Object: %s not accessible'%uid
+            raise AttributeError('Referenced Object: %s not accessible'%uid)
         return obj
 
     def _text_output(self, text_value, mimetype, raw=False):
@@ -329,10 +328,7 @@ class ExhibitItemContent(Item):
         return text
 
 
-class ExhibitItemNamer(grok.Adapter):
-    grok.context(IExhibitItem)
-    grok.provides(INameFromTitle)
-
+class ExhibitItemNamer(object):
     @property
     def title(self):
         """Use the DC title not the one stored on the instance which
@@ -344,9 +340,8 @@ class ExhibitItemNamer(grok.Adapter):
 def textIndexer(obj):
     return '%s\n%s\n%s'%(obj.getText(mimetype='text/plain'),
                          obj.Title(), obj.Description())
-grok.global_adapter(textIndexer, name="SearchableText")
+
 
 @indexer(IExhibitItem)
 def sectionIndexer(obj):
     return aq_parent(aq_inner(obj)).Title()
-grok.global_adapter(sectionIndexer, name="ExhibitSection")

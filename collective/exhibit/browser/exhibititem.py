@@ -1,16 +1,14 @@
-from five import grok
+from Products.Five.browser import BrowserView
 from AccessControl.SecurityManagement import getSecurityManager
 from AccessControl.PermissionRole import rolesForPermissionOn
 from Products.statusmessages.interfaces import IStatusMessage
 
-from collective.exhibit.content.exhibititem import IExhibitItem
+from collective.exhibit.content.exhibititem.IExhibitItem
 from collective.exhibit import exhibitMessageFactory as _
 
-class View(grok.View):
-    """A view providing a permission check"""
-    grok.context(IExhibitItem)
-    grok.require('zope2.View')
 
+class View(BrowserView):
+    """A view providing a permission check"""
     def update(self):
         super(View, self).update()
 

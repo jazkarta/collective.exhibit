@@ -1,13 +1,31 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:grok="http://namespaces.zope.org/grok"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="collective.exhibit">
 
   <!-- configure your content components here -->
-  <grok:grok package="." />
+    <browser:page
+        for="collective.exhibit.content.exhibititem.IExhibitItem"
+        permission="zope2.View"
+        class=".views.MyView"
+        />
+
+  <adapter name="SearchableText" factory=".exhibititem.textIndexer" />
+  <adapter name="ExhibitSection" factory=".exhibititem.sectionIndexer" />
+
+  <adapter
+      for=".exhibititem.IExhibitItem"
+      provides="plone.app.content.interfaces.INameFromTitle"
+      factory=".exhibititem.ExhibitItemNamer"
+      />
+
+  <adapter
+      for=".shop.MyShoppableItemType"
+      provides=".interfaces.IProductImageProvider"
+      factory=".images.FolderishProductImageProvider"
+      />
 
     <plone:behavior
         title="Bulk Exibit Item Add"
