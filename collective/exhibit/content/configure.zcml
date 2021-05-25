@@ -5,13 +5,6 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="collective.exhibit">
 
-  <!-- configure your content components here -->
-    <browser:page
-        for="collective.exhibit.content.exhibititem.IExhibitItem"
-        permission="zope2.View"
-        class=".views.MyView"
-        />
-
   <adapter name="SearchableText" factory=".exhibititem.textIndexer" />
   <adapter name="ExhibitSection" factory=".exhibititem.sectionIndexer" />
 
@@ -19,12 +12,6 @@
       for=".exhibititem.IExhibitItem"
       provides="plone.app.content.interfaces.INameFromTitle"
       factory=".exhibititem.ExhibitItemNamer"
-      />
-
-  <adapter
-      for=".shop.MyShoppableItemType"
-      provides=".interfaces.IProductImageProvider"
-      factory=".images.FolderishProductImageProvider"
       />
 
     <plone:behavior
@@ -63,6 +50,30 @@
       name="collective.exhibit.bibliography_types"
       component=".exhibit.bibliography_types"
       provides="zope.schema.interfaces.IVocabularyFactory"
+      />
+
+  <subscriber
+      for=".exhibit.IExhibit
+           zope.lifecycleevent.interfaces.IObjectAddedEvent"
+      handler=".exhibit.createExhibitContent"
+      />
+
+  <subscriber
+      for=".exhibit.IExhibit
+           zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+      handler=".exhibit.editExhibitContent"
+      />
+
+  <subscriber
+      for="plone.dexterity.interfaces.IDexterityContent
+           zope.lifecycleevent.interfaces.IObjectAddedEvent"
+      handler=".exhibit.addExhibitSections"
+      />
+
+  <subscriber
+      for="plone.dexterity.interfaces.IDexterityContent
+           zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+      handler=".exhibit.addExhibitSections"
       />
 
 </configure>

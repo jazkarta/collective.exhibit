@@ -1,7 +1,9 @@
 from zope import schema
 from zope.interface import alsoProvides
 from z3c.form.interfaces import IEditForm, IAddForm
-from plone.directives import form
+from plone.autoform import directives
+from plone.autoform.interfaces import IFormFieldProvider
+from plone.supermodel.directives import fieldset
 from plone.supermodel.model import Schema
 from plone.dexterity.utils import createContentInContainer
 from plone.namedfile.field import NamedBlobImage
@@ -44,14 +46,14 @@ class IBulkItemAdd(Schema):
                                 ),
                                 required=False,
                                 )
-    form.widget(exhibit_items=ExhibitRelatedFieldWidget)
-    form.fieldset('bulk_add', label=_(u'Bulk Add Exhibit Items'),
+    directives.widget(exhibit_items=ExhibitRelatedFieldWidget)
+    fieldset('bulk_add', label=_(u'Bulk Add Exhibit Items'),
                   fields=['exhibit_items'])
-    form.omitted('exhibit_items')
-    form.no_omit(IEditForm, 'exhibit_items')
-    form.no_omit(IAddForm, 'exhibit_items')
+    directives.omitted('exhibit_items')
+    directives.no_omit(IEditForm, 'exhibit_items')
+    directives.no_omit(IAddForm, 'exhibit_items')
 
-alsoProvides(IBulkItemAdd, form.IFormFieldProvider)
+alsoProvides(IBulkItemAdd, IFormFieldProvider)
 
 
 class BulkItemAdd(object):

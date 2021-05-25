@@ -3,7 +3,6 @@ from AccessControl.SecurityManagement import getSecurityManager
 from AccessControl.PermissionRole import rolesForPermissionOn
 from Products.statusmessages.interfaces import IStatusMessage
 
-from collective.exhibit.content.exhibititem.IExhibitItem
 from collective.exhibit import exhibitMessageFactory as _
 
 

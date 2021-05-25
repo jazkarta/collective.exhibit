@@ -1,19 +1,19 @@
 from zope import schema
-from zope.interface import implements, alsoProvides
+from zope.interface import implementer, alsoProvides, provider
 from zope.component import getUtility, adapts
 from zope.component import queryMultiAdapter
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.interfaces import IContextSourceBinder
 from z3c.form import interfaces
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
-from zope.lifecycleevent.interfaces import IObjectAddedEvent
-from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.container.interfaces import IContainerModifiedEvent
 
 from Products.CMFCore.utils import getToolByName
 from plone.supermodel.model import Schema
 from plone.app.textfield import RichText
 from plone.app.textfield.value import RichTextValue
+from plone.autoform import directives
+from plone.autoform.interfaces import IFormFieldProvider
 from plone.dexterity.utils import createContentInContainer
 from plone.behavior.interfaces import IBehaviorAssignable
 from plone.dexterity.interfaces import IDexterityContent
@@ -31,8 +31,8 @@ from collective.exhibit.config import EXHIBIT_STYLESHEETS
 from collective.exhibit.config import EXHIBIT_HOMEPAGES
 from collective.exhibit import exhibitMessageFactory as _
 
-import pdb;pdb.set_trace()
-@grok.provider(IContextSourceBinder)
+
+@provider(IContextSourceBinder)
 def exhibit_pages(context):
     pages = []
     portal_url = getToolByName(context, 'portal_url')
@@ -47,7 +47,7 @@ def exhibit_pages(context):
     return SimpleVocabulary(pages)
 
 
-@grok.provider(IContextSourceBinder)
+@provider(IContextSourceBinder)
 def exhibit_homepages(context):
     pages = []
     portal_url = getToolByName(context, 'portal_url')
@@ -62,7 +62,7 @@ def exhibit_homepages(context):
     return SimpleVocabulary(pages)
 
 
-@grok.provider(IContextSourceBinder)
+@provider(IContextSourceBinder)
 def exhibit_stylesheets(context):
     pages = []
     portal_url = getToolByName(context, 'portal_url')
@@ -77,7 +77,7 @@ def exhibit_stylesheets(context):
     return SimpleVocabulary(pages)
 
 
-@grok.provider(IContextSourceBinder)
+@provider(IContextSourceBinder)
 def bibliography_types(context):
     types = []
     portal_bibliography = getToolByName(context, 'portal_bibliography')
@@ -95,8 +95,8 @@ class IExhibit(Schema):
                        required=False,
                        description=u'Select a template to use for the default text or leave blank to enter custom text below',
                        source=exhibit_homepages)
-    form.omitted('homepage')
-    form.no_omit(interfaces.IAddForm, 'homepage')
+    directives.omitted('homepage')
+    directives.no_omit(interfaces.IAddForm, 'homepage')
 
     text = RichText(title=_(u'Text'),
                     required=False,
@@ -105,7 +105,7 @@ class IExhibit(Schema):
                     output_mime_type='text/x-html-safe',
                     default=u'',
                     )
-    form.primary('text')
+    #directives.primary('text')
 
     image = NamedBlobImage(title=_(u'Image'),
                            required=False)
@@ -119,7 +119,7 @@ class IExhibit(Schema):
                        required=False,
                        description=u'Select any pages from the global site templates that you want to be included on the exhibit. (If this list is blank, it means that you have already added all of the global site templates.)',
                        value_type=schema.Choice(source=exhibit_pages))
-    form.widget(pages=CheckBoxFieldWidget)
+    directives.widget(pages=CheckBoxFieldWidget)
 
 
 class IInitialSections(Schema):
@@ -128,14 +128,14 @@ class IInitialSections(Schema):
                           description=u'Add the titles of any sections that you wish to add to the exhibit, one per line. You must add at least one section.',
                           value_type=schema.TextLine())
 
-    form.omitted('sections')
-    form.no_omit(interfaces.IAddForm, 'sections')
+    directives.omitted('sections')
+    directives.no_omit(interfaces.IAddForm, 'sections')
 
-alsoProvides(IInitialSections, form.IFormFieldProvider)
+alsoProvides(IInitialSections, IFormFieldProvider)
 
 
+@implementer(IInitialSections)
 class InitialSections(object):
-    implements(IInitialSections)
     adapts(IExhibit)
 
     def __init__(self, context):
@@ -151,7 +151,6 @@ class InitialSections(object):
     sections = property(_get_items, _set_items)
 
 
-@grok.subscribe(IExhibit, IObjectAddedEvent)
 def createExhibitContent(exhibit, event):
     from collective.exhibit.portlets.navigation import Assignment
     portal_url = getToolByName(exhibit, 'portal_url')
@@ -183,7 +182,6 @@ def createExhibitContent(exhibit, event):
                                      'text/html', 'text/html')
 
 
-@grok.subscribe(IExhibit, IObjectModifiedEvent)
 def editExhibitContent(exhibit, event):
     # Don't call again when items are added to avoid recursion
     if IContainerModifiedEvent.providedBy(event):
@@ -198,8 +196,7 @@ def editExhibitContent(exhibit, event):
     exhibit.manage_pasteObjects(pages)
 
 
-@grok.subscribe(IDexterityContent, IObjectAddedEvent)
-@grok.subscribe(IDexterityContent, IObjectModifiedEvent)
+
 def addExhibitSections(obj, event):
     # Don't call again when items are added to avoid recursion, and
     # only call on items with assigned behavior

@@ -7,7 +7,8 @@ from zope.publisher.interfaces import NotFound
 from zope.traversing.interfaces import TraversalError
 from zope.location.interfaces import LocationError
 
-from plone.directives import form
+from plone.autoform import directives
+from plone.supermodel.directives import primary
 from plone.supermodel.model import Schema
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.content import Item
@@ -53,8 +54,9 @@ class IExhibitItem(Schema):
                                     source=CatalogSource(),
                                     required=False,
                                     )
-    form.widget(referenced_item=ExhibitRelatedFieldWidget)
-    form.primary('referenced_item')
+    
+    directives.widget(referenced_item=ExhibitRelatedFieldWidget)
+    primary('referenced_item')
 
     title = schema.TextLine(
         title = _(u'Title'),
@@ -136,7 +138,7 @@ class IKeywordCategorization(ICategorization):
                     required = False,
                     index_name='Subject',
         )
-    form.widget(subjects='collective.z3cform.keywordwidget.widget.KeywordFieldWidget')
+    directives.widget(subjects='collective.z3cform.keywordwidget.widget.KeywordFieldWidget')
 
 alsoProvides(IKeywordCategorization, IFormFieldProvider)
 

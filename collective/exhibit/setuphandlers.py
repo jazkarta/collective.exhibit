@@ -4,7 +4,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
 
 from collective.exhibit import exhibitMessageFactory as _
-from config import EXHIBIT_TEMPLATES
+from collective.exhibit.config import EXHIBIT_TEMPLATES
 
 try:
     from eea.facetednavigation.settings.interfaces import IHidePloneRightColumn

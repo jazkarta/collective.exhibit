@@ -1,5 +1,4 @@
-from zope.interface import implements
-from zope.formlib import form
+from zope.interface import implementer
 from Acquisition import aq_inner, aq_parent
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -11,8 +10,8 @@ from collective.exhibit.portlets.interfaces import INavPortlet
 from collective.exhibit.content.exhibit import IExhibit
 
 
+@implementer(INavPortlet)
 class Assignment(base.Assignment):
-    implements(INavPortlet)
 
     css_class=u''
 
@@ -22,7 +21,7 @@ class Assignment(base.Assignment):
 
 
 class AddForm(base.AddForm):
-    form_fields = form.Fields(INavPortlet)
+    schema = INavPortlet
     label = _(u"Add Navigation Portlet")
     description = _(u"This portlet displays exhibit navigation.")
 
@@ -31,7 +30,7 @@ class AddForm(base.AddForm):
 
 
 class EditForm(base.EditForm):
-    form_fields = form.Fields(INavPortlet)
+    schema = INavPortlet
     label = _(u"Add Navigation Portlet")
     description = _(u"This portlet displays exhibit navigation.")
 
