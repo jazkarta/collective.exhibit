@@ -331,6 +331,10 @@ class ExhibitItemContent(Item):
 
 
 class ExhibitItemNamer(object):
+
+    def __init__(self, context):
+        self.context = context
+
     @property
     def title(self):
         """Use the DC title not the one stored on the instance which

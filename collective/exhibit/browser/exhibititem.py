@@ -1,4 +1,5 @@
 from Products.Five.browser import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from AccessControl.SecurityManagement import getSecurityManager
 from AccessControl.PermissionRole import rolesForPermissionOn
 from Products.statusmessages.interfaces import IStatusMessage
@@ -8,6 +9,8 @@ from collective.exhibit import exhibitMessageFactory as _
 
 class View(BrowserView):
     """A view providing a permission check"""
+    __call__ = ViewPageTemplateFile("exhibititem_templates/view.pt")
+
     def update(self):
         super(View, self).update()
 
