@@ -1,4 +1,5 @@
 import itertools
+import six
 from Acquisition import aq_inner, aq_parent
 from zope import schema
 from zope.interface import invariant, Invalid, alsoProvides
@@ -307,8 +308,10 @@ class ExhibitItemContent(Item):
                 subject = referenced.Subject()
             else:
                 subject = []
-        else:
+        elif six.PY2:
             subject = [s.encode('utf-8') for s in subject]
+        else:
+            subject = list(subject)
         return subject
 
     def getText(self, mimetype=None, raw=False, **kwargs):
