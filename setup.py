@@ -48,7 +48,6 @@ setup(name='collective.exhibit',
                         'plone.formwidget.contenttree',
                         'collective.autopermission',
                         'plone.namedfile [blobs]',
-                        'collective.z3cform.keywordwidget',
                         ],
       extras_require=dict(test=['plone.app.testing',]),
       entry_points="""

@@ -16,10 +16,10 @@ from plone.dexterity.content import Item
 from plone.dexterity.utils import getAdditionalSchemata
 from plone.app.uuid.utils import uuidToObject
 from plone.app.vocabularies.catalog import CatalogSource
-from plone.app.content.interfaces import INameFromTitle
 
 from plone.app.textfield import RichText
 from plone.app.textfield.interfaces import ITransformer
+from plone.app.z3cform.widget import AjaxSelectWidget
 from plone.namedfile.interfaces import INamedImageField
 from plone.namedfile.field import NamedImage
 from plone.namedfile.scaling import ImageScaling
@@ -30,7 +30,6 @@ from Products.CMFCore.utils import getToolByName, _checkPermission
 
 from collective.exhibit import exhibitMessageFactory as _
 from collective.exhibit.browser.helpers import ExhibitRelatedFieldWidget
-from collective.z3cform.keywordwidget.field import Keywords
 from plone.app.dexterity.behaviors.metadata import ICategorization
 from plone.autoform.interfaces import IFormFieldProvider
 
@@ -100,7 +99,8 @@ class IExhibitItem(Schema):
                     )
 
     show_more_link = schema.Bool(title=_(u'Show more info link'),
-                                 default=True)
+                                 default=True,
+                                 required=False)
 
     @invariant
     def validateHasTitle(data):
@@ -130,16 +130,21 @@ class IExhibitItem(Schema):
 
 class IKeywordCategorization(ICategorization):
     # Override Subjects
-    subjects = Keywords(title = _(u'label_categories',
+    subjects = schema.List(title = _(u'label_categories',
                                       default=u'Categories'),
                     description = _(u'help_categories',
                                     default=u'Also known as keywords, '
                                     'tags or labels, these help you '
                                     'categorize your content.'),
+                    value_type=schema.TextLine(),
                     required = False,
-                    index_name='Subject',
+                    missing_value=[],
         )
-    directives.widget(subjects='collective.z3cform.keywordwidget.widget.KeywordFieldWidget')
+    directives.widget(
+        'subjects',
+        widget_class=AjaxSelectWidget,
+        vocabulary='plone.app.vocabularies.Keywords'
+    )
 
 alsoProvides(IKeywordCategorization, IFormFieldProvider)
 
