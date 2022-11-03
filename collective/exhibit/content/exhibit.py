@@ -110,6 +110,11 @@ class IExhibit(Schema):
     image = NamedBlobImage(title=_(u'Image'),
                            required=False)
 
+    image_alt = schema.TextLine(
+        title=_(u'Optional description of the image'),
+        required=False,
+    )
+
     stylesheet = schema.Choice(title=_(u'Exhibit Stylesheet'),
                        required=False,
                        description=u'Select an stylesheet from the global site stylesheets.)',
