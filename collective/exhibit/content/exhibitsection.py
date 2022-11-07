@@ -29,11 +29,6 @@ class IExhibitSection(Schema):
 
     show_image = schema.Bool(title=_(u'Show image in default view'))
 
-    image_alt = schema.TextLine(
-        title=_(u'Optional description of the image'),
-        required=False,
-    )
-
     section_display = schema.Choice(title=_(u'Section Display'),
                                     values=(u'Slider', u'Grid', u'List'),
                                     default=u'Slider')

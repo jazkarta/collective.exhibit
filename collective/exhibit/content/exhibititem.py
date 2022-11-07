@@ -87,11 +87,6 @@ class IExhibitItem(Schema):
     show_image = schema.Bool(title=_(u'Show image in default view'),
                              default=True)
 
-    image_alt = schema.TextLine(
-        title=_(u'Optional description of the image'),
-        required=False,
-    )
-
     text = RichText(title=_(u'Description'),
                     description=_(u'Describe the exhibit item.  Leave '
                                   'this blank to use the description '
