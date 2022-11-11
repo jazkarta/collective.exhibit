@@ -93,12 +93,13 @@
   <tal:listing repeat="item items">
   <div tal:attributes="class python:'ListingItem%s' % (context == item and ' CurrentListingItem' or '')"
        tal:define="item_title item/Title|nothing;
-                   item_url item/absolute_url;">
-    <script tal:condition="python:context == item" tal:content="python:'var current_exhibit_item_index=%d' % repeat['item'].index">
+                   item_url item/absolute_url;
+                   is_current python:context == item">
+    <script tal:condition="is_current" tal:content="python:'var current_exhibit_item_index=%d' % repeat['item'].index">
     </script>
 
     <a class="ExhibitItemPreview"
-       tal:attributes="href item_url">
+       tal:attributes="href item_url; aria-current python: 'page' if is_current else None">
       <img class="ExhibitItemThumb"
            tal:attributes="src string:${item_url}/@@images/image/thumb;
                            alt item_title;" />
