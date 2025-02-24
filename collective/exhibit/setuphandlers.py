@@ -16,7 +16,7 @@ except ImportError:
 
 def configureExhibitsFolder(portal):
     folder = portal.restrictedTraverse('portal-exhibit-templates')
-    folder.setExcludeFromNav(True)
+    folder.exclude_from_nav = True
     folder.reindexObject()
 
 

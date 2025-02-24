@@ -11,6 +11,7 @@
       handler="collective.exhibit.setuphandlers.exhibitSetup"
       title="Exhibit Setup"
       description="Additional configuration steps">
+   <depends name="content" />
    <depends name="keywords" />
   </genericsetup:importStep>
 
